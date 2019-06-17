@@ -1,0 +1,3 @@
+[submodule "FakeNewsNet"]
+	path = FakeNewsNet
+	url = https://github.com/KaiDMML/FakeNewsNet.git
