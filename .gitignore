@@ -3,4 +3,5 @@
 .RData
 .Ruserdata
 fasttext_test/aclImdb/
-.tar.gz
+.tar
+.gz
