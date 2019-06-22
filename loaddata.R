@@ -1,4 +1,7 @@
-## load LIAR dataset
+##################################
+############## LIAR ##############
+##################################
+############ TRAIN ###############
 train<-read.csv(file="liar_dataset/train.TSV",sep = '\t', header = FALSE)
 header<-c("ID","label","statement","subject","speaker","speaker.title","state","party","bt.count","f.count","ht.count","mt.count","pof.count","context")
 names(train)<-header
@@ -29,7 +32,34 @@ file.create("liar_dataset/train.txt")
 #out<-file("liar_dataset/train.txt")
 for (i in 1:nrow(train)) {
   line<-paste("__label__", as.character(train$label[i]), " ",train$statement[i], sep="")
-  write(line,file="liar_dataset/train.txt",append=TRUE)
+  if (grepl("json", line)==TRUE){
+    write(line,file="liar_dataset/train.txt",append=TRUE)
+  }
+}
+#close(out)
+
+############ TEST ###############
+test<-read.csv(file="liar_dataset/test.TSV",sep = '\t', header = FALSE)
+header<-c("ID","label","statement","subject","speaker","speaker.title","state","party","bt.count","f.count","ht.count","mt.count","pof.count","context")
+names(test)<-header
+head(test)
+# reorder levels
+labels<-c("pants-fire","false","barely-true","half-true","mostly-true","true")
+for (num in 6:1) {
+  test$label <- relevel(test$label,labels[num])
+}
+levels(test$label)
+test$label<-unclass(test$label)
+# hack to get reset levels
+test$label<-as.numeric(test$label)
+test$label<-as.factor(test$label)
+
+## write LIAR to output
+file.create("liar_dataset/test.txt")
+#out<-file("liar_dataset/test.txt")
+for (i in 1:nrow(test)) {
+  line<-paste("__label__", as.character(test$label[i]), " ",test$statement[i], sep="")
+  write(line,file="liar_dataset/test.txt",append=TRUE)
 }
 #close(out)
 
