@@ -1,6 +1,4 @@
 [submodule "FakeNewsNet"]
 	path = FakeNewsNet
 	url = https://github.com/KaiDMML/FakeNewsNet.git
-[submodule "fastText"]
-	path = fastText
-	url = https://github.com/facebookresearch/fastText.git
+

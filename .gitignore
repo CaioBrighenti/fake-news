@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+fasttext_test/aclImdb/
+.tar.gz
