@@ -46,14 +46,22 @@ for (i in 1:length(tokens)) {
     doc_vec <- rep(0,50)
   }
   # add document to matrix
-  doc_vecs[i,]<-doc_vec
+  doc_vectors[i,]<-doc_vec
 }
 
-dat<-data.frame(label=as.factor(unclass(train$label)),doc_vecs)
+dat<-data.frame(label=as.factor(unclass(train$label)),doc_vectors)
 head(dat)
 
+## make sure predictors are numberic
+### shouldn't be necessary but I GUESS THAT'S OK
+for (idx in 2:51) {
+  dat[,idx]<-as.numeric(type.convert(dat[,idx]))
+}
+
+
 ## fit ordinal logistic model
-#library(MASS)
-dat_sub<-sample(dat,size=10)
-mod.polr<-polr(dat$label~dat$X1)
+library(MASS)
+#mod<-lm(as.numeric(label)~.,data=dat)
+#summary(mod)
+mod.polr<-polr(label~.,data=dat,Hess=TRUE)
 summary(mod.polr)

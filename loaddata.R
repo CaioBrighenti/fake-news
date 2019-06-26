@@ -1,20 +1,26 @@
 ##################################
 ############## LIAR ##############
 ##################################
-############ TRAIN ###############
-train<-read.csv(file="LIAR/dataset/train.TSV",sep = '\t', quote="", header = FALSE)
-header<-c("ID","label","statement","subject","speaker","speaker.title","state","party","bt.count","f.count","ht.count","mt.count","pof.count","context")
-names(train)<-header
-head(train)
-# grab 10 random observations
-survey_LIAR<-train[sample(nrow(train), 10), ]
+loadLIAR <- function() {
+  ## load train data
+  train<-read.csv(file="LIAR/dataset/train.TSV",sep = '\t', quote="", header = FALSE)
+  header<-c("ID","label","statement","subject","speaker","speaker.title","state","party","bt.count","f.count","ht.count","mt.count","pof.count","context")
+  names(train)<-header
+  
+  ## load test data
+  test<-read.csv(file="LIAR/dataset/test.TSV",sep = '\t', quote="", header = FALSE)
+  names(test)<-header
 
-## reorder and number label
-labels<-c("pants-fire","false","barely-true","half-true","mostly-true","true")
-for (num in 6:1) {
-  train$label <- relevel(train$label,labels[num])
+    ## reorder and number label
+  labels<-c("pants-fire","false","barely-true","half-true","mostly-true","true")
+  for (num in 6:1) {
+    train$label <- relevel(train$label,labels[num])
+  }
+
+  
+  
 }
-levels(train$label)
+
 
 ## write LIAR to fastText format
 # file.create("LIAR/train.txt")
@@ -24,19 +30,6 @@ levels(train$label)
 #   write(line,file="LIAR/train.txt",append=TRUE)
 # }
 #close(out)
-
-############ TEST ###############
-test<-read.csv(file="LIAR/dataset/test.TSV",sep = '\t', quote="", header = FALSE)
-header<-c("ID","label","statement","subject","speaker","speaker.title","state","party","bt.count","f.count","ht.count","mt.count","pof.count","context")
-names(test)<-header
-head(test)
-
-## reorder and number label
-labels<-c("pants-fire","false","barely-true","half-true","mostly-true","true")
-for (num in 6:1) {
-  test$label <- relevel(test$label,labels[num])
-}
-levels(test$label)
 
 
 ## write LIAR to output
