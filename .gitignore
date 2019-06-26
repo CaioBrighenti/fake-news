@@ -6,3 +6,4 @@ fasttext_test/aclImdb/
 .tar
 .gz
 .Rproj
+fake-news.Rproj
