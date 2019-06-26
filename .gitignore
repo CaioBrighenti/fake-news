@@ -5,3 +5,4 @@
 fasttext_test/aclImdb/
 .tar
 .gz
+.Rproj
