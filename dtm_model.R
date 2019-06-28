@@ -50,8 +50,11 @@ dtm_test = create_dtm(test_it, vectorizer)
 ############## FIT MODELS ############## 
 ## fit ordinal logistic model
 library(MASS)
-dat_train<-data.frame(label=train$label,as.matrix(dtm_train))
-mod.lm<-lm(label~.,data=dat_train,Hess=TRUE)
+dtm_train_mat <- as.matrix(dtm_train)
+mode(dtm_train_mat) = "numeric"
+dat_train<-data.frame(label=train$label,dtm_train_mat)
+mod.polr<-polr(label~.,data=dat_train,Hess=TRUE)
+summary(mod.lm)
 #summary(mod.polr)
 calcAccuracy(mod.polr, dat_train)
 calcAccuracy(mod.polr, dat_test)
