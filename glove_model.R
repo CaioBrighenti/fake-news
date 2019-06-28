@@ -33,9 +33,9 @@ glove = GlobalVectors$new(word_vectors_size = 50, vocabulary = vocab, x_max = 10
 word_vectors<-glove$fit_transform(tcm, n_iter = 35)
 
 ############## GET TFIDF DTM ############## 
-dtm_train = create_dtm(it, vectorizer)
-tfidf = TfIdf$new()
-dtm_tfidf = tfidf$fit_transform(dtm_train)
+# dtm_train = create_dtm(it, vectorizer)
+# tfidf = TfIdf$new()
+# dtm_tfidf = tfidf$fit_transform(dtm_train)
 
 ############## CREATE DOC VECTORS############## 
 ## create doc vectors for train data
@@ -43,9 +43,11 @@ train_dvec <- docVector(tokens, vocab, word_vectors)
 mode(train_dvec) = "numeric"
 dat_train<-data.frame(label=as.factor(unclass(train$label)),train_dvec)
 
-
-
 ## create doc vectors for test data
+test_tokens <- test$statement %>%
+  lemmatize_strings %>%
+  tolower %>%
+  word_tokenizer
 test_dvec <- docVector(test_tokens, vocab, word_vectors)
 mode(test_dvec) = "numeric"
 dat_test<-data.frame(label=as.factor(unclass(test$label)),test_dvec)
@@ -63,6 +65,7 @@ library(e1071)
 mod.svm<-svm(as.factor(label)~.,data=dat_train, kernel="linear", cost=10, scale=FALSE)
 #tune.out<-tune(svm,as.factor(label)~.,data=dat_train,kernel="linear", ranges=list(cost=c(0.001,0.01,0.1,1,5,10,100)))
 calcAccuracy(mod.svm, dat_test)
+
 
 ############## HELPER FUNCTIONS ############## 
 docVector <- function(tokens,vocab,word_vectors){
