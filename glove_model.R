@@ -1,3 +1,7 @@
+############## HYPERPARAMETERS ############## 
+wvec_size <- 100
+
+
 ############## LOAD ############## 
 ## load in libs
 library("text2vec")
@@ -29,7 +33,7 @@ vocab <- prune_vocabulary(vocab, term_count_min = 5L)
 vectorizer <- vocab_vectorizer(vocab)
 # use window of 5 for context words
 tcm <- create_tcm(it, vectorizer, skip_grams_window = 5L)
-glove = GlobalVectors$new(word_vectors_size = 50, vocabulary = vocab, x_max = 10)
+glove = GlobalVectors$new(word_vectors_size = wvec_size, vocabulary = vocab, x_max = 10, learning_rate=0.01)
 word_vectors<-glove$fit_transform(tcm, n_iter = 35)
 
 ############## GET TFIDF DTM ############## 
@@ -70,7 +74,7 @@ calcAccuracy(mod.svm, dat_test)
 ############## HELPER FUNCTIONS ############## 
 docVector <- function(tokens,vocab,word_vectors){
   ## create doc vectors for train data
-  doc_vectors<-matrix(0, nrow=length(tokens), ncol=50)
+  doc_vectors<-matrix(0, nrow=length(tokens), ncol=wvec_size)
   ## loop through each document
   for (i in 1:length(tokens)) {
     # grab words in doc
@@ -83,7 +87,7 @@ docVector <- function(tokens,vocab,word_vectors){
     } else if (length(words) == 1){
       doc_vec <- word_vectors[words, ]
     } else {
-      doc_vec <- rep(0,50)
+      doc_vec <- rep(0,wvec_size)
     }
     # add document to matrix
     doc_vectors[i,]<-doc_vec
@@ -94,7 +98,7 @@ docVector <- function(tokens,vocab,word_vectors){
 
 docVectorWeighted <- function(tokens,vocab,word_vectors,weights){
   ## create doc vectors for train data
-  doc_vectors<-matrix(0, nrow=length(tokens), ncol=50)
+  doc_vectors<-matrix(0, nrow=length(tokens), ncol=wvec_size)
   ## loop through each document
   for (i in 1:length(tokens)) {
     # grab words in doc
@@ -102,7 +106,7 @@ docVectorWeighted <- function(tokens,vocab,word_vectors,weights){
     # remove pruned words and stopwords
     words<-words[which(words %in% vocab$term)]
     if (length(words)==0) {
-      doc_vectors[i,]<-rep(0,50)
+      doc_vectors[i,]<-rep(0,wvec_size)
       next
     }
     # get word vectors to calc doc vec

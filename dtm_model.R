@@ -53,8 +53,18 @@ library(MASS)
 dtm_train_mat <- as.matrix(dtm_train)
 mode(dtm_train_mat) = "numeric"
 dat_train<-data.frame(label=train$label,dtm_train_mat)
+dtm_test_mat <- as.matrix(dtm_test)
+mode(dtm_test_mat) = "numeric"
+dat_test<-data.frame(label=test$label,dtm_test_mat)
+
+
+
+
 mod.polr<-polr(label~.,data=dat_train,Hess=TRUE)
-summary(mod.lm)
-#summary(mod.polr)
+summary(mod.polr)
 calcAccuracy(mod.polr, dat_train)
 calcAccuracy(mod.polr, dat_test)
+mod.svm<-svm(as.factor(label)~.,data=dat_train, kernel="linear", cost=5, scale=FALSE)
+calcAccuracy(mod.svm, dat_train)
+calcAccuracy(mod.svm, dat_test)
+
