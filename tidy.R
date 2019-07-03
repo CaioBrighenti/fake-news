@@ -1,9 +1,13 @@
 ############## LOAD ############## 
 ## load in libs
 library("tidytext")
+library("syuzhet")
 library(scales)
 library(tidyr)
 library("ggplot2")
+library("reshape2")
+library("wordcloud")
+library("corrplot")
 library("viridis")
 # load in data
 source("loaddata.R")
@@ -21,6 +25,7 @@ data(stop_words)
 tidy_train <- tidy_train %>%
     anti_join(stop_words)
 
+############## WORD FREQUENCY ############## 
 # word frequency
 tidy_train %>%
   count(word, sort = TRUE) 
@@ -39,16 +44,11 @@ frequency <- count(tidy_train,label,word,sort=TRUE) %>%
   group_by(label) %>%
   mutate(proportion = n / sum(n)) %>%
   dplyr::select(-n) %>%
-  spread(label, proportion) #%>%
-  #gather(label, proportion, 'pants-fire':'true')
-## plot
-pf_ht <- wordplot(frequency,frequency$`pants-fire`,frequency$`half-true`,"pants-fire","half-true")
-pf_t <- wordplot(frequency,frequency$`pants-fire`,frequency$`true`,"pants-fire","true")
-ht_t <- wordplot(frequency,frequency$`half-true`,frequency$`true`,"half-true","true")
-
-
-wordplot <- function(frequency,label1,label2,x_lab,y_lab){
-  p <- ggplot(frequency, aes(x = label1, y = label2, color = true)) +
+  spread(label, proportion) %>%
+  gather(label, proportion, 'pants-fire':'true')
+## facet plot
+t_prop <- frequency[frequency$label=="true",]$proportion
+ggplot(frequency, aes(x = proportion, y = rep(t_prop,6), color = proportion)) +
   geom_abline(color = "gray40", lty = 2) +
   geom_jitter(alpha = 0.1, size = 2.5, width = 0.3, height = 0.3) +
   geom_text(aes(label = word), check_overlap = TRUE, vjust = 1.5) +
@@ -56,6 +56,88 @@ wordplot <- function(frequency,label1,label2,x_lab,y_lab){
   scale_y_log10(labels = percent_format()) +
   theme(legend.position="none") +
   scale_color_viridis(limits = c(0, 0.001),option="B") +
-  labs(y = y_lab, x = x_lab)
-  return(p)
-}
+  facet_wrap(~label, ncol = 3) +
+  labs(y = "true", x = NULL) +
+  ggtitle("Plots of word frequency proportion in true group vs other groups")
+
+
+# word frequency by group
+prop.aov <- aov(proportion ~ label, data = frequency)
+summary(prop.aov)
+TukeyHSD(prop.aov)
+
+
+frequency <- frequency %>%
+  spread(label, proportion)
+frequency[is.na(frequency)] <- 0
+# correlation tests
+cor <- cor(frequency[,2:7])
+corrplot(cor, type = "upper", 
+         tl.col = "black", tl.srt = 45)
+
+
+############## SENTIMENT ANALYSIS ############## 
+tidy_train <- tidy_train %>%
+  group_by(label)
+
+## check most positive words
+bing_pos <- get_sentiments("bing") %>% 
+  filter(sentiment == "positive")
+tidy_train %>%
+  filter(label == "true") %>%
+  inner_join(bing_pos) %>%
+  count(word, sort = TRUE)
+
+## sentiment by label + doc
+train_sentiment <- tidy_train %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(label, index=ID, sentiment) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+ggplot(train_sentiment, aes(index, sentiment, fill = label)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~label, ncol = 2, scales = "free_x")
+
+## sentiment by label
+label_sentiment <- train_sentiment %>% 
+  group_by(label) %>%
+  summarise(negative=-sum(negative),positive = sum(positive), sentiment=sum(sentiment))
+
+dfm <- melt(label_sentiment[,c('label','negative','positive', 'sentiment')],id.vars = 1)
+ggplot(dfm,aes(x = label,y = value)) + 
+  geom_bar(aes(fill = variable),stat = "identity",position = "stack") +
+  geom_hline(yintercept=0)
+
+## sentiment counts
+bing_word_counts <- tidy_train %>%
+  ungroup() %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE)
+
+bing_word_counts %>%
+  group_by(sentiment) %>%
+  top_n(30) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y") +
+  labs(y = "Contribution to sentiment",
+       x = NULL) +
+  coord_flip()
+
+# word clouds
+##full data
+tidy_train %>%
+  ungroup() %>%
+  anti_join(stop_words) %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 100))
+
+## comparison
+tidy_train %>%
+  count(word, sort = TRUE) %>%
+  acast(word ~ label, value.var = "n", fill = 0) %>%
+  comparison.cloud(colors = viridis(6),
+                   max.words = 300)
