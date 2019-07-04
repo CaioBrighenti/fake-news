@@ -37,7 +37,8 @@ tidy_train %>%
   ggplot(aes(word, n)) +
   geom_col() +
   xlab(NULL) +
-  coord_flip()
+  coord_flip() +
+  ggtitle("Most common words in train set")
 
 # word frequency by group
 frequency <- count(tidy_train,label,word,sort=TRUE) %>%
@@ -45,7 +46,7 @@ frequency <- count(tidy_train,label,word,sort=TRUE) %>%
   mutate(proportion = n / sum(n)) %>%
   dplyr::select(-n) %>%
   spread(label, proportion) %>%
-  gather(label, proportion, 'pants-fire':'true')
+  gather(label, proportion, 'pants-fire':'true') 
 ## facet plot
 t_prop <- frequency[frequency$label=="true",]$proportion
 ggplot(frequency, aes(x = proportion, y = rep(t_prop,6), color = proportion)) +
@@ -75,7 +76,6 @@ cor <- cor(frequency[,2:7])
 corrplot(cor, type = "upper", 
          tl.col = "black", tl.srt = 45)
 
-
 ############## SENTIMENT ANALYSIS ############## 
 tidy_train <- tidy_train %>%
   group_by(label)
@@ -97,7 +97,8 @@ train_sentiment <- tidy_train %>%
 
 ggplot(train_sentiment, aes(index, sentiment, fill = label)) +
   geom_col(show.legend = FALSE) +
-  facet_wrap(~label, ncol = 2, scales = "free_x")
+  facet_wrap(~label, ncol = 2, scales = "free_x") +
+  ggtitle("Claim net sentiment by label")
 
 ## sentiment by label
 label_sentiment <- train_sentiment %>% 
@@ -107,7 +108,8 @@ label_sentiment <- train_sentiment %>%
 dfm <- melt(label_sentiment[,c('label','negative','positive', 'sentiment')],id.vars = 1)
 ggplot(dfm,aes(x = label,y = value)) + 
   geom_bar(aes(fill = variable),stat = "identity",position = "stack") +
-  geom_hline(yintercept=0)
+  geom_hline(yintercept=0) +
+  ggtitle("Net sentiment by label")
 
 ## sentiment counts
 bing_word_counts <- tidy_train %>%
@@ -141,3 +143,7 @@ tidy_train %>%
   acast(word ~ label, value.var = "n", fill = 0) %>%
   comparison.cloud(colors = viridis(6),
                    max.words = 300)
+
+
+
+############## TFIDF ############## 
