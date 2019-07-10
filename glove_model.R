@@ -5,6 +5,7 @@ wvec_size <- 100
 ############## LOAD ############## 
 ## load in libs
 library("text2vec")
+library(devtools)
 library("tidytext")
 library("stopwords")
 library("dplyr")
@@ -66,28 +67,45 @@ calcAccuracy(mod.polr, dat_test)
 
 ## SVM
 library(e1071)
-mod.svm<-svm(as.factor(label)~.,data=dat_train, kernel="linear", cost=10, scale=FALSE)
+#mod.svm<-svm(as.factor(label)~.,data=dat_train, kernel="linear", cost=10, scale=FALSE)
 #tune.out<-tune(svm,as.factor(label)~.,data=dat_train,kernel="linear", ranges=list(cost=c(0.001,0.01,0.1,1,5,10,100)))
-calcAccuracy(mod.svm, dat_test)
+#calcAccuracy(mod.svm, dat_test)
 
+
+############## GOOGLE NEWS MODEL ############## 
+## load in Google News vectors
+install_github("bmschmidt/wordVectors")
+library(wordVectors)
+path = "/google_vecs/gnews.bin"
+f <- file.choose()
+g_news <- read.vectors(f)
+
+## create document vectors
+train_dvec <- docVector(tokens, g_news)
+mode(doc_vectors) = "numeric"
+dat_train<-data.frame(label=as.factor(unclass(train$label)),doc_vectors)
+test_dvec <- docVector(test_tokens, g_news)
+mode(test_dvec) = "numeric"
+dat_test<-data.frame(label=as.factor(unclass(test$label)),test_dvec)
 
 ############## HELPER FUNCTIONS ############## 
-docVector <- function(tokens,vocab,word_vectors){
+docVector <- function(tokens, word_vectors){
   ## create doc vectors for train data
-  doc_vectors<-matrix(0, nrow=length(tokens), ncol=wvec_size)
+  doc_vectors<-matrix(0, nrow=length(tokens), ncol=dim(word_vectors)[2])
   ## loop through each document
   for (i in 1:length(tokens)) {
+    print(i)
     # grab words in doc
     words<-unlist(tokens[i])
     # remove pruned words and stopwords
-    words<-words[which(words %in% vocab$term)]
+    words<-words[which(words %in% rownames(word_vectors))]
     # calculate document mean
     if (length(words)>1){
       doc_vec <- colMeans(word_vectors[words, ])
     } else if (length(words) == 1){
       doc_vec <- word_vectors[words, ]
     } else {
-      doc_vec <- rep(0,wvec_size)
+      doc_vec <- rep(0,ncol=dim(g_news)[2])
     }
     # add document to matrix
     doc_vectors[i,]<-doc_vec
