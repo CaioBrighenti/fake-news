@@ -7,3 +7,4 @@ fasttext_test/aclImdb/
 .gz
 .Rproj
 fake-news.Rproj
+.bin
