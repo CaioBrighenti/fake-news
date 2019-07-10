@@ -57,20 +57,6 @@ test_dvec <- docVector(test_tokens, vocab, word_vectors)
 mode(test_dvec) = "numeric"
 dat_test<-data.frame(label=as.factor(unclass(test$label)),test_dvec)
 
-############## FIT MODELS ############## 
-## fit ordinal logistic model
-library(MASS)
-mod.polr<-polr(as.factor(label)~.,data=dat_train,Hess=TRUE)
-#summary(mod.polr)
-calcAccuracy(mod.polr, dat_train)
-calcAccuracy(mod.polr, dat_test)
-
-## SVM
-library(e1071)
-#mod.svm<-svm(as.factor(label)~.,data=dat_train, kernel="linear", cost=10, scale=FALSE)
-#tune.out<-tune(svm,as.factor(label)~.,data=dat_train,kernel="linear", ranges=list(cost=c(0.001,0.01,0.1,1,5,10,100)))
-#calcAccuracy(mod.svm, dat_test)
-
 
 ############## GOOGLE NEWS MODEL ############## 
 ## load in Google News vectors
@@ -82,11 +68,26 @@ g_news <- read.vectors(f)
 
 ## create document vectors
 train_dvec <- docVector(tokens, g_news)
-mode(doc_vectors) = "numeric"
-dat_train<-data.frame(label=as.factor(unclass(train$label)),doc_vectors)
+mode(train_dvec) = "numeric"
+dat_train<-data.frame(label=as.factor(unclass(train$label)),train_dvec)
 test_dvec <- docVector(test_tokens, g_news)
 mode(test_dvec) = "numeric"
 dat_test<-data.frame(label=as.factor(unclass(test$label)),test_dvec)
+
+############## FIT MODELS ############## 
+## fit ordinal logistic model
+library(MASS)
+mod.polr<-polr(as.factor(label)~.,data=dat_train,Hess=TRUE)
+#summary(mod.polr)
+calcAccuracy(mod.polr, dat_train)
+calcAccuracy(mod.polr, dat_test)
+
+## SVM
+library(e1071)
+mod.svm<-svm(as.factor(label)~.,data=dat_train, kernel="radial", gamma = 3,cost=1, scale=FALSE)
+#tune.out<-tune(svm,as.factor(label)~.,data=dat_train,kernel="linear", ranges=list(cost=c(0.001,0.01,0.1,1,5,10,100)))
+calcAccuracy(mod.svm, dat_train)
+calcAccuracy(mod.svm, dat_test)
 
 ############## HELPER FUNCTIONS ############## 
 docVector <- function(tokens, word_vectors){

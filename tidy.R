@@ -374,3 +374,16 @@ word_ratios %>%
   coord_flip() +
   ylab("log odds ratio (true/pants-fire)") +
   scale_fill_discrete(name = "", labels = c("true", "pants-fire"))
+
+############## TRUTH DICTIONARY ############## 
+# load in dict
+source("survey.R")
+truth_dict <- loadTruthDict()
+
+## sentiment counts
+word_counts <- tidy_train %>%
+  ungroup() %>%
+  inner_join(truth_dict,by="word") %>%
+  count(word, untruth, truth, sort = TRUE) %>%
+  mutate(truthfulness = truth - untruth) %>%
+  arrange(desc(abs(truthfulness)))

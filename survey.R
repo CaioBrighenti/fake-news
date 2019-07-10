@@ -42,3 +42,23 @@ survey_just %>%
   group_by(label) %>%
   summarise(speaker=mean(speaker), knowledge=mean(knowledge), words=mean(words), 
             grammar=mean(grammar), intuition=mean(intuition), other=mean(other))
+
+
+# load in truthfulness dictionaries
+## untruth
+loadTruthDict <- function(){
+  untruth_dict <-read.csv(file="survey/untruth_dict.csv",header = TRUE)
+  untruth_dict <- as_tibble(untruth_dict) %>%
+    arrange(desc(word)) %>%
+    mutate(word = as.character(word))
+  ## truth
+  truth_dict <-read.csv(file="survey/truth_dict.csv",header = TRUE)
+  truth_dict <- as_tibble(truth_dict) %>%
+    arrange(desc(word)) %>%
+    mutate(word = as.character(word))
+  
+  dict <-  truth_dict %>%
+    full_join(untruth_dict, by="word")
+  return(dict)
+}
+
