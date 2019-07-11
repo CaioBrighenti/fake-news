@@ -114,6 +114,17 @@ ggplot(dfm,aes(x = label,y = value)) +
   geom_hline(yintercept=0) +
   ggtitle("Net sentiment by label")
 
+## MEAN
+label_sentiment <- train_sentiment %>% 
+  group_by(label) %>%
+  summarise(negative=-mean(negative),positive = mean(positive), sentiment=mean(sentiment))
+
+dfm <- melt(label_sentiment[,c('label','negative','positive', 'sentiment')],id.vars = 1)
+ggplot(dfm,aes(x = label,y = value)) + 
+  geom_bar(aes(fill = variable),stat = "identity",position = "stack") +
+  geom_hline(yintercept=0) +
+  ggtitle("Net sentiment by label")
+
 ## sentiment counts
 bing_word_counts <- tidy_train %>%
   ungroup() %>%
@@ -378,12 +389,91 @@ word_ratios %>%
 ############## TRUTH DICTIONARY ############## 
 # load in dict
 source("survey.R")
-truth_dict <- loadTruthDict()
+truth_dict <- loadTruthDict() %>%
+  anti_join(stop_words)
+## top true terms
+truth_dict %>%
+  arrange(desc(net))
+## top untrue terms
+truth_dict %>%
+  arrange(net)
 
-## sentiment counts
-word_counts <- tidy_train %>%
+## sentiment
+tidy_train <- tidy_train %>%
+  group_by(label)
+
+## check most truth words
+dict_pos <- truth_dict %>% 
+  filter(rating == "truthful")
+tidy_train %>%
+  filter(label == "true") %>%
+  inner_join(dict_pos) %>%
+  count(word, sort = TRUE)
+
+## rating by label + doc
+train_rating <- tidy_train %>%
+  inner_join(truth_dict) %>%
+  count(label, index=ID, rating) %>%
+  spread(rating, n, fill = 0) %>%
+  mutate(net = truthful - untruthful)
+
+ggplot(train_rating, aes(index, net, fill = label)) +
+  geom_col(show.legend = FALSE) +
+  geom_hline(yintercept = 0) +
+  facet_wrap(~label, ncol = 2, scales = "free_x") +
+  ggtitle("Claim net truth rating by label")
+
+## sentiment by label
+label_rating <- train_rating %>% 
+  group_by(label) %>%
+  summarise(truthful=sum(truthful),untruthful = -sum(untruthful), net=sum(net))
+
+dfm <- melt(label_rating[,c('label','truthful','untruthful', 'net')],id.vars = 1)
+ggplot(dfm,aes(x = label,y = value)) + 
+  geom_bar(aes(fill = variable),stat = "identity",position = "stack") +
+  geom_hline(yintercept=0) +
+  ggtitle("Net sentiment by label")
+
+## MEAN
+label_rating <- train_rating %>% 
+  group_by(label) %>%
+  summarise(truthful=mean(truthful),untruthful = -mean(untruthful), net=mean(net))
+
+dfm <- melt(label_rating[,c('label','truthful','untruthful', 'net')],id.vars = 1)
+ggplot(dfm,aes(x = label,y = value)) + 
+  geom_bar(aes(fill = variable),stat = "identity",position = "stack") +
+  geom_hline(yintercept=0) +
+  ggtitle("Mean sentiment by label")
+
+## rating counts
+truth_word_counts <- tidy_train %>%
   ungroup() %>%
-  inner_join(truth_dict,by="word") %>%
-  count(word, untruth, truth, sort = TRUE) %>%
-  mutate(truthfulness = truth - untruth) %>%
-  arrange(desc(abs(truthfulness)))
+  inner_join(truth_dict) %>%
+  count(word, rating, net, sort = TRUE)
+
+truth_word_counts %>%
+  group_by(rating) %>%
+  top_n(30) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = rating)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~rating, scales = "free_y") +
+  labs(y = "Word frequency",
+       x = NULL) +
+  coord_flip()
+
+## adjusted for contribution
+truth_word_counts %>%
+  mutate(contribution = abs(net) * n) %>%
+  group_by(rating) %>%
+  top_n(30) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, abs(contribution))) %>%
+  ggplot(aes(word, contribution, fill = rating)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~rating, scales = "free_y") +
+  labs(y = "Word frequency",
+       x = NULL) +
+  coord_flip()
+

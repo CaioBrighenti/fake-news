@@ -58,7 +58,11 @@ loadTruthDict <- function(){
     mutate(word = as.character(word))
   
   dict <-  truth_dict %>%
-    full_join(untruth_dict, by="word")
+    full_join(untruth_dict, by="word", fill=0) %>%
+    mutate(untruth = replace_na(untruth, 0)) %>%
+    mutate(net=truth-untruth) %>%
+    filter(net != 0) %>%
+    mutate(rating = ifelse(net > 0,"truthful","untruthful")) 
   return(dict)
 }
 
