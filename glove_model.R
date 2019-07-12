@@ -1,5 +1,5 @@
 ############## HYPERPARAMETERS ############## 
-wvec_size <- 100
+wvec_size <- 300
 
 
 ############## LOAD ############## 
@@ -49,7 +49,7 @@ word_vectors<-glove$fit_transform(tcm, n_iter = 35)
 ## create doc vectors for train data
 train_dvec <- docVector(tokens, word_vectors)
 mode(train_dvec) = "numeric"
-dat_train<-data.frame(label=as.factor(unclass(train$label)),train_dvec)
+dat_train<-data.frame(ID=train$ID, label=as.factor(unclass(train$label)),train_dvec)
 
 ## create doc vectors for test data
 test_tokens <- test$statement %>%
@@ -58,7 +58,7 @@ test_tokens <- test$statement %>%
   word_tokenizer
 test_dvec <- docVector(test_tokens, word_vectors)
 mode(test_dvec) = "numeric"
-dat_test<-data.frame(label=as.factor(unclass(test$label)),test_dvec)
+dat_test<-data.frame(ID=test$ID, label=as.factor(unclass(test$label)),test_dvec)
 
 
 ############## GOOGLE NEWS MODEL ############## 
@@ -107,34 +107,40 @@ test_rating <- tidy_test %>%
   group_by(ID) %>%
   summarise(label= unique(label), truth = sum(truth), untruth=sum(untruth), net=sum(net))
 
-## model fits
-mod.polr<-polr(as.factor(label)~truth+untruth,data=train_rating,Hess=TRUE)
-calcAccuracy(mod.polr, train_rating)
-calcAccuracy(mod.polr, test_rating)
-
-#tune.out <- tune(svm, as.factor(label)~truth+untruth, data = train_rating, kernel="polynomial",
-#            ranges = list(power = seq(1:5), cost = 2^(2:4)),
-#            tunecontrol = tune.control(sampling = "fix")
-#)
-#plot(tune.out)
-mod.svm<-svm(as.factor(label)~truth+untruth,data=train_rating, kernel="radial", gamma=3, cost=2, scale=FALSE)
-calcAccuracy(mod.svm, train_rating)
-calcAccuracy(mod.svm, test_rating)
-
-plotPredictions(list(mod.polr,mod.svm), test_rating)
+## merge with document vectors
+dat_train <- as_tibble(dat_train)
+train_full <- dat_train %>%
+  full_join(train_rating, by="ID") %>%
+  mutate(truth = replace_na(truth, 0), untruth = replace_na(untruth, 0), net = replace_na(net, 0)) %>%
+  mutate(label=as.factor(label.x)) %>%
+  dplyr::select(-label.y, -label.x) %>%
+  dplyr::select(label, truth, untruth, net, everything(), -ID,)
+## test
+dat_test <- as_tibble(dat_test)
+test_full <- dat_test %>%
+  full_join(test_rating, by="ID") %>%
+  mutate(truth = replace_na(truth, 0), untruth = replace_na(untruth, 0), net = replace_na(net, 0)) %>%
+  mutate(label=as.factor(label.x)) %>%
+  dplyr::select(-label.y, -label.x) %>%
+  dplyr::select(label, truth, untruth, net, everything(), -ID,)
 
 ############## FIT MODELS ############## 
 ## fit ordinal logistic model
-mod.polr<-polr(as.factor(label)~.,data=dat_train,Hess=TRUE)
-#summary(mod.polr)
-calcAccuracy(mod.polr, dat_train)
-calcAccuracy(mod.polr, dat_test)
+mod.polr<-polr(label~.-truth-untruth,data=train_full,Hess=TRUE)
+summary(mod.polr)
+calcAccuracy(mod.polr, train_full)
+calcAccuracy(mod.polr, test_full)
 
 ## SVM
-mod.svm<-svm(as.factor(label)~.,data=dat_train, kernel="linear", cost=1, scale=FALSE)
-#tune.out<-tune(svm,as.factor(label)~.,data=dat_train,kernel="linear", ranges=list(cost=c(0.001,0.01,0.1,1,5,10,100)))
-calcAccuracy(mod.svm, dat_train)
-calcAccuracy(mod.svm, dat_test)
+mod.svm<-svm(label~.-truth-untruth,data=train_full, kernel="linear", cost=1, scale=FALSE)
+# tune.out <- tune(svm, as.factor(label)~truth+untruth, data = train_rating, kernel="radial",
+#                  ranges = list(gamma = seq(1:5), cost = 2^(2:4)),
+#                  tunecontrol = tune.control(sampling = "fix")
+# )
+calcAccuracy(mod.svm, train_full)
+calcAccuracy(mod.svm, test_full)
+
+plotPredictions(list(mod.polr, mod.svm), test_full)
 
 ############## HELPER FUNCTIONS ############## 
 plotPredictions <- function(mods,dat_test){

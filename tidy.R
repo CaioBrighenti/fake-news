@@ -91,11 +91,18 @@ tidy_train %>%
   inner_join(bing_pos) %>%
   count(word, sort = TRUE)
 
+## add document word count 
+ tidy_train <- tidy_train %>% 
+  group_by(ID) %>%
+  mutate(count = n()) %>%
+  ungroup()
+
 ## sentiment by label + doc
 train_sentiment <- tidy_train %>%
   inner_join(get_sentiments("bing")) %>%
-  count(label, index=ID, sentiment) %>%
-  spread(sentiment, n, fill = 0) %>%
+  count(label, index=ID, sentiment, count) %>%
+  spread(sentiment, n, fill = 0) %>% 
+  mutate(positive = positive/count, negative = negative/count) %>%
   mutate(sentiment = positive - negative)
 
 ggplot(train_sentiment, aes(index, sentiment, fill = label)) +
