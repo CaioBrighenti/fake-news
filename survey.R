@@ -5,6 +5,8 @@ library(tidyverse)
 survey_claims<-read.csv(file="survey/survey_claims.csv",header = TRUE)
 survey_claims <- as_tibble(survey_claims)
 
+#colors
+colgate_ter <- c("#64A50A", "#F0AA00","#0096C8", "#005F46","#FF6914","#004682")
 
 ## analysize truth ratings
 survey_truth <- survey_claims %>% 
@@ -20,7 +22,30 @@ survey_truth %>%
   summarise(mean_acc = mean(acc), mean_adj = mean(adj))
 survey_truth %>% 
   group_by(label) %>%
-  summarise(mean_acc = mean(acc), mean_adj = mean(adj))
+  summarise(mean_acc = mean(acc), mean_adj = mean(adj)) %>%
+  mutate(label = replace(label, c(1,2,3,4,5,6), c("pants-fire", "false", "barely-true", "half-true", "mostly-true", "true"))) %>%
+  gather(type, value, `mean_acc`:`mean_adj`) %>% 
+  ggplot(aes(x=type, y=value, fill=type)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~label) +
+  scale_fill_manual(values= colgate_ter[1:2], labels=c("Exact match", "Off by one")) +
+  geom_text(aes(label=round(value, digits = 2)), vjust=1.6, color="white", size=3.5) +
+  ylab("Proportion") +
+  xlab("") +
+  ggtitle("Survey respondent claim classification performance by label") +
+  ylim(0,1)
+  
+
+
+# plot mean accuracy
+tibble(acc = c(0.260, 0.866), type = c("exact match", "off by one")) %>%
+  ggplot(aes(x=type, y=acc)) +
+  geom_bar(stat="identity", fill=c("#E10028", "#821019")) +
+  geom_text(aes(label=acc), vjust=1.6, color="white", size=4)+
+  theme_minimal() +
+  ylim(0,1) + 
+  xlab("") +
+  ylab("proportion")
 
 
 ## analyze types
@@ -42,6 +67,25 @@ survey_just %>%
   group_by(label) %>%
   summarise(speaker=mean(speaker), knowledge=mean(knowledge), words=mean(words), 
             grammar=mean(grammar), intuition=mean(intuition), other=mean(other))
+
+# sums
+survey_just %>%
+  dplyr::select(-other) %>%
+  summarise(speaker=sum(speaker), knowledge=sum(knowledge), words=sum(words), 
+            grammar=sum(grammar), intuition=sum(intuition)) %>%
+  gather(just, count, `speaker`:`intuition`) %>%
+  ggplot(aes(x=just, y=count, fill=just)) +
+  geom_bar(stat="identity") +
+  scale_fill_manual(values= colgate_ter[1:5],
+                    labels=c("Sentence grammar", "Intuition", "Prior knowledge of topic","Speaker's identity", "Word choice")) +
+  geom_text(aes(label=count), vjust=1.6, color="white", size=3.5) +
+  ggtitle("Survey respondent justifications for chosen truthfulness ratings")
+  
+
+survey_just %>%
+  group_by(label) %>%
+  summarise(speaker=sum(speaker), knowledge=sum(knowledge), words=sum(words), 
+            grammar=sum(grammar), intuition=sum(intuition), other=sum(other))
 
 
 # load in truthfulness dictionaries

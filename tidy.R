@@ -29,6 +29,9 @@ data(stop_words)
 tidy_train <- tidy_train %>%
     anti_join(stop_words)
 
+# define colors
+colgate <- c("#64A50A", "#F0AA00","#0096C8", "#005F46","#FF6914","#004682")
+
 ############## WORD FREQUENCY ############## 
 # word frequency
 tidy_train %>%
@@ -71,13 +74,15 @@ prop.aov <- aov(proportion ~ label, data = frequency)
 summary(prop.aov)
 TukeyHSD(prop.aov)
 
-frequency <- frequency %>%
-  spread(label, proportion)
-frequency[is.na(frequency)] <- 0
-# correlation tests
-cor <- cor(frequency[,2:7])
-corrplot(cor, type = "upper", 
-         tl.col = "black", tl.srt = 45)
+# correlation matrix
+cor_dat <- frequency %>%
+  spread(label, proportion) %>%
+  dplyr::select(-word) %>%
+  dplyr::select(`pants-fire`,false,`barely-true`,`half-true`,`mostly-true`,true)
+cor_dat[is.na(cor_dat)] <- 0
+cor <- cor(cor_dat)
+corrplot(cor, type = "lower", col = colorRampPalette(rev(colgate_ter))(100),
+         tl.col = "black", tl.srt = 45, method = "color", title="test", mar=c(0,0,2,0))
 
 ############## SENTIMENT ANALYSIS ############## 
 tidy_train <- tidy_train %>%
@@ -102,13 +107,16 @@ train_sentiment <- tidy_train %>%
   inner_join(get_sentiments("bing")) %>%
   count(label, index=ID, sentiment, count) %>%
   spread(sentiment, n, fill = 0) %>% 
-  mutate(positive = positive/count, negative = negative/count) %>%
+  mutate(positive = positive, negative = negative) %>%
   mutate(sentiment = positive - negative)
 
 ggplot(train_sentiment, aes(index, sentiment, fill = label)) +
   geom_col(show.legend = FALSE) +
+  geom_hline(yintercept=0) +
   facet_wrap(~label, ncol = 2, scales = "free_x") +
-  ggtitle("Claim net sentiment by label")
+  ggtitle("Claim net sentiment by label") +
+  scale_fill_manual(values= c("#64A50A", "#F0AA00","#0096C8", "#005F46","#FF6914","#004682")) +
+  ylab("net sentiment")
 
 ## sentiment by label
 label_sentiment <- train_sentiment %>% 
@@ -119,9 +127,23 @@ dfm <- melt(label_sentiment[,c('label','negative','positive', 'sentiment')],id.v
 ggplot(dfm,aes(x = label,y = value)) + 
   geom_bar(aes(fill = variable),stat = "identity",position = "stack") +
   geom_hline(yintercept=0) +
-  ggtitle("Net sentiment by label")
+  ggtitle("Net sentiment by label") +
+  scale_fill_manual(values= colgate_ter[2:5], labels = c("Total negative sentiment", "Total positive sentiment", "Net sentiment")) +
+  ylab("Sentiment") +
+  xlab("Truth label")
 
 ## MEAN
+## sentiment by label + doc
+doc_sentiment <- train_sentiment %>%
+  group_by(index) %>%
+  summarise(label=label,negative=-mean(negative),positive = mean(positive), sentiment=mean(sentiment))
+
+ggplot(doc_sentiment, aes(index, sentiment, fill = label)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~label, ncol = 2, scales = "free_x") +
+  ggtitle("Claim mean net sentiment by label") 
+
+## sentiment by label
 label_sentiment <- train_sentiment %>% 
   group_by(label) %>%
   summarise(negative=-mean(negative),positive = mean(positive), sentiment=mean(sentiment))
@@ -130,7 +152,10 @@ dfm <- melt(label_sentiment[,c('label','negative','positive', 'sentiment')],id.v
 ggplot(dfm,aes(x = label,y = value)) + 
   geom_bar(aes(fill = variable),stat = "identity",position = "stack") +
   geom_hline(yintercept=0) +
-  ggtitle("Net sentiment by label")
+  ggtitle("Mean sentiment by label") +
+  scale_fill_manual(values= colgate_ter[2:5], labels = c("Mean negative sentiment", "Mean positive sentiment", "Mean net sentiment")) +
+  ylab("Sentiment") +
+  xlab("Truth label")
 
 ## sentiment counts
 bing_word_counts <- tidy_train %>%

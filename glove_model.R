@@ -126,21 +126,44 @@ test_full <- dat_test %>%
 
 ############## FIT MODELS ############## 
 ## fit ordinal logistic model
-mod.polr<-polr(label~.-truth-untruth,data=train_full,Hess=TRUE)
+mod.polr<-polr(label~.-truth-untruth-net,data=train_full,Hess=TRUE)
 summary(mod.polr)
-calcAccuracy(mod.polr, train_full)
-calcAccuracy(mod.polr, test_full)
+acc.polr.train <- calcAccuracy(mod.polr, train_full)
+acc.polr.test <- calcAccuracy(mod.polr, test_full)
+adj.polr.train <- calcAccuracy(mod.polr, train_full,1)
+adj.polr.test <- calcAccuracy(mod.polr, test_full,1)
 
 ## SVM
-mod.svm<-svm(label~.-truth-untruth,data=train_full, kernel="linear", cost=1, scale=FALSE)
+mod.svm<-svm(label~.-truth-untruth-net,data=train_full, kernel="radial", gamma=3, cost=.1, scale=FALSE)
 # tune.out <- tune(svm, as.factor(label)~truth+untruth, data = train_rating, kernel="radial",
 #                  ranges = list(gamma = seq(1:5), cost = 2^(2:4)),
 #                  tunecontrol = tune.control(sampling = "fix")
 # )
-calcAccuracy(mod.svm, train_full)
-calcAccuracy(mod.svm, test_full)
+acc.svm_train<-calcAccuracy(mod.svm, train_full)
+acc.svm_test<-calcAccuracy(mod.svm, test_full)
+adj.svm_train<-calcAccuracy(mod.svm, train_full,1)
+adj.svm_test<-calcAccuracy(mod.svm, test_full,1)
 
 plotPredictions(list(mod.polr, mod.svm), test_full)
+
+## accuracy plot
+accs <- tibble(model=c("Ordered Logistic Regression","Ordered Logistic Regression","Ordered Logistic Regression","Ordered Logistic Regression",
+                       "SVM","SVM","SVM","SVM"),
+                    data=c("train","test","train","test","train","test","train","test"),
+               type=c("acc","acc","adj","adj","acc","acc","adj","adj"),
+               value=c(acc.polr.train,acc.polr.test,adj.polr.train,adj.polr.test,acc.svm_train,acc.svm_test,adj.svm_train,adj.svm_test))
+accs %>%
+  ggplot(aes(x=model,y=value, fill=type)) +
+  geom_bar(stat = "identity",position=position_dodge()) +
+  facet_wrap(~data) +
+  scale_fill_manual(values= colgate_ter[2:5], labels = c("Accuracy", "Adjacency")) +
+  ylab("Value") +
+  xlab("") +
+  ggtitle("Preliminary modeling accuracy and adjacency for train/test data") +
+  geom_text(aes(label=round(value, digits = 2)), vjust=1.6, color="white",
+            position = position_dodge(0.9), size=4) +
+  ylim(0,1)
+  
 
 ############## HELPER FUNCTIONS ############## 
 plotPredictions <- function(mods,dat_test){
