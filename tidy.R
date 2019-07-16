@@ -15,14 +15,20 @@ library("corrplot")
 library("viridis")
 # load in data
 source("loaddata.R")
-train <- loadLIARTrain()
+## LIAR
+train_LIAR <- loadLIARTrain()
+## FNN
+
 
 # tidy data
 names(train)
 train_df <- as_tibble(train[,1:3,])
 train_df$statement <- as.character(train_df$statement)
-tidy_train <- train_df %>% 
-  unnest_tokens(word, statement)
+fnn <- train %>%
+  mutate(text = as.character(text)) %>%
+  dplyr::select(-title)
+tidy_train <- fnn %>% 
+  unnest_tokens(word, text)
 
 # pre-process
 data(stop_words)
@@ -31,6 +37,7 @@ tidy_train <- tidy_train %>%
 
 # define colors
 colgate <- c("#64A50A", "#F0AA00","#0096C8", "#005F46","#FF6914","#004682")
+colgate_ter <- c("#64A50A", "#F0AA00","#0096C8", "#005F46","#FF6914","#004682")
 
 ############## WORD FREQUENCY ############## 
 # word frequency
@@ -39,7 +46,7 @@ tidy_train %>%
 ## plot
 tidy_train %>%
   count(word, sort = TRUE) %>%
-  filter(n > 200) %>%
+  filter(n > 1000) %>%
   mutate(word = reorder(word, n)) %>%
   ggplot(aes(word, n)) +
   geom_col() +
@@ -92,7 +99,7 @@ tidy_train <- tidy_train %>%
 bing_pos <- get_sentiments("bing") %>% 
   filter(sentiment == "positive")
 tidy_train %>%
-  filter(label == "true") %>%
+  filter(label == "real") %>%
   inner_join(bing_pos) %>%
   count(word, sort = TRUE)
 
@@ -136,7 +143,7 @@ ggplot(dfm,aes(x = label,y = value)) +
 ## sentiment by label + doc
 doc_sentiment <- train_sentiment %>%
   group_by(index) %>%
-  summarise(label=label,negative=-mean(negative),positive = mean(positive), sentiment=mean(sentiment))
+  summarise(label=first(label),negative=-mean(negative),positive = mean(positive), sentiment=mean(sentiment))
 
 ggplot(doc_sentiment, aes(index, sentiment, fill = label)) +
   geom_col(show.legend = FALSE) +
@@ -185,7 +192,7 @@ tidy_train %>%
 
 ## comparison
 tidy_train %>%
-  count(word, sort = TRUE) %>%
+  count(word, sort = TRUE, label) %>%
   acast(word ~ label, value.var = "n", fill = 0) %>%
   comparison.cloud(colors = viridis(6),
                    max.words = 300)
@@ -193,8 +200,8 @@ tidy_train %>%
 
 ############## TFIDF ############## 
 ## BY LABEL
-train_words <- train_df %>%
-  unnest_tokens(word, statement) %>%
+train_words <- fnn %>%
+  unnest_tokens(word, text) %>%
   count(label, word, sort = TRUE)
 
 total_words <- train_words %>% 
@@ -258,7 +265,7 @@ train_words %>%
 
 train_words %>%
   arrange(desc(tf_idf)) %>%
-  top_n(15) %>% 
+  top_n(150) %>% 
   ggplot(aes(word, tf_idf, fill = label)) +
   geom_col(show.legend = FALSE) +
   labs(x = NULL, y = "tf-idf") +
@@ -266,8 +273,8 @@ train_words %>%
   coord_flip()
 
 ############## N-GRAMS ############## 
-train_bigrams <- train_df %>%
-  unnest_tokens(bigram, statement, token = "ngrams", n = 2)
+train_bigrams <- fnn %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 2)
 
 train_bigrams %>%
   count(bigram, sort = TRUE)
@@ -316,7 +323,7 @@ bigram_tf_idf
 # plot bigrams
 bigram_tf_idf %>%
   arrange(desc(tf_idf)) %>%
-  top_n(150) %>% 
+  top_n(100) %>% 
   ggplot(aes(bigram, tf_idf, fill = label)) +
   geom_col(show.legend = FALSE) +
   labs(x = NULL, y = "tf-idf") +
@@ -373,7 +380,7 @@ bigram_counts
 
 # filter for only relatively common combinations
 bigram_graph <- bigram_counts %>%
-  filter(n > 20) %>%
+  filter(n > 100) %>%
   graph_from_data_frame()
 
 bigram_graph
@@ -400,7 +407,7 @@ word_ratios <- tidy_train %>%
   ungroup() %>%
   spread(label, n, fill = 0) %>%
   mutate_if(is.numeric, funs((. + 1) / (sum(.) + 1))) %>%
-  mutate(logratio = log(true / `pants-fire`)) %>%
+  mutate(logratio = log(real / `fake`)) %>%
   arrange(desc(logratio))
 # equally likely words
 word_ratios %>% 
@@ -438,16 +445,17 @@ tidy_train <- tidy_train %>%
 dict_pos <- truth_dict %>% 
   filter(rating == "truthful")
 tidy_train %>%
-  filter(label == "true") %>%
+  filter(label == "real") %>%
   inner_join(dict_pos) %>%
   count(word, sort = TRUE)
 
 ## rating by label + doc
+### normalized by count
 train_rating <- tidy_train %>%
   inner_join(truth_dict) %>%
-  count(label, index=ID, rating) %>%
+  count(label, index=ID, rating, count) %>%
   spread(rating, n, fill = 0) %>%
-  mutate(net = truthful - untruthful)
+  mutate(truthful = truthful/count, untruthful = untruthful / count ,net = truthful - untruthful)
 
 ggplot(train_rating, aes(index, net, fill = label)) +
   geom_col(show.legend = FALSE) +
@@ -456,6 +464,7 @@ ggplot(train_rating, aes(index, net, fill = label)) +
   ggtitle("Claim net truth rating by label")
 
 ## sentiment by label
+### need to normalize by number of documents
 label_rating <- train_rating %>% 
   group_by(label) %>%
   summarise(truthful=sum(truthful),untruthful = -sum(untruthful), net=sum(net))

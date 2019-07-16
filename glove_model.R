@@ -1,5 +1,5 @@
 ############## HYPERPARAMETERS ############## 
-wvec_size <- 300
+wvec_size <- 100
 
 
 ############## LOAD ############## 
@@ -15,12 +15,19 @@ library(MASS)
 library(e1071)
 # load in data
 source("loaddata.R")
-train <- loadLIARTrain()
-test <- loadLIARTest()
+LIAR_train <- loadLIARTrain()
+LIAR_test <- loadLIARTest()
+FNN_train <- loadFNNTrain()
+FNN_test <- loadFNNTest()
+
+## chose dataset
+train <- FNN_train
+test <- FNN_test
+#train <- LIAR_train
 
 ############## CREATE WORD EMBEDDINGS ############## 
 # Create iterator over tokens
-tokens <- train$statement %>%
+tokens <- train$text %>%
   lemmatize_strings %>%
   tolower %>%
   word_tokenizer
@@ -38,7 +45,7 @@ vectorizer <- vocab_vectorizer(vocab)
 # use window of 5 for context words
 tcm <- create_tcm(it, vectorizer, skip_grams_window = 5L)
 glove = GlobalVectors$new(word_vectors_size = wvec_size, vocabulary = vocab, x_max = 10, learning_rate=0.01)
-word_vectors<-glove$fit_transform(tcm, n_iter = 35)
+word_vectors<-glove$fit_transform(tcm, n_iter = 20)
 
 ############## GET TFIDF DTM ############## 
 # dtm_train = create_dtm(it, vectorizer)
@@ -49,16 +56,16 @@ word_vectors<-glove$fit_transform(tcm, n_iter = 35)
 ## create doc vectors for train data
 train_dvec <- docVector(tokens, word_vectors)
 mode(train_dvec) = "numeric"
-dat_train<-data.frame(ID=train$ID, label=as.factor(unclass(train$label)),train_dvec)
+dat_train<-data.frame(ID=train$ID, label=as.factor(unclass(train$label)),train_dvec)[,-1]
 
 ## create doc vectors for test data
-test_tokens <- test$statement %>%
+test_tokens <- test$text %>%
   lemmatize_strings %>%
   tolower %>%
   word_tokenizer
 test_dvec <- docVector(test_tokens, word_vectors)
 mode(test_dvec) = "numeric"
-dat_test<-data.frame(ID=test$ID, label=as.factor(unclass(test$label)),test_dvec)
+dat_test<-data.frame(ID=test$ID, label=as.factor(unclass(test$label)),test_dvec)[,-1]
 
 
 ############## GOOGLE NEWS MODEL ############## 
@@ -126,37 +133,40 @@ test_full <- dat_test %>%
 
 ############## FIT MODELS ############## 
 ## fit ordinal logistic model
-mod.polr<-polr(label~.-truth-untruth-net,data=train_full,Hess=TRUE)
-summary(mod.polr)
-acc.polr.train <- calcAccuracy(mod.polr, train_full)
-acc.polr.test <- calcAccuracy(mod.polr, test_full)
-adj.polr.train <- calcAccuracy(mod.polr, train_full,1)
-adj.polr.test <- calcAccuracy(mod.polr, test_full,1)
+mod.logit<-glm(label~.,data=dat_train,family="binomial")
+summary(mod.logit)
+acc.logit.train <- calcAccuracyLR(mod.logit, dat_train)
+acc.logit.test <- calcAccuracyLR(mod.logit, dat_test)
+#adj.logit.train <- calcAccuracyLR(mod.logit, dat_train,1)
+#adj.logit.test <- calcAccuracyLR(mod.logit, test_full,1)
 
 ## SVM
-mod.svm<-svm(label~.-truth-untruth-net,data=train_full, kernel="radial", gamma=3, cost=.1, scale=FALSE)
+mod.svm<-svm(label~.,data=dat_train, kernel="radial", gamma=3, cost=3, scale=FALSE)
 # tune.out <- tune(svm, as.factor(label)~truth+untruth, data = train_rating, kernel="radial",
 #                  ranges = list(gamma = seq(1:5), cost = 2^(2:4)),
 #                  tunecontrol = tune.control(sampling = "fix")
 # )
-acc.svm_train<-calcAccuracy(mod.svm, train_full)
-acc.svm_test<-calcAccuracy(mod.svm, test_full)
-adj.svm_train<-calcAccuracy(mod.svm, train_full,1)
-adj.svm_test<-calcAccuracy(mod.svm, test_full,1)
+#mod.svm <- tune.out$best.model
+acc.svm_train<-calcAccuracy(mod.svm, dat_train)
+acc.svm_test<-calcAccuracy(mod.svm, dat_test)
+#adj.svm_train<-calcAccuracy(mod.svm, dat_train,1)
+#adj.svm_test<-calcAccuracy(mod.svm, test_full,1)
 
-plotPredictions(list(mod.polr, mod.svm), test_full)
+#plotPredictions(list(mod.polr, mod.svm), test_full)
 
 ## accuracy plot
-accs <- tibble(model=c("Ordered Logistic Regression","Ordered Logistic Regression","Ordered Logistic Regression","Ordered Logistic Regression",
+accs <- tibble(model=c("Ordered Logistic Regression","Ordered Logistic Regression",
+                       "Ordered Logistic Regression","Ordered Logistic Regression",
                        "SVM","SVM","SVM","SVM"),
                     data=c("train","test","train","test","train","test","train","test"),
                type=c("acc","acc","adj","adj","acc","acc","adj","adj"),
-               value=c(acc.polr.train,acc.polr.test,adj.polr.train,adj.polr.test,acc.svm_train,acc.svm_test,adj.svm_train,adj.svm_test))
+               value=c(acc.polr.train,acc.polr.test,adj.polr.train,adj.polr.test,
+                       acc.svm_train,acc.svm_test,adj.svm_train,adj.svm_test))
 accs %>%
   ggplot(aes(x=model,y=value, fill=type)) +
   geom_bar(stat = "identity",position=position_dodge()) +
   facet_wrap(~data) +
-  scale_fill_manual(values= colgate_ter[2:5], labels = c("Accuracy", "Adjacency")) +
+  scale_fill_manual(values= colgate_ter, labels = c("Accuracy", "Adjacency")) +
   ylab("Value") +
   xlab("") +
   ggtitle("Preliminary modeling accuracy and adjacency for train/test data") +
@@ -242,6 +252,15 @@ calcAccuracy <- function(mod,new_data,adj=0) {
   true_labels <- new_data$label
   pred <- predict(mod, newdata = new_data, type="class")
   dist <- abs(as.numeric(pred)-as.numeric(true_labels))
+  acc <-  mean(dist <= adj)
+  return(acc)
+}
+
+calcAccuracyLR <- function(mod,new_data,adj=0) {
+  true_labels <- new_data$label
+  pred <- predict(mod, newdata = new_data)
+  class <- as.numeric(pred > 0.5) + 1
+  dist <- abs(as.numeric(class)-as.numeric(true_labels))
   acc <-  mean(dist <= adj)
   return(acc)
 }

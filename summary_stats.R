@@ -8,6 +8,7 @@ library("viridis")
 source("loaddata.R")
 train <- loadLIARTrain()
 test <- loadLIARTest()
+fnn <- loadFNN()
 
 ############## LABEL FREQUENCY PLOTS ############## 
 ggplot(train, aes(x=factor(label)))+
@@ -16,6 +17,11 @@ ggplot(train, aes(x=factor(label)))+
   xlab("Truth Label") + ylab("Frequency") +
   theme_minimal()
 ggplot(test, aes(x=factor(label)))+
+  geom_bar(aes(y = (..count..)/sum(..count..)*100), width=0.7, fill="steelblue")+
+  ggtitle("Label frequency in test set") +
+  xlab("Truth Label") + ylab("Frequency") +
+  theme_minimal()
+ggplot(fnn, aes(x=factor(label)))+
   geom_bar(aes(y = (..count..)/sum(..count..)*100), width=0.7, fill="steelblue")+
   ggtitle("Label frequency in test set") +
   xlab("Truth Label") + ylab("Frequency") +
