@@ -15,19 +15,22 @@ library("corrplot")
 library("viridis")
 # load in data
 source("loaddata.R")
-## LIAR
-train_LIAR <- loadLIARTrain()
-## FNN
+LIAR_train <- loadLIARTrain()
+LIAR_test <- loadLIARTest()
+FNN_train <- loadFNNTrain()
+FNN_test <- loadFNNTest()
 
+## chose dataset
+train <- FNN_train
 
 # tidy data
 names(train)
 train_df <- as_tibble(train[,1:3,])
 train_df$statement <- as.character(train_df$statement)
-fnn <- train %>%
+train <- train %>%
   mutate(text = as.character(text)) %>%
   dplyr::select(-title)
-tidy_train <- fnn %>% 
+tidy_train <- train %>% 
   unnest_tokens(word, text)
 
 # pre-process
@@ -46,7 +49,7 @@ tidy_train %>%
 ## plot
 tidy_train %>%
   count(word, sort = TRUE) %>%
-  filter(n > 1000) %>%
+  filter(n > 7000) %>%
   mutate(word = reorder(word, n)) %>%
   ggplot(aes(word, n)) +
   geom_col() +
@@ -200,7 +203,7 @@ tidy_train %>%
 
 ############## TFIDF ############## 
 ## BY LABEL
-train_words <- fnn %>%
+train_words <- train %>%
   unnest_tokens(word, text) %>%
   count(label, word, sort = TRUE)
 
@@ -273,7 +276,7 @@ train_words %>%
   coord_flip()
 
 ############## N-GRAMS ############## 
-train_bigrams <- fnn %>%
+train_bigrams <- train %>%
   unnest_tokens(bigram, text, token = "ngrams", n = 2)
 
 train_bigrams %>%
@@ -299,8 +302,8 @@ bigrams_united <- bigrams_filtered %>%
 bigrams_united
 
 # trigrams
-train_df %>%
-  unnest_tokens(trigram, statement, token = "ngrams", n = 3) %>%
+train %>%
+  unnest_tokens(trigram, text, token = "ngrams", n = 3) %>%
   separate(trigram, c("word1", "word2", "word3"), sep = " ") %>%
   filter(!word1 %in% stop_words$word,
          !word2 %in% stop_words$word,

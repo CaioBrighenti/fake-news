@@ -1,3 +1,5 @@
+library(readr)
+
 ##################################
 ############## LIAR ##############
 ##################################
@@ -33,10 +35,10 @@ loadLIARTest <- function() {
 ##################################
 ########## FAKENEWSNET ###########
 ##################################
-splitDataFNN()
+#splitDataFNN()
 ## load FakeNewsNet dataset
 splitDataFNN <- function() {
-  ffn<-read.csv(file="FakeNewsNet/dataset/fnn_data.TSV",sep = '\t', quote="", header = TRUE) %>%
+  ffn<-read.csv(file="FakeNewsNet/dataset/fnn_data.TSV",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
     as_tibble()
   train_ind <- sample(seq_len(nrow(ffn)), size = floor(nrow(ffn) * .75))
   train <- ffn[train_ind,]
@@ -46,12 +48,12 @@ splitDataFNN <- function() {
 }
 
 loadFNNTrain <- function() {
-  train<-read.csv(file="FakeNewsNet/dataset/fnn_train.tsv",sep = '\t', quote="", header = TRUE) %>%
+  train<-read.csv(file="FakeNewsNet/dataset/fnn_train.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
     as_tibble()
   return(train)
 }
 loadFNNTest <- function() {
-  test<-read.csv(file="FakeNewsNet/dataset/fnn_test.tsv",sep = '\t', quote="", header = TRUE) %>%
+  test<-read.csv(file="FakeNewsNet/dataset/fnn_test.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
     as_tibble()
   return(test)
 }
