@@ -1,5 +1,5 @@
 ############## HYPERPARAMETERS ############## 
-wvec_size <- 100
+wvec_size <- 300
 
 
 ############## LOAD ############## 
@@ -13,6 +13,7 @@ library("textstem")
 library(progress)
 library(MASS)
 library(e1071)
+library(caret)
 # load in data
 source("loaddata.R")
 LIAR_train <- loadLIARTrain()
@@ -24,6 +25,11 @@ FNN_test <- loadFNNTest()
 train <- FNN_train
 test <- FNN_test
 #train <- LIAR_train
+
+############## FIX IMBALANCED DATA ############## 
+barplot(table(train$label))
+train <- caret::upSample(train, train$label)
+barplot(table(train$label))
 
 ############## CREATE WORD EMBEDDINGS ############## 
 # Create iterator over tokens
@@ -56,8 +62,8 @@ word_vectors<-glove$fit_transform(tcm, n_iter = 20)
 ## create doc vectors for train data
 train_dvec <- docVector(tokens, word_vectors)
 mode(train_dvec) = "numeric"
-dat_train<-data.frame(ID=train$ID, label=as.factor(unclass(train$label)),train_dvec)[,-1]
-
+#  0 = real, 1 = fake
+dat_train<-data.frame(ID=train$ID, label=as.factor(2-unclass(train$label)),train_dvec)[,-1]
 ## create doc vectors for test data
 test_tokens <- test$text %>%
   lemmatize_strings %>%
@@ -65,7 +71,7 @@ test_tokens <- test$text %>%
   word_tokenizer
 test_dvec <- docVector(test_tokens, word_vectors)
 mode(test_dvec) = "numeric"
-dat_test<-data.frame(ID=test$ID, label=as.factor(unclass(test$label)),test_dvec)[,-1]
+dat_test<-data.frame(ID=test$ID, label=as.factor(2-unclass(test$label)),test_dvec)[,-1]
 
 
 ############## GOOGLE NEWS MODEL ############## 
@@ -133,24 +139,20 @@ test_full <- dat_test %>%
 
 ############## FIT MODELS ############## 
 ## fit ordinal logistic model
-mod.logit<-glm(label~.,data=dat_train,family="binomial")
+mod.logit<-glm(label~.^2,data=dat_train,family="binomial")
 summary(mod.logit)
-acc.logit.train <- calcAccuracyLR(mod.logit, dat_train)
-acc.logit.test <- calcAccuracyLR(mod.logit, dat_test)
-#adj.logit.train <- calcAccuracyLR(mod.logit, dat_train,1)
-#adj.logit.test <- calcAccuracyLR(mod.logit, test_full,1)
+stats.logit.train <- calcAccuracyLR(mod.logit, dat_train)
+stats.logit.test <- calcAccuracyLR(mod.logit, dat_test)
 
 ## SVM
-mod.svm<-svm(label~.,data=dat_train, kernel="radial", gamma=3, cost=3, scale=FALSE)
+mod.svm<-svm(label~.,data=dat_train, kernel="linear", scale=FALSE)
 # tune.out <- tune(svm, as.factor(label)~truth+untruth, data = train_rating, kernel="radial",
 #                  ranges = list(gamma = seq(1:5), cost = 2^(2:4)),
 #                  tunecontrol = tune.control(sampling = "fix")
 # )
 #mod.svm <- tune.out$best.model
-acc.svm_train<-calcAccuracy(mod.svm, dat_train)
-acc.svm_test<-calcAccuracy(mod.svm, dat_test)
-#adj.svm_train<-calcAccuracy(mod.svm, dat_train,1)
-#adj.svm_test<-calcAccuracy(mod.svm, test_full,1)
+stats.svm_train<-calcAccuracy(mod.svm, dat_train)
+stats.svm_test<-calcAccuracy(mod.svm, dat_test)
 
 #plotPredictions(list(mod.polr, mod.svm), test_full)
 
@@ -251,17 +253,31 @@ docVectorWeighted <- function(tokens,vocab,word_vectors,weights){
 calcAccuracy <- function(mod,new_data,adj=0) {
   true_labels <- new_data$label
   pred <- predict(mod, newdata = new_data, type="class")
-  dist <- abs(as.numeric(pred)-as.numeric(true_labels))
+  dist <- abs(as.numeric(pred)-(as.numeric(true_labels)))
   acc <-  mean(dist <= adj)
-  return(acc)
+  ## [1] = sensitivity/recall, [2] = specificity, [5] = precision, [7] = F1
+  cm <- confusionMatrix(as.factor(pred), true_labels, positive="1")
+  # calculate F1
+  stats <- tibble(accuracy = acc, sensitivity = cm$byClass[1],
+                  specificity = cm$byClass[2], precision = cm$byClass[5],
+                  F1 = cm$byClass[7], c_matrix = cm$table)
+  print(stats)
+  return(stats)
 }
 
 calcAccuracyLR <- function(mod,new_data,adj=0) {
   true_labels <- new_data$label
   pred <- predict(mod, newdata = new_data)
-  class <- as.numeric(pred > 0.5) + 1
-  dist <- abs(as.numeric(class)-as.numeric(true_labels))
+  class <- as.numeric(pred > 0.5)
+  dist <- abs(as.numeric(class)-(as.numeric(true_labels)-1))
   acc <-  mean(dist <= adj)
-  return(acc)
+  ## [1] = sensitivity/recall, [2] = specificity, [5] = precision, [7] = F1
+  cm <- confusionMatrix(as.factor(class), true_labels, positive="1")
+  # calculate F1
+  stats <- tibble(accuracy = acc, sensitivity = cm$byClass[1],
+                  specificity = cm$byClass[2], precision = cm$byClass[5],
+                  F1 = cm$byClass[7], c_matrix = cm$table)
+  print(stats)
+  return(stats)
 }
 
