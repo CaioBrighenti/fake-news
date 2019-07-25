@@ -7,12 +7,17 @@ library("dplyr")
 library("textstem")
 # load in data
 source("loaddata.R")
-train <- loadLIARTrain()
-test <- loadLIARTest()
+LIAR_train <- loadLIARTrain()
+LIAR_test <- loadLIARTest()
+FNN_train <- loadFNNTrain()
+FNN_test <- loadFNNTest()
 
+## chose dataset
+train <- FNN_train
+test <- FNN_test
 ############## CREATE TRAIN DTM ############## 
 # Create iterator over tokens
-tokens <- train$statement %>%
+tokens <- train$text %>%
   lemmatize_strings %>%
   tolower %>%
   word_tokenizer
@@ -32,7 +37,7 @@ dtm_train = create_dtm(it, vectorizer)
 
 ############## CREATE TEST DTM ############## 
 # Create iterator over tokens
-test_tokens <- test$statement %>%
+test_tokens <- test$text %>%
   lemmatize_strings %>%
   tolower %>%
   word_tokenizer
@@ -48,8 +53,7 @@ dtm_test = create_dtm(test_it, vectorizer)
 
 
 ############## FIT MODELS ############## 
-## fit ordinal logistic model
-library(MASS)
+## fit logistic model
 dtm_train_mat <- as.matrix(dtm_train)
 mode(dtm_train_mat) = "numeric"
 dat_train<-data.frame(label=train$label,dtm_train_mat)
@@ -59,8 +63,8 @@ dat_test<-data.frame(label=test$label,dtm_test_mat)
 
 
 
-
-mod.polr<-polr(label~.,data=dat_train,Hess=TRUE)
+y <- test$label
+mod.logit<-glm(dtm_test, y,family="binomial")
 summary(mod.polr)
 calcAccuracy(mod.polr, dat_train)
 calcAccuracy(mod.polr, dat_test)
