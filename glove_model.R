@@ -76,7 +76,7 @@ dat_test<-data.frame(ID=test$ID, label=as.factor(2-unclass(test$label)),test_dve
 
 ############## GOOGLE NEWS MODEL ############## 
 ## load in Google News vectors
-install_github("bmschmidt/wordVectors")
+#install_github("bmschmidt/wordVectors")
 library(wordVectors)
 path = "/google_vecs/gnews.bin"
 f <- file.choose()
@@ -97,28 +97,28 @@ truth_dict <- loadTruthDict() %>%
   anti_join(stop_words)
 
 # tidy train data
-train_df <- as_tibble(train[,1:3,])
-train_df$statement <- as.character(train_df$statement)
-tidy_train <- train_df %>% 
-  unnest_tokens(word, statement) %>%
+train$text <- as.character(train$text)
+tidy_train <- as_tibble(train) %>% 
+  dplyr::select(-title) %>%
+  unnest_tokens(word, text) %>%
   anti_join(stop_words)
 ## test data
-test_df <- as_tibble(test[,1:3,])
-test_df$statement <- as.character(test_df$statement)
-tidy_test <- test_df %>% 
-  unnest_tokens(word, statement) %>%
+test$text <- as.character(test$text)
+tidy_test <- as_tibble(test) %>% 
+  dplyr::select(-title) %>%
+  unnest_tokens(word, text) %>%
   anti_join(stop_words)
 
 # get truth counts
 train_rating <- tidy_train %>%
   inner_join(truth_dict) %>%
   group_by(ID) %>%
-  summarise(label= unique(label), truth = sum(truth), untruth=sum(untruth), net=sum(net))
+  summarise(label= first(label), truth = sum(truth), untruth=sum(untruth), net=sum(net))
 # get test counts
 test_rating <- tidy_test %>%
   inner_join(truth_dict) %>%
   group_by(ID) %>%
-  summarise(label= unique(label), truth = sum(truth), untruth=sum(untruth), net=sum(net))
+  summarise(label= first(label), truth = sum(truth), untruth=sum(untruth), net=sum(net))
 
 ## merge with document vectors
 dat_train <- as_tibble(dat_train)
@@ -139,7 +139,7 @@ test_full <- dat_test %>%
 
 ############## FIT MODELS ############## 
 ## fit ordinal logistic model
-mod.logit<-glm(label~.^2,data=dat_train,family="binomial")
+mod.logit<-glm(label~.,data=dat_train,family="binomial")
 summary(mod.logit)
 stats.logit.train <- calcAccuracyLR(mod.logit, dat_train)
 stats.logit.test <- calcAccuracyLR(mod.logit, dat_test)
@@ -178,14 +178,6 @@ accs %>%
   
 
 ############## HELPER FUNCTIONS ############## 
-plotPredictions <- function(mods,dat_test){
-  par(mfrow=c(1,length(mods)+1))
-  plot(test$label)
-  for (mod in mods) {
-    plot(predict(mod, newdata = dat_test))
-  }
-}
-
 docVector <- function(tokens, word_vectors){
   ## create doc vectors for train data
   doc_vectors<-matrix(0, nrow=length(tokens), ncol=dim(word_vectors)[2])
@@ -248,36 +240,5 @@ docVectorWeighted <- function(tokens,vocab,word_vectors,weights){
     doc_vectors[i,]<-doc_vec
   }
   return(doc_vectors)
-}
-
-calcAccuracy <- function(mod,new_data,adj=0) {
-  true_labels <- new_data$label
-  pred <- predict(mod, newdata = new_data, type="class")
-  dist <- abs(as.numeric(pred)-(as.numeric(true_labels)))
-  acc <-  mean(dist <= adj)
-  ## [1] = sensitivity/recall, [2] = specificity, [5] = precision, [7] = F1
-  cm <- confusionMatrix(as.factor(pred), true_labels, positive="1")
-  # calculate F1
-  stats <- tibble(accuracy = acc, sensitivity = cm$byClass[1],
-                  specificity = cm$byClass[2], precision = cm$byClass[5],
-                  F1 = cm$byClass[7], c_matrix = cm$table)
-  print(stats)
-  return(stats)
-}
-
-calcAccuracyLR <- function(mod,new_data,adj=0) {
-  true_labels <- new_data$label
-  pred <- predict(mod, newdata = new_data)
-  class <- as.numeric(pred > 0.5)
-  dist <- abs(as.numeric(class)-(as.numeric(true_labels)-1))
-  acc <-  mean(dist <= adj)
-  ## [1] = sensitivity/recall, [2] = specificity, [5] = precision, [7] = F1
-  cm <- confusionMatrix(as.factor(class), true_labels, positive="1")
-  # calculate F1
-  stats <- tibble(accuracy = acc, sensitivity = cm$byClass[1],
-                  specificity = cm$byClass[2], precision = cm$byClass[5],
-                  F1 = cm$byClass[7], c_matrix = cm$table)
-  print(stats)
-  return(stats)
 }
 
