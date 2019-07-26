@@ -1,19 +1,19 @@
-# fake news
+# Fake News Detection
 
-One Paragraph of project description goes here
+This project is a summer research project focused on creating an interpretable model for fake news detection. While work in this field typically involves deep neural networks, this project aims to use simpler models in order to reach novel conclusions about fake news. The objective is not to beat the state-of-the-art approach, but to learn more about the textual properties of fake news.
 
-## Datasets and tools 
+## Datasets and main libraries used
+*Note: this is not a comprehensive list of all packages used.*
 
 * [FakeNewsNet](https://github.com/KaiDMML/FakeNewsNet) - Dataset
 * [LIAR](https://arxiv.org/abs/1705.00648) - Dataset
-* [FastText](https://github.com/facebookresearch/fastText) - Library for text representation
-* [NRC](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm) - Dictionary for sentiment analysis
+* [tidyverse](https://www.tidyverse.org/) - Collection of R packages for data science
+* [tidytext](https://cran.r-project.org/web/packages/tidytext/index.html) - R package for tidyverse-style text analysis and NLP
+* [text2vec](http://text2vec.org/) - R package for text analysis and NLP
 
 ## Author
 
 * **Caio Brighenti** - *Initial work* - [CaioBrighenti](https://github.com/CaioBrighenti)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
