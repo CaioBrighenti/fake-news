@@ -2,6 +2,9 @@
 
 This project is a summer research project focused on creating an interpretable model for fake news detection. While work in this field typically involves deep neural networks, this project aims to use simpler models in order to reach novel conclusions about fake news. The objective is not to beat the state-of-the-art approach, but to learn more about the textual properties of fake news.
 
+## Research summary poster
+![Reseach Poster](https://github.com/CaioBrighenti/fake-news/blob/master/plots/Poster-1.png?raw=true)
+
 ## Datasets and main libraries used
 *Note: this is not a comprehensive list of all packages used.*
 
@@ -13,7 +16,7 @@ This project is a summer research project focused on creating an interpretable m
 
 ## Author
 
-* **Caio Brighenti** - *Initial work* - [CaioBrighenti](https://github.com/CaioBrighenti)
+* **Caio Brighenti** - [CaioBrighenti](https://github.com/CaioBrighenti)
 
 ## License
 
@@ -21,4 +24,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Thank you to the Colgate University Divison of Natural Sciences and Mathematics for funding this research.
+* Thank you to the [*Colgate University Divison of Natural Sciences and Mathematics*](https://www.colgate.edu/academics/departments-programs/division-natural-sciences-and-mathematics) for funding this research.
