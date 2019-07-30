@@ -1,7 +1,10 @@
 ############## LOAD ############## 
 ## load in libs
+options( java.parameters = "-Xmx6g")
 library("tidyverse")
 library("tidytext")
+library("cleanNLP")
+library("rJava")
 
 # load in data
 source("helpers.R")
@@ -29,6 +32,12 @@ tidy_train <- train %>%
 # clean tokens
 tidy_train <- tidy_train %>%
   anti_join(stop_words)
+
+############## SETUP CORENLP ############## 
+#cnlp_download_corenlp()
+cnlp_init_corenlp()
+anno <- cnlp_annotate(train[1,]$text)
+
 
 ############## COMPLEXITY ############## 
 
