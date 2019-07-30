@@ -6,6 +6,7 @@ library("stopwords")
 library("dplyr")
 library("textstem")
 # load in data
+source("helpers.R")
 source("loaddata.R")
 LIAR_train <- loadLIARTrain()
 LIAR_test <- loadLIARTest()
@@ -15,6 +16,14 @@ FNN_test <- loadFNNTest()
 ## chose dataset
 train <- FNN_train
 test <- FNN_test
+train$label <- as.factor(2-unclass(train$label))
+test$label <- as.factor(2-unclass(test$label))
+
+############## FIX IMBALANCED DATA ############## 
+barplot(table(train$label))
+train <- caret::upSample(train, train$label)
+barplot(table(train$label))
+
 ############## CREATE TRAIN DTM ############## 
 # Create iterator over tokens
 tokens <- train$text %>%
@@ -54,21 +63,27 @@ dtm_test = create_dtm(test_it, vectorizer)
 
 ############## FIT MODELS ############## 
 ## fit logistic model
-dtm_train_mat <- as.matrix(dtm_train)
-mode(dtm_train_mat) = "numeric"
-dat_train<-data.frame(label=train$label,dtm_train_mat)
-dtm_test_mat <- as.matrix(dtm_test)
-mode(dtm_test_mat) = "numeric"
-dat_test<-data.frame(label=test$label,dtm_test_mat)
+library(glmnet)
+NFOLDS = 4
+cv.out = cv.glmnet(x = dtm_train, y = train$label, 
+                              family = 'binomial', 
+                              # L1 penalty
+                              alpha = 1,
+                              # interested in the area under ROC curve
+                              type.measure = "auc",
+                              # 5-fold cross-validation
+                              nfolds = NFOLDS,
+                              # high value is less accurate, but has faster training
+                              thresh = 1e-3,
+                              # again lower number of iterations for faster training
+                              maxit = 1e3)
+plot(cv.out)
 
+## get accuracy
+stats.logit_train<-calcAccuracyLR(cv.out, dtm_train, 0, train$label)
+stats.logit_test<-calcAccuracyLR(cv.out, dtm_test, 0, test$label)
 
-
-y <- test$label
-mod.logit<-glm(dtm_test, y,family="binomial")
-summary(mod.polr)
-calcAccuracy(mod.polr, dat_train)
-calcAccuracy(mod.polr, dat_test)
-mod.svm<-svm(as.factor(label)~.,data=dat_train, kernel="linear", cost=5, scale=FALSE)
-calcAccuracy(mod.svm, dat_train)
-calcAccuracy(mod.svm, dat_test)
-
+# get coefficients
+word_coef <- coef(cv.out)
+head(word_coef[order(-word_coef)], 20)
+head(word_coef[order(word_coef)], 20)

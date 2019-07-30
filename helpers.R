@@ -1,7 +1,11 @@
+library(caret)
 ############## HELPER FUNCTIONS ############## 
-calcAccuracyLR <- function(mod,new_data,adj=0) {
-  true_labels <- new_data$`_label`
-  pred <- predict(mod, newdata = new_data)
+calcAccuracyLR <- function(mod,new_data,adj=0, true_labels = NULL) {
+  if (is.null(true_labels)){
+    true_labels <- new_data$`_label`
+    if (is.null(true_labels)){true_labels <- new_data$label}
+  }
+  pred <- predict(mod, new_data)
   class <- as.numeric(pred > 0.5)
   dist <- abs(as.numeric(class)-(as.numeric(true_labels)-1))
   acc <-  mean(dist <= adj)

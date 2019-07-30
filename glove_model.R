@@ -16,6 +16,7 @@ library(e1071)
 library(caret)
 # load in data
 source("loaddata.R")
+source("helpers.R")
 LIAR_train <- loadLIARTrain()
 LIAR_test <- loadLIARTest()
 FNN_train <- loadFNNTrain()
