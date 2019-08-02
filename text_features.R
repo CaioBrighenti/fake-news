@@ -44,41 +44,45 @@ tidy_train <- tidy_train %>%
   anti_join(stop_words)
 
 ############## CORENLP SYNTAX TREES FROM PYTHON ############## 
-library("reticulate")
-use_python("C:/Users/Caio Brighenti/AppData/Local/Programs/Python/Python37", required = T)
-py_config()
-source_python("processCoreNLP.py")
-## create empty dataframe
-test_depths <- tibble(ID = test$ID, 
-                       sentence = rep(0, nrow(test)),
-                       verb_phrase = rep(0, nrow(test)),
-                       noun_phrase = rep(0, nrow(test)))
-## calculate tree depths for each document
-pb <- progress_bar$new(format = "[:bar] :current/:total (:percent)", total = nrow(test))
-for (idx in 1:nrow(test)) {
-  pb$tick()
-  if (test_depths[idx,]$sentence == 0) {
-    t_depths <- getConstTreeDepths(test[idx,]$text)
-    test_depths[idx,]$sentence <- t_depths$sentence
-    test_depths[idx,]$verb_phrase <- t_depths$`verb-phrase`
-    test_depths[idx,]$noun_phrase <- t_depths$`noun-phrase`
+## coreNLP server must be running at localhost:9000
+## timed out observations return (-1,-1,-1)
+getSyntaxTreeDepths <- function(dat, dat_name){
+  library("reticulate")
+  use_python("C:/Users/Caio Brighenti/AppData/Local/Programs/Python/Python37", required = T)
+  py_config()
+  source_python("processCoreNLP.py")
+  ## create empty dataframe
+  dat_depths <- tibble(ID = dat$ID,
+                         sentence = rep(0, nrow(dat)),
+                         verb_phrase = rep(0, nrow(dat)),
+                         noun_phrase = rep(0, nrow(dat)))
+  ## calculate tree depths for each document
+  pb <- progress_bar$new(format = "[:bar] :current/:total (:percent)", total = nrow(dat))
+  for (idx in 1:nrow(dat)) {
+    pb$tick()
+    if (dat_depths[idx,]$sentence == 0) {
+      t_depths <- getConstTreeDepths(dat[idx,]$text)
+      dat_depths[idx,]$sentence <- t_depths$sentence
+      dat_depths[idx,]$verb_phrase <- t_depths$`verb-phrase`
+      dat_depths[idx,]$noun_phrase <- t_depths$`noun-phrase`
+    }
   }
-}
   
-
-## check distribution
-test_labels <- test %>%
-  dplyr::select(ID, label)
-test_depths <- test_depths %>%
-  left_join(test_labels, by="ID")
-test_depths %>% 
-  filter(sentence != 0) %>%
-  group_by(label) %>%
-  summarise(sentence = median(sentence), verb_phrase = median(verb_phrase), noun_phrase = median(noun_phrase))
-plot(test_depths$verb_phrase, test_depths$noun_phrase)
-
-# write to file
-write_tsv(test_depths, "coreNLP_annotations/fnn_test.tsv")
+  
+  ## check distribution
+  dat_labels <- dat %>%
+    dplyr::select(ID, label)
+  dat_depths <- dat_depths %>%
+    left_join(dat_labels, by="ID")
+  dat_depths %>%
+    filter(sentence != 0) %>%
+    group_by(label) %>%
+    summarise(sentence = median(sentence), verb_phrase = median(verb_phrase), noun_phrase = median(noun_phrase))
+  plot(dat_depths$verb_phrase, dat_depths$noun_phrase)
+  
+  # write to file
+  write_tsv(dat_depths, paste("coreNLP_annotations/",dat_name,".tsv", sep=""))
+}
 
 ############## SETUP CORENLP ############## 
 # cnlp_download_corenlp()
@@ -91,7 +95,13 @@ print(t2 - t1)
 
 
 ############## COMPLEXITY ############## 
+## syntax tree depths
+train_depths <- read.csv(file="coreNLP_annotations/fnn_train.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
+  as_tibble()
+test_depths <- read.csv(file="coreNLP_annotations/fnn_test.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
+  as_tibble()
 
+## readability
 
 ############## PSYCHOLOGY ############## 
 
