@@ -86,22 +86,108 @@ getSyntaxTreeDepths <- function(dat, dat_name){
 
 ############## SETUP CORENLP ############## 
 # cnlp_download_corenlp()
-cnlp_init_corenlp()
-t1 <- Sys.time()
-anno <- cnlp_annotate(train$text)
-t2 <- Sys.time()
-print(t2 - t1)
+# cnlp_init_corenlp()
+# anno <- cnlp_annotate(train$text)
 
 
 
 ############## COMPLEXITY ############## 
-## syntax tree depths
+# syntax tree depths
 train_depths <- read.csv(file="coreNLP_annotations/fnn_train.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
-  as_tibble()
+  as_tibble() %>%
+  mutate(ID = as.character(ID))
 test_depths <- read.csv(file="coreNLP_annotations/fnn_test.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
-  as_tibble()
+  as_tibble() %>%
+  mutate(ID = as.character(ID))
 
-## readability
+# readability
+library("quanteda")
+## FOG
+FOG_scores <- quanteda::textstat_readability(train$text, measure = "FOG")
+train_read <- train %>%
+  mutate(FOG = FOG_scores$FOG)
+
+## SMOG
+SMOG_scores <- quanteda::textstat_readability(train$text, measure = "SMOG")
+train_read <- train_read %>%
+  mutate(SMOG = SMOG_scores$SMOG)
+
+## Flesch-Kincaid
+FK_scores <- quanteda::textstat_readability(train$text, measure = "Flesch.Kincaid")
+train_read <- train_read %>%
+  mutate(FK = FK_scores$Flesch.Kincaid)
+
+## Coleman-Liau
+CL_scores <- quanteda::textstat_readability(train$text, measure = "Coleman.Liau")
+train_read <- train_read %>%
+  mutate(CL = CL_scores$Coleman.Liau)
+
+## ARI
+ARI_scores <- quanteda::textstat_readability(train$text, measure = "ARI")
+train_read <- train_read %>%
+  mutate(ARI = ARI_scores$ARI)
+
+## compare readability
+train_read %>%
+  group_by(label) %>%
+  summarise(FOG = mean(FOG), SMOG = mean(SMOG), FK = mean(FK), CL = mean(CL), ARI = mean(ARI))
+
+# basic stats
+cnlp_init_tokenizers()
+train_anno <- cnlp_annotate(train$text, as_strings = TRUE)
+
+## mean sentence word counts
+train_swc <- train_anno$token %>% 
+  mutate(num_id = as.numeric(str_remove(id, "doc"))) %>%
+  group_by(id) %>%
+  count(sid, num_id) %>%
+  summarise(swc = median(n), num_id = first(num_id)) %>%
+  arrange(num_id) %>%
+  mutate(ID = train$ID, label = train$label, text = train$text) %>%
+  dplyr::select(ID, label, text, swc)
+
+## mean word length
+train_wl <- train_anno$token %>%
+  mutate(num_id = as.numeric(str_remove(id, "doc"))) %>%
+  mutate(wlen = nchar(word)) %>% 
+  group_by(id) %>%
+  summarise(wlen = mean(wlen), num_id = first(num_id)) %>%
+  arrange(num_id) %>%
+  mutate(ID = train$ID, label = train$label, text = train$text) %>%
+  dplyr::select(ID, label, text, wlen)
+  
+## type-token ratio
+train_totals <- train_anno$token %>%
+  count(id)
+train_ttr <- train_anno$token %>%
+  mutate(num_id = as.numeric(str_remove(id, "doc"))) %>%
+  left_join(train_totals) %>% 
+  group_by(id) %>%
+  summarise(types = n_distinct(word), tokens = first(n), num_id = first(num_id)) %>%
+  arrange(num_id) %>%
+  mutate(ID = train$ID, label = train$label, text = train$text, TTR = types / tokens) %>%
+  dplyr::select(ID, label, text, types, tokens, TTR)
+
+train_ttr %>%
+  group_by(label) %>%
+  summarise(TTR = mean(TTR))
+
+
+## merge
+train_complexity <- train %>%
+  left_join(train_depths, by=c("ID")) %>%
+  left_join(train_swc, by=c("ID", "label", "text")) %>%
+  left_join(train_wl, by=c("ID", "label", "text")) %>%
+  left_join(train_ttr, by=c("ID", "label", "text"))
+
+## compare
+train_complexity %>%
+  group_by(label) %>%
+  summarise(sentence = mean(sentence), verb_phrase = mean(verb_phrase), noun_phrase = mean(noun_phrase),
+            swc = mean(swc), wlen = mean(wlen), TTR = mean(TTR))
+
+# write to file
+write_tsv(train_complexity, "text_features/FNN_train_complexity.tsv")
 
 ############## PSYCHOLOGY ############## 
 

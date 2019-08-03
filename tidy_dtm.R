@@ -20,7 +20,7 @@ train <- FNN_train
 test <- FNN_test
 train$label <- as.factor(2-unclass(train$label))
 test$label <- as.factor(2-unclass(test$label))
-train <- caret::downSample(train, train$label) %>%
+train <- caret::upSample(train, train$label) %>%
   as_tibble() %>%
   select(-Class)
 
@@ -83,8 +83,7 @@ tidy_test <- test %>%
   unnest_tokens(word, text)
 
 # clean tokens
-tidy_test <- tidy_test %>%
-  intersect(tidy_train, word)
+tidy_test <- tidy_test[which(tidy_train$word %in% tidy_test$word ),]
 
 # get counts
 test_counts <- tidy_test %>%
@@ -110,7 +109,7 @@ test_dtm_df <- test_dtm_df %>%
 
 ############## FIT MODEL ############## 
 # fit model
-mod.logit<-glm(`_label` ~ . - ID, data=train_dtm_df,family="binomial")
+mod.logit<-glm(`_label` ~ ., data=train_dtm_df,family="binomial")
 summary(mod.logit)
 
 # get coefficients
@@ -119,8 +118,8 @@ head(word_coef[order(-word_coef)], 20)
 head(word_coef[order(word_coef)], 20)
   
 # test accuracy
-stats.logit_train<-calcAccuracyLR(mod.logit, train_dtm_df)
-stats.logit_train<-calcAccuracyLR(mod.logit, test_dtm_df)
+stats.logit_train_tidydtm<-calcAccuracyLR(mod.logit, train_dtm_df)
+stats.logit_train_tidydtm<-calcAccuracyLR(mod.logit, test_dtm_df)
 
 # compare lengths
 train_lengths <- train %>%
