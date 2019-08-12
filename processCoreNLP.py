@@ -8,17 +8,10 @@ from nltk.tree import *
 import numpy as np
 import pandas as pd
 
-def testfunction(text):
-    return(text)
-
 def getConstTreeDepths(text):
     host = "http://localhost"
     port = "9000"
     nlp = StanfordCoreNLP(host + ":" + port)
-    # text = "Joshua Brown, 40, was killed in Florida in May when his Tesla failed to " \
-    #        "differentiate between the side of a turning truck and the sky while " \
-    #        "operating in autopilot mode."
-    # text2 = "hi this is a bad sentence."
     output = nlp.annotate(
         text,
         properties={
@@ -58,8 +51,14 @@ def getConstTreeDepths(text):
         VP_depth_list.append(0)
     # calculate medians
     depth_dict = {
-    "sentence" : np.mean(sen_depth_list),
-    "verb-phrase" : np.mean(VP_depth_list),
-    "noun-phrase" : np.mean(NP_depth_list)
+    "mu-sentence" : np.mean(sen_depth_list),
+    "mu-verb-phrase" : np.mean(VP_depth_list),
+    "mu-noun-phrase" : np.mean(NP_depth_list),
+    "sd-sentence" : np.std(sen_depth_list),
+    "sd-verb-phrase" : np.std(VP_depth_list),
+    "sd-noun-phrase" : np.std(NP_depth_list),
+    "iqr-sentence" : np.subtract(*np.percentile(sen_depth_list, [75, 25])),
+    "iqr-verb-phrase" : np.subtract(*np.percentile(VP_depth_list, [75, 25])),
+    "iqr-noun-phrase" : np.subtract(*np.percentile(NP_depth_list, [75, 25]))
     }
     return depth_dict
