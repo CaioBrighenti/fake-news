@@ -65,7 +65,7 @@ train_depths <- tibble(ID = train$ID,
 pb <- progress_bar$new(format = "[:bar] :current/:total (:percent)", total = nrow(train))
 for (idx in 1:nrow(train)) {
   pb$tick()
-  if (train_depths[idx,]$sentence == 0) {
+  if (train_depths[idx,]$mu_sentence == 0) {
     t_depths <- getConstTreeDepths(train[idx,]$text)
     train_depths[idx,] <- c(train_depths[idx,]$ID, t_depths)
   }
@@ -206,7 +206,72 @@ train_complexity %>%
 
 
 
+############## LOAD LIWC ############## 
+train_LIWC<-read.csv(file="FakeNewsNet/dataset/LIWC2015_fnn_train.csv",header = TRUE, encoding="UTF-8") %>%
+  as_tibble()
+train_LIWC <- train_LIWC %>%
+  mutate(ID = A, label = B, title = C, text = D) %>%
+  select(ID, label, title, text, WC:OtherP)
+
+train_LIWC %>%
+  dplyr::select(-title, -text, -ID, -label) %>%
+  map(~ as.numeric(unlist(summary(aov(.x ~ train_LIWC$label)))['Pr(>F)1'])) %>%
+  as_tibble() %>%
+  gather(var, value) %>%
+  arrange(value)
 ############## PSYCHOLOGY ############## 
 
 
-############## STYLISTIC ############## 
+############## POS TAGS FROM CORENLP ############## 
+library("reticulate")
+use_python("C:/Users/Caio Brighenti/AppData/Local/Programs/Python/Python37", required = T)
+py_config()
+source_python("processCoreNLP.py")
+## create empty dataframe
+train_POS <- tibble(ID = train$ID, CC = rep(-1, nrow(train)), CD = rep(-1, nrow(train)), DT = rep(-1, nrow(train)),
+  EX = rep(-1, nrow(train)), FW = rep(-1, nrow(train)),IN = rep(-1, nrow(train)),JJ = rep(-1, nrow(train)),
+  JJR = rep(-1, nrow(train)),JJS = rep(-1, nrow(train)),LS = rep(-1, nrow(train)),MD = rep(-1, nrow(train)),
+  NN = rep(-1, nrow(train)),NNS = rep(-1, nrow(train)),NNP = rep(-1, nrow(train)),NNPS = rep(-1, nrow(train)),
+  PDT = rep(-1, nrow(train)),POS = rep(-1, nrow(train)),PRP = rep(-1, nrow(train)),`PRP$` = rep(-1, nrow(train)),
+  RB = rep(-1, nrow(train)),RBR = rep(-1, nrow(train)),RBS = rep(-1, nrow(train)),RP = rep(-1, nrow(train)),
+  SYM = rep(-1, nrow(train)),TO = rep(-1, nrow(train)),UH = rep(-1, nrow(train)),VB = rep(-1, nrow(train)),
+  VBD = rep(-1, nrow(train)),VBG = rep(-1, nrow(train)),VBN = rep(-1, nrow(train)),VBP = rep(-1, nrow(train)),
+  VBZ = rep(-1, nrow(train)),WDT = rep(-1, nrow(train)),WP = rep(-1, nrow(train)),`WP$` = rep(-1, nrow(train)),
+  WRB = rep(-1, nrow(train)))
+## get POS counts 
+pb <- progress_bar$new(format = "[:bar] :current/:total (:percent)", total = nrow(train))
+for (idx in 1:nrow(train)) {
+  pb$tick()
+  if (train_POS[idx,]$CC == -1) {
+    t_POS <- getPOSCounts(train[idx,]$text)
+    train_POS[idx,] <- c(train_POS[idx,]$ID, t_POS)
+  }
+}
+
+## check distribution
+train_labels <- train %>%
+  dplyr::select(ID, label)
+train_POS <- train_POS %>%
+  left_join(train_labels, by="ID")
+train_POS %>%
+  filter(CC != -1) %>%
+  group_by(label) %>%
+  summarise_at(vars(CC:WRB), mean, na.rm = TRUE)
+
+
+# write to file
+write_tsv(train_POS, "coreNLP_annotations/FNN_train_POS.tsv")
+
+############## STYLISTIC ############### 
+# POS tags
+train_POS <- read.csv(file="coreNLP_annotations/FNN_train_POS.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
+  as_tibble() %>%
+  mutate(ID = as.character(ID), label = unclass(label) - 1) %>%
+  select(ID, label, everything())
+
+mod <- glm(label ~ . - ID, data = train_POS, family = "binomial")
+summary(mod)
+calcAccuracyLR(mod, train_POS)
+
+# LIWC features
+
