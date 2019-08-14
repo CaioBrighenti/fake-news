@@ -60,7 +60,8 @@ train_depths <- tibble(ID = train$ID,
                        sd_noun_phrase = rep(0, nrow(train)),
                        iqr_sentence = rep(0, nrow(train)),
                        iqr_verb_phrase = rep(0, nrow(train)),
-                       iqr_noun_phrase = rep(0, nrow(train)))
+                       iqr_noun_phrase = rep(0, nrow(train)),
+                       num_verb_phrase = rep(0, nrow(train)))
 ## calculate tree depths for each document
 pb <- progress_bar$new(format = "[:bar] :current/:total (:percent)", total = nrow(train))
 for (idx in 1:nrow(train)) {
@@ -78,24 +79,17 @@ train_labels <- train %>%
 train_depths <- train_depths %>%
   left_join(train_labels, by="ID")
 train_depths %>%
-  filter(sentence != 0) %>%
+  filter(mu_sentence != 0) %>%
   group_by(label) %>%
-  summarise(sentence = mean(sentence), verb_phrase = mean(verb_phrase), noun_phrase = mean(noun_phrase))
-plot(train_depths$verb_phrase, train_depths$noun_phrase)
+  summarise(mu_sentence = mean(mu_sentence), mu_verb_phrase = mean(mu_verb_phrase), mu_noun_phrase = mean(mu_noun_phrase))
 
 # write to file
-#write_tsv(train_depths, "coreNLP_annotations/FNN_test_titles.tsv")
-
-############## SETUP CORENLP ############## 
-# cnlp_download_corenlp()
-# cnlp_init_corenlp()
-# anno <- cnlp_annotate(train$text)
+# write_tsv(train_depths, "coreNLP_annotations/fnn_train_trees.tsv")
 
 
-
-############## COMPLEXITY ############## 
+############## CALCULATE COMPLEXITY ############## 
 # syntax tree depths
-train_depths <- read.csv(file="coreNLP_annotations/fnn_train.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
+train_depths <- read.csv(file="coreNLP_annotations/fnn_train_trees.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
   as_tibble() %>%
   mutate(ID = as.character(ID))
 test_depths <- read.csv(file="coreNLP_annotations/fnn_test.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
@@ -183,28 +177,17 @@ train_complexity <- train %>%
   left_join(train_ttr, by=c("ID", "label", "text"))
 
 # write to file
-write_tsv(train_complexity, "text_features/FNN_train_titles_complexity.tsv")
+#write_tsv(train_complexity, "text_features/fnn_train_complexity.tsv")
 
+
+############## LOAD COMPLEXITY ############## 
 # read from file
-train_complexity <- read.csv(file="text_features/FNN_train_complexity.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
+train_complexity <- read.csv(file="text_features/fnn_train_complexity.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
   as_tibble() %>%
   mutate(ID = as.character(ID))
 
-## compare
-train_complexity %>%
-  group_by(label) %>%
-  summarise(sentence = mean(sentence), verb_phrase = mean(verb_phrase), noun_phrase = mean(noun_phrase),
-            swc = mean(swc), wlen = mean(wlen), TTR = mean(TTR))
-train_complexity %>%
-  group_by(label) %>%
-  summarise(sentence = median(sentence), verb_phrase = median(verb_phrase), noun_phrase = median(noun_phrase),
-            swc = median(swc), wlen = median(wlen), TTR = median(TTR))
-train_complexity %>%
-  group_by(label) %>%
-  summarise(sentence = sd(sentence), verb_phrase = sd(verb_phrase), noun_phrase = sd(noun_phrase),
-            swc = sd(swc), wlen = sd(wlen), TTR = sd(TTR))
-
-
+## evaluate var imp and aov
+complexity_ranks <- getVarRanks(train_complexity)
 
 ############## LOAD LIWC ############## 
 train_LIWC<-read.csv(file="FakeNewsNet/dataset/LIWC2015_fnn_train.csv",header = TRUE, encoding="UTF-8") %>%
@@ -213,12 +196,11 @@ train_LIWC <- train_LIWC %>%
   mutate(ID = A, label = B, title = C, text = D) %>%
   select(ID, label, title, text, WC:OtherP)
 
-train_LIWC %>%
-  dplyr::select(-title, -text, -ID, -label) %>%
-  map(~ as.numeric(unlist(summary(aov(.x ~ train_LIWC$label)))['Pr(>F)1'])) %>%
-  as_tibble() %>%
-  gather(var, value) %>%
-  arrange(value)
+## evaluate var imp and aov
+LIWC_ranks <- train_LIWC %>%
+  dplyr::select(-title) %>%
+  getVarRanks()
+
 ############## PSYCHOLOGY ############## 
 
 
@@ -260,18 +242,22 @@ train_POS %>%
 
 
 # write to file
-write_tsv(train_POS, "coreNLP_annotations/FNN_train_POS.tsv")
+write_tsv(train_POS, "coreNLP_annotations/fnn_train_POS.tsv")
 
 ############## STYLISTIC ############### 
 # POS tags
-train_POS <- read.csv(file="coreNLP_annotations/FNN_train_POS.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
+train_POS <- read.csv(file="coreNLP_annotations/fnn_train_POS.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
   as_tibble() %>%
-  mutate(ID = as.character(ID), label = unclass(label) - 1) %>%
+  mutate(ID = as.character(ID)) %>%
   select(ID, label, everything())
 
-mod <- glm(label ~ . - ID, data = train_POS, family = "binomial")
-summary(mod)
-calcAccuracyLR(mod, train_POS)
+train_POS %>%
+  dplyr::select(-ID) %>%
+  filterVarImp(.,.$label) %>%
+  mutate(var = row.names(.), mu = (fake + real) / 2) %>%
+  arrange(desc(mu)) %>%
+  select(var, mu, everything())
 
 # LIWC features
+
 

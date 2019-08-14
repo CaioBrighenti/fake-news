@@ -41,3 +41,27 @@ plotPredictions <- function(mods,dat_test){
     plot(predict(mod, newdata = dat_test))
   }
 }
+
+getVarRanks <- function(data) {
+  ## get rid of unnecessary columns
+  if('title' %in% names(data)){data <- data %>% select(-title)}
+  if('text' %in% names(data)){data <- data %>% select(-text)}
+  
+  aovs <- data %>%
+    dplyr::select(-ID, -label) %>%
+    map(~ as.numeric(unlist(summary(aov(.x ~ data$label)))['Pr(>F)1'])) %>%
+    as_tibble() %>%
+    gather(var, p_val) %>%
+    arrange(p_val)
+  
+  ranks <- data %>%
+    dplyr::select(-ID, -label) %>%
+    filterVarImp(.,data$label) %>%
+    mutate(var = row.names(.), max_varimp = pmax(fake,real), varimp_rank = rank(-max_varimp)) %>%
+    select(var, max_varimp, varimp_rank) %>%
+    left_join(aovs, by = 'var') %>%
+    mutate(p_rank = rank(p_val), avg_rank = (varimp_rank + p_rank) / 2) %>%
+    arrange(avg_rank)
+  
+  return(ranks)
+}
