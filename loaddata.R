@@ -6,7 +6,8 @@ library(readr)
 loadLIARTrain <- function() {
   ## load train data
   train<-read.csv(file="LIAR/dataset/train.TSV",sep = '\t', quote="", header = FALSE)
-  header<-c("ID","label","text","subject","speaker","speaker.title","state","party","bt.count","f.count","ht.count","mt.count","pof.count","context")
+  header<-c("ID","label","text","subject","speaker","speaker.title","state",
+            "party","bt.count","f.count","ht.count","mt.count","pof.count","context")
   names(train)<-header
 
     ## reorder and number label
@@ -20,7 +21,8 @@ loadLIARTrain <- function() {
 loadLIARTest <- function() {
   ## load train data
   test<-read.csv(file="LIAR/dataset/test.TSV",sep = '\t', quote="", header = FALSE)
-  header<-c("ID","label","text","subject","speaker","speaker.title","state","party","bt.count","f.count","ht.count","mt.count","pof.count","context")
+  header<-c("ID","label","text","subject","speaker","speaker.title","state",
+            "party","bt.count","f.count","ht.count","mt.count","pof.count","context")
   names(test)<-header
   
   ## reorder and number label

@@ -2,6 +2,7 @@ import os
 import json
 import re
 import csv
+import pandas as pd
 
 
 os.getcwd()
@@ -55,3 +56,12 @@ for dirName, subdirList, fileList in os.walk(fnn_path):
             with open(path, 'a', encoding='utf-8') as file:
                 tsv_writer = csv.writer(file, delimiter='\t')
                 tsv_writer.writerow([ID,label,title, text])
+
+
+## write csv versions
+train_path='FakeNewsNet/dataset/fnn_train.tsv'
+test_path='FakeNewsNet/dataset/fnn_test.tsv'
+train_table=pd.read_table(train_path,sep='\t')
+train_table.to_csv('FakeNewsNet/dataset/fnn_train.csv',index=False)
+test_table=pd.read_table(test_path,sep='\t')
+test_table.to_csv('FakeNewsNet/dataset/fnn_test.csv',index=False)
