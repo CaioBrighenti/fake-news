@@ -119,6 +119,7 @@ def getConstTreeDepths(text):
     "sd-noun-phrase" : np.std(NP_depth_list),
     "iqr-sentence" : np.subtract(*np.percentile(sen_depth_list, [75, 25])),
     "iqr-verb-phrase" : np.subtract(*np.percentile(VP_depth_list, [75, 25])),
-    "iqr-noun-phrase" : np.subtract(*np.percentile(NP_depth_list, [75, 25]))
+    "iqr-noun-phrase" : np.subtract(*np.percentile(NP_depth_list, [75, 25])),
+    "num_verb_phrase" : len(VP_depth_list)
     }
     return depth_dict
