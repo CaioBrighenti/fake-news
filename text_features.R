@@ -6,6 +6,7 @@ library("tidytext")
 library("cleanNLP")
 library("rJava")
 library("progress")
+library("MASS")
 
 # load in data
 source("helpers.R")
@@ -34,14 +35,6 @@ test <- test %>%
   mutate(text = as.character(text), ID = as.character(ID)) %>%
   filter(nchar(text) > 0 & nchar(text) < 100000) %>%
   dplyr::select(ID, label, text)
-
-# unnest tokens
-tidy_train <- train %>% 
-  unnest_tokens(word, text)
-
-# clean tokens
-tidy_train <- tidy_train %>%
-  anti_join(stop_words)
 
 ############## CORENLP SYNTAX TREES FROM PYTHON ############## 
 ## coreNLP server must be running at localhost:9000
@@ -73,26 +66,95 @@ for (idx in 1:nrow(train)) {
 }
 
 
-## check distribution
+## add label
 train_labels <- train %>%
   dplyr::select(ID, label)
 train_depths <- train_depths %>%
   left_join(train_labels, by="ID")
-train_depths %>%
-  filter(mu_sentence != 0) %>%
-  group_by(label) %>%
-  summarise(mu_sentence = mean(mu_sentence), mu_verb_phrase = mean(mu_verb_phrase), mu_noun_phrase = mean(mu_noun_phrase))
 
 # write to file
 # write_tsv(train_depths, "coreNLP_annotations/fnn_train_trees.tsv")
 
+
+
+############## POS TAGS FROM CORENLP ############## 
+library("reticulate")
+use_python("C:/Users/Caio Brighenti/AppData/Local/Programs/Python/Python37", required = T)
+py_config()
+source_python("processCoreNLP.py")
+## create empty dataframe
+train_POS <- tibble(ID = train$ID, CC = rep(-1, nrow(train)), CD = rep(-1, nrow(train)), DT = rep(-1, nrow(train)),
+                    EX = rep(-1, nrow(train)), FW = rep(-1, nrow(train)),IN = rep(-1, nrow(train)),JJ = rep(-1, nrow(train)),
+                    JJR = rep(-1, nrow(train)),JJS = rep(-1, nrow(train)),LS = rep(-1, nrow(train)),MD = rep(-1, nrow(train)),
+                    NN = rep(-1, nrow(train)),NNS = rep(-1, nrow(train)),NNP = rep(-1, nrow(train)),NNPS = rep(-1, nrow(train)),
+                    PDT = rep(-1, nrow(train)),POS = rep(-1, nrow(train)),PRP = rep(-1, nrow(train)),`PRP$` = rep(-1, nrow(train)),
+                    RB = rep(-1, nrow(train)),RBR = rep(-1, nrow(train)),RBS = rep(-1, nrow(train)),RP = rep(-1, nrow(train)),
+                    SYM = rep(-1, nrow(train)),TO = rep(-1, nrow(train)),UH = rep(-1, nrow(train)),VB = rep(-1, nrow(train)),
+                    VBD = rep(-1, nrow(train)),VBG = rep(-1, nrow(train)),VBN = rep(-1, nrow(train)),VBP = rep(-1, nrow(train)),
+                    VBZ = rep(-1, nrow(train)),WDT = rep(-1, nrow(train)),WP = rep(-1, nrow(train)),`WP$` = rep(-1, nrow(train)),
+                    WRB = rep(-1, nrow(train)))
+## get POS counts 
+pb <- progress_bar$new(format = "[:bar] :current/:total (:percent)", total = nrow(train))
+for (idx in 1:nrow(train)) {
+  pb$tick()
+  if (train_POS[idx,]$CC == -1) {
+    t_POS <- getPOSCounts(train[idx,]$text)
+    train_POS[idx,] <- c(train_POS[idx,]$ID, t_POS)
+  }
+}
+
+## check distribution
+train_labels <- train %>%
+  dplyr::select(ID, label)
+train_POS <- train_POS %>%
+  left_join(train_labels, by="ID")
+train_POS %>%
+  filter(CC != -1) %>%
+  group_by(label) %>%
+  summarise_at(vars(CC:WRB), mean, na.rm = TRUE)
+
+
+# write to file
+#write_tsv(train_POS, "coreNLP_annotations/fnn_train_POS.tsv")
+
+############## NER TAGS FROM CORENLP ############## 
+library("reticulate")
+use_python("C:/Users/Caio Brighenti/AppData/Local/Programs/Python/Python37", required = T)
+py_config()
+source_python("processCoreNLP.py")
+## create empty dataframe
+test_NER <- tibble(ID = test$ID, NER = rep(-1, nrow(test)))
+## get NER counts 
+pb <- progress_bar$new(format = "[:bar] :current/:total (:percent)", total = nrow(test))
+for (idx in 1:nrow(test)) {
+  pb$tick()
+  if (test_NER[idx,]$NER == -1) {
+    t_NER <- getNERCounts(test[idx,]$text)
+    test_NER[idx,] <- c(test_NER[idx,]$ID, t_NER)
+  }
+}
+
+## check distribution
+test_labels <- test %>%
+  dplyr::select(ID, label)
+test_NER <- test_NER %>%
+  left_join(test_labels, by="ID") %>%
+  mutate(NER = as.numeric(NER))
+test_NER %>%
+  filter(NER != -1) %>%
+  group_by(label) %>%
+  summarise_at(vars(NER), mean, na.rm = TRUE)
+
+
+# write to file
+write_tsv(test_NER, "coreNLP_annotations/fnn_test_NER.tsv")
 
 ############## CALCULATE COMPLEXITY ############## 
 # syntax tree depths
 train_depths <- read.csv(file="coreNLP_annotations/fnn_train_trees.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
   as_tibble() %>%
   mutate(ID = as.character(ID))
-test_depths <- read.csv(file="coreNLP_annotations/fnn_test.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
+test_depths <- read.csv(file="coreNLP_annotations/fnn_test_trees.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
   as_tibble() %>%
   mutate(ID = as.character(ID))
 
@@ -177,87 +239,188 @@ train_complexity <- train %>%
   left_join(train_ttr, by=c("ID", "label", "text"))
 
 # write to file
-#write_tsv(train_complexity, "text_features/fnn_train_complexity.tsv")
+write_tsv(train_complexity, "text_features/fnn_train_complexity.tsv")
 
 
 ############## LOAD COMPLEXITY ############## 
 # read from file
-train_complexity <- read.csv(file="text_features/fnn_train_complexity.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
-  as_tibble() %>%
-  mutate(ID = as.character(ID))
+train_complexity <- loadFNNComplexity('train')
+test_complexity <- loadFNNComplexity('test')
+
 
 ## evaluate var imp and aov
 complexity_ranks <- getVarRanks(train_complexity)
+test_complexity_ranks <- getVarRanks(test_complexity)
+
+############## LIWC PREDICTOR GROUPS ############### 
+LIWC_groups <- tibble(
+  WC = "summary",
+  Analytic = "summary",	
+  Clout = "summary",	
+  Authentic = "summary",	
+  Tone = "summary",
+  WPS = "summary",	
+  Sixltr = "summary",	
+  Dic = "summary",	
+  function. = "function",
+  pronoun = "function",	
+  ppron = "function",	
+  i = "function",	
+  we = "function",	
+  you = "function",	
+  shehe = "function",	
+  they = "function",	
+  ipron = "function",	
+  article = "function",	
+  prep = "function",	
+  auxverb = "function",	
+  adverb = "function",	
+  conj = "function",	
+  negate = "function",	
+  verb = "othergram",	
+  adj = "othergram",	
+  compare = "othergram",		
+  interrog = "othergram",	
+  number = "othergram",		
+  quant = "othergram",	
+  affect = "affect",
+  posemo = "affect",
+  negemo = "affect",
+  anx = "affect",
+  anger = "affect",	
+  sad = "affect",	
+  social = "social",
+  family = "social",
+  friend = "social",
+  female = "social",	
+  male = "social",
+  cogproc	= "cogproc",
+  insight	= "cogproc",
+  cause	= "cogproc",
+  discrep	= "cogproc",	
+  tentat	= "cogproc",	
+  certain	= "cogproc",	
+  differ	= "cogproc",
+  percept	= "percept",
+  see	= "percept",	
+  hear = "percept",
+  feel = "percept",
+  bio = "bio",
+  body = "bio",
+  health = "bio",
+  sexual = "bio",	
+  ingest = "bio",
+  drives = "drives",
+  affiliation = "drives",
+  achieve = "drives",
+  power = "drives",	
+  reward = "drives",
+  risk = "drives",	
+  focuspast	= "timeorient",
+  focuspresent	= "timeorient",	
+  focusfuture	= "timeorient",	
+  relativ = "relativ",	
+  motion = "relativ",		
+  space = "relativ",		
+  time = "relativ",		
+  work = "personc",
+  leisure = "personc",
+  home = "personc",	
+  money = "personc",	
+  relig = "personc",	
+  death = "personc",	
+  informal = "informal",	
+  swear = "informal",		
+  netspeak = "informal",		
+  assent = "informal",		
+  nonflu = "informal",		
+  filler = "informal",		
+  AllPunc = "punc",
+  Period = "punc",	
+  Comma = "punc",	
+  Colon = "punc",	
+  SemiC = "punc",	
+  QMark = "punc",	
+  Exclam = "punc",	
+  Dash = "punc",	
+  Quote = "punc",	
+  Apostro = "punc",	
+  Parenth = "punc",	
+  OtherP = "punc"
+) %>%
+  gather(var, group)
 
 ############## LOAD LIWC ############## 
+## train
 train_LIWC<-read.csv(file="FakeNewsNet/dataset/LIWC2015_fnn_train.csv",header = TRUE, encoding="UTF-8") %>%
-  as_tibble()
-train_LIWC <- train_LIWC %>%
-  mutate(ID = A, label = B, title = C, text = D) %>%
-  select(ID, label, title, text, WC:OtherP)
+  as_tibble() %>%
+  mutate(ID = as.character(A), label = B, title = as.character(C), text = as.character(D)) %>%
+  dplyr::select(ID, label, -title, -text, WC:OtherP)
+## test
+test_LIWC<-read.csv(file="FakeNewsNet/dataset/LIWC2015_fnn_test.csv",header = TRUE, encoding="UTF-8") %>%
+  as_tibble() %>%
+  mutate(ID = as.character(A), label = B, title = as.character(C), text = as.character(D)) %>%
+  dplyr::select(ID, label, -title, -text, WC:OtherP)
 
 ## evaluate var imp and aov
 LIWC_ranks <- train_LIWC %>%
-  dplyr::select(-title) %>%
   getVarRanks()
+## check by groups
+LIWC_ranks %>%
+  left_join(LIWC_groups, by = "var") %>%
+  group_by(group) %>%
+  summarise(varimp_rank = mean(varimp_rank), p_rank = mean(p_rank), avg_rank = mean(avg_rank)) %>%
+  arrange(avg_rank)
 
-############## PSYCHOLOGY ############## 
-
-
-############## POS TAGS FROM CORENLP ############## 
-library("reticulate")
-use_python("C:/Users/Caio Brighenti/AppData/Local/Programs/Python/Python37", required = T)
-py_config()
-source_python("processCoreNLP.py")
-## create empty dataframe
-train_POS <- tibble(ID = train$ID, CC = rep(-1, nrow(train)), CD = rep(-1, nrow(train)), DT = rep(-1, nrow(train)),
-  EX = rep(-1, nrow(train)), FW = rep(-1, nrow(train)),IN = rep(-1, nrow(train)),JJ = rep(-1, nrow(train)),
-  JJR = rep(-1, nrow(train)),JJS = rep(-1, nrow(train)),LS = rep(-1, nrow(train)),MD = rep(-1, nrow(train)),
-  NN = rep(-1, nrow(train)),NNS = rep(-1, nrow(train)),NNP = rep(-1, nrow(train)),NNPS = rep(-1, nrow(train)),
-  PDT = rep(-1, nrow(train)),POS = rep(-1, nrow(train)),PRP = rep(-1, nrow(train)),`PRP$` = rep(-1, nrow(train)),
-  RB = rep(-1, nrow(train)),RBR = rep(-1, nrow(train)),RBS = rep(-1, nrow(train)),RP = rep(-1, nrow(train)),
-  SYM = rep(-1, nrow(train)),TO = rep(-1, nrow(train)),UH = rep(-1, nrow(train)),VB = rep(-1, nrow(train)),
-  VBD = rep(-1, nrow(train)),VBG = rep(-1, nrow(train)),VBN = rep(-1, nrow(train)),VBP = rep(-1, nrow(train)),
-  VBZ = rep(-1, nrow(train)),WDT = rep(-1, nrow(train)),WP = rep(-1, nrow(train)),`WP$` = rep(-1, nrow(train)),
-  WRB = rep(-1, nrow(train)))
-## get POS counts 
-pb <- progress_bar$new(format = "[:bar] :current/:total (:percent)", total = nrow(train))
-for (idx in 1:nrow(train)) {
-  pb$tick()
-  if (train_POS[idx,]$CC == -1) {
-    t_POS <- getPOSCounts(train[idx,]$text)
-    train_POS[idx,] <- c(train_POS[idx,]$ID, t_POS)
-  }
-}
-
-## check distribution
-train_labels <- train %>%
-  dplyr::select(ID, label)
-train_POS <- train_POS %>%
-  left_join(train_labels, by="ID")
-train_POS %>%
-  filter(CC != -1) %>%
-  group_by(label) %>%
-  summarise_at(vars(CC:WRB), mean, na.rm = TRUE)
-
-
-# write to file
-write_tsv(train_POS, "coreNLP_annotations/fnn_train_POS.tsv")
 
 ############## STYLISTIC ############### 
 # POS tags
 train_POS <- read.csv(file="coreNLP_annotations/fnn_train_POS.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
   as_tibble() %>%
   mutate(ID = as.character(ID)) %>%
-  select(ID, label, everything())
+  dplyr::select(ID, label, everything())
+test_POS <- read.csv(file="coreNLP_annotations/fnn_test_POS.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
+  as_tibble() %>%
+  mutate(ID = as.character(ID)) %>%
+  dplyr::select(ID, label, everything())
 
-train_POS %>%
-  dplyr::select(-ID) %>%
-  filterVarImp(.,.$label) %>%
-  mutate(var = row.names(.), mu = (fake + real) / 2) %>%
-  arrange(desc(mu)) %>%
-  select(var, mu, everything())
 
-# LIWC features
+## evaluate var imp and aov
+POS_ranks <- train_POS %>%
+  getVarRanks()
+
+############## MERGE ############### 
+## merge datasets
+train_txtfeat <- train_complexity %>%
+  left_join(train_LIWC, by = c("ID", "label")) %>%
+  left_join(train_POS, by = c("ID", "label")) %>%
+  mutate(label = as.factor(2 - unclass(label))) %>%
+  dplyr::select(-ID)
+test_txtfeat <- test_complexity %>%
+  left_join(test_LIWC, by = c("ID", "label")) %>%
+  left_join(test_POS, by = c("ID", "label")) %>%
+  mutate(label = as.factor(2 - unclass(label))) %>%
+  dplyr::select(-ID)
+
+## merge ranks
+txtfeat_ranks <- complexity_ranks %>%
+  full_join(LIWC_ranks) %>%
+  full_join(POS_ranks) %>%
+  dplyr::select(var, max_varimp, p_val) %>%
+  mutate(varimp_rank = rank(-max_varimp), p_rank = rank(p_val), avg_rank = (varimp_rank + p_rank) / 2) %>%
+  arrange(avg_rank)
+
+## upsample
+txtfeat_fit <- upSample(train_txtfeat, train_txtfeat$label) %>%
+  dplyr::select(-Class) %>%
+  as_tibble()
+
+
+############## MODEL ############### 
+mod <-  glm(label ~ .,
+             data=txtfeat_fit, family="binomial")
+summary(mod)
+getROC(mod, train_txtfeat)
+calcAccuracyLR(mod, train_txtfeat, cutoff = 0.5)
 
 

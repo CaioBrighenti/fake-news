@@ -8,6 +8,26 @@ from nltk.tree import *
 import numpy as np
 import pandas as pd
 
+def getNERCounts(text):
+    ## get named entities
+    host = "http://localhost"
+    port = "9000"
+    nlp = StanfordCoreNLP(host + ":" + port)
+    output = nlp.annotate(
+    text,
+    properties={
+        "outputFormat": "json",
+        "annotators": "ner"
+    }
+    )
+    ner_count = 0
+    if type(output) == str:
+        return(ner_count)
+    for sen in output['sentences']:
+        ner_count += len(sen['entitymentions'])
+
+    return ner_count
+
 def getPOSCounts(text):
     ## get POS tags
     host = "http://localhost"
@@ -60,6 +80,8 @@ def getPOSCounts(text):
         "WRB" : 0
     }
     ## need to add check for failed output
+    if type(output) == str:
+        return(pos_dict)
     for sen in output['sentences']:
         for tok in sen['tokens']:
             pos_tag = tok['pos']
