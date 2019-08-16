@@ -1,0 +1,9 @@
+nohup: ignoring input
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/runpy.py", line 174, in _run_module_as_main
+    "__main__", fname, loader, pkg_name)
+  File "/usr/lib/python2.7/runpy.py", line 72, in _run_code
+    exec code in run_globals
+  File "/mnt/c/Users/Caio Brighenti/Documents/repositories/fake-news/FakeNewsNet/code/resource_server/app.py", line 3, in <module>
+    from flask import Flask
+ImportError: No module named flask

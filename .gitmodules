@@ -1,1 +1,4 @@
 
+[submodule "data/FakeNewsNet"]
+	path = data/FakeNewsNet
+	url = https://github.com/CaioBrighenti/FakeNewsNet.git
