@@ -52,7 +52,7 @@ vectorizer <- vocab_vectorizer(vocab)
 # use window of 5 for context words
 tcm <- create_tcm(it, vectorizer, skip_grams_window = 5L)
 glove = GlobalVectors$new(word_vectors_size = wvec_size, vocabulary = vocab, x_max = 10, learning_rate=0.01)
-word_vectors<-glove$fit_transform(tcm, n_iter = 20)
+word_vectors<-glove$fit_transform(tcm, n_iter = 30)
 
 ############## GET TFIDF DTM ############## 
 # dtm_train = create_dtm(it, vectorizer)
