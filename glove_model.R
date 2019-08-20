@@ -54,6 +54,7 @@ tcm <- create_tcm(it, vectorizer, skip_grams_window = 5L)
 glove = GlobalVectors$new(word_vectors_size = wvec_size, vocabulary = vocab, x_max = 10, learning_rate=0.01)
 word_vectors<-glove$fit_transform(tcm, n_iter = 30)
 
+
 ############## GET TFIDF DTM ############## 
 # dtm_train = create_dtm(it, vectorizer)
 # tfidf = TfIdf$new()
@@ -79,7 +80,7 @@ dat_test<-data.frame(ID=test$ID, label=as.factor(2-unclass(test$label)),test_dve
 ## load in Google News vectors
 #install_github("bmschmidt/wordVectors")
 library(wordVectors)
-path = "/google_vecs/gnews.bin"
+path = "/wvecs/gnews.bin"
 f <- file.choose()
 g_news <- read.vectors(f)
 
@@ -142,8 +143,9 @@ test_full <- dat_test %>%
 ## fit ordinal logistic model
 mod.logit<-glm(label~.,data=dat_train,family="binomial")
 summary(mod.logit)
-stats.logit.train <- calcAccuracyLR(mod.logit, dat_train)
-stats.logit.test <- calcAccuracyLR(mod.logit, dat_test)
+getROC(mod.logit, dat_train)
+calcAccuracyLR(mod.logit, dat_train, cutoff = .25)
+calcAccuracyLR(mod.logit, dat_test, cutoff = .25)
 
 ## SVM
 mod.svm<-svm(label~.,data=dat_train, kernel="linear", scale=FALSE)
@@ -176,7 +178,11 @@ accs %>%
   geom_text(aes(label=round(value, digits = 2)), vjust=1.6, color="white",
             position = position_dodge(0.9), size=4) +
   ylim(0,1)
-  
+
+############## CHECK FAKEST WORDS ############## 
+word_predicts <- predict(mod.logit, data.frame(word_vectors)) %>%
+  tibble::enframe() %>%
+  arrange(desc(value))
 
 ############## HELPER FUNCTIONS ############## 
 docVector <- function(tokens, word_vectors){

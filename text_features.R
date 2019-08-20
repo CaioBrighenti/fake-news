@@ -7,6 +7,8 @@ library("cleanNLP")
 library("rJava")
 library("progress")
 library("MASS")
+library("car")
+library("glmnet")
 
 # load in data
 source("helpers.R")
@@ -21,11 +23,14 @@ FNN_test <- loadFNNTest()
 train <- FNN_train
 test <- FNN_test
 
+# define colors
+colgate_ter <- c("#64A50A", "#F0AA00","#0096C8", "#005F46","#FF6914","#004682")
+
 ############## TIDY ############## 
 # tidy train
 train <- train %>% 
   as_tibble() %>%
-  mutate(text = as.character(text), ID = as.character(ID)) %>%
+  mutate(text = as.character(title), ID = as.character(ID)) %>%
   filter(nchar(text) > 0 & nchar(text) < 100000) %>%
   dplyr::select(ID, label, text)
 
@@ -73,7 +78,7 @@ train_depths <- train_depths %>%
   left_join(train_labels, by="ID")
 
 # write to file
-# write_tsv(train_depths, "coreNLP_annotations/fnn_train_trees.tsv")
+# write_tsv(train_depths, "annotations/coreNLP/fnn_train_titles_trees.tsv")
 
 
 
@@ -115,7 +120,7 @@ train_POS %>%
 
 
 # write to file
-#write_tsv(train_POS, "coreNLP_annotations/fnn_train_POS.tsv")
+#write_tsv(train_POS, "annotations/coreNLP/fnn_train_POS.tsv")
 
 ############## NER TAGS FROM CORENLP ############## 
 library("reticulate")
@@ -151,10 +156,10 @@ write_tsv(test_NER, "coreNLP_annotations/fnn_test_NER.tsv")
 
 ############## CALCULATE COMPLEXITY ############## 
 # syntax tree depths
-train_depths <- read.csv(file="coreNLP_annotations/fnn_train_trees.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
+train_depths <- read.csv(file="annotations/coreNLP/fnn_train_trees.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
   as_tibble() %>%
   mutate(ID = as.character(ID))
-test_depths <- read.csv(file="coreNLP_annotations/fnn_test_trees.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
+test_depths <- read.csv(file="annotations/coreNLP/fnn_test_trees.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
   as_tibble() %>%
   mutate(ID = as.character(ID))
 
@@ -239,7 +244,7 @@ train_complexity <- train %>%
   left_join(train_ttr, by=c("ID", "label", "text"))
 
 # write to file
-write_tsv(train_complexity, "text_features/fnn_train_complexity.tsv")
+# write_tsv(train_complexity, "features/fnn_train_complexity.tsv")
 
 
 ############## LOAD COMPLEXITY ############## 
@@ -247,120 +252,16 @@ write_tsv(train_complexity, "text_features/fnn_train_complexity.tsv")
 train_complexity <- loadFNNComplexity('train')
 test_complexity <- loadFNNComplexity('test')
 
-
 ## evaluate var imp and aov
 complexity_ranks <- getVarRanks(train_complexity)
-test_complexity_ranks <- getVarRanks(test_complexity)
-
-############## LIWC PREDICTOR GROUPS ############### 
-LIWC_groups <- tibble(
-  WC = "summary",
-  Analytic = "summary",	
-  Clout = "summary",	
-  Authentic = "summary",	
-  Tone = "summary",
-  WPS = "summary",	
-  Sixltr = "summary",	
-  Dic = "summary",	
-  function. = "function",
-  pronoun = "function",	
-  ppron = "function",	
-  i = "function",	
-  we = "function",	
-  you = "function",	
-  shehe = "function",	
-  they = "function",	
-  ipron = "function",	
-  article = "function",	
-  prep = "function",	
-  auxverb = "function",	
-  adverb = "function",	
-  conj = "function",	
-  negate = "function",	
-  verb = "othergram",	
-  adj = "othergram",	
-  compare = "othergram",		
-  interrog = "othergram",	
-  number = "othergram",		
-  quant = "othergram",	
-  affect = "affect",
-  posemo = "affect",
-  negemo = "affect",
-  anx = "affect",
-  anger = "affect",	
-  sad = "affect",	
-  social = "social",
-  family = "social",
-  friend = "social",
-  female = "social",	
-  male = "social",
-  cogproc	= "cogproc",
-  insight	= "cogproc",
-  cause	= "cogproc",
-  discrep	= "cogproc",	
-  tentat	= "cogproc",	
-  certain	= "cogproc",	
-  differ	= "cogproc",
-  percept	= "percept",
-  see	= "percept",	
-  hear = "percept",
-  feel = "percept",
-  bio = "bio",
-  body = "bio",
-  health = "bio",
-  sexual = "bio",	
-  ingest = "bio",
-  drives = "drives",
-  affiliation = "drives",
-  achieve = "drives",
-  power = "drives",	
-  reward = "drives",
-  risk = "drives",	
-  focuspast	= "timeorient",
-  focuspresent	= "timeorient",	
-  focusfuture	= "timeorient",	
-  relativ = "relativ",	
-  motion = "relativ",		
-  space = "relativ",		
-  time = "relativ",		
-  work = "personc",
-  leisure = "personc",
-  home = "personc",	
-  money = "personc",	
-  relig = "personc",	
-  death = "personc",	
-  informal = "informal",	
-  swear = "informal",		
-  netspeak = "informal",		
-  assent = "informal",		
-  nonflu = "informal",		
-  filler = "informal",		
-  AllPunc = "punc",
-  Period = "punc",	
-  Comma = "punc",	
-  Colon = "punc",	
-  SemiC = "punc",	
-  QMark = "punc",	
-  Exclam = "punc",	
-  Dash = "punc",	
-  Quote = "punc",	
-  Apostro = "punc",	
-  Parenth = "punc",	
-  OtherP = "punc"
-) %>%
-  gather(var, group)
 
 ############## LOAD LIWC ############## 
+## LIWC groups
+LIWC_groups <- loadLIWCGroups()
 ## train
-train_LIWC<-read.csv(file="FakeNewsNet/dataset/LIWC2015_fnn_train.csv",header = TRUE, encoding="UTF-8") %>%
-  as_tibble() %>%
-  mutate(ID = as.character(A), label = B, title = as.character(C), text = as.character(D)) %>%
-  dplyr::select(ID, label, -title, -text, WC:OtherP)
+train_LIWC<-loadFNNLIWC('train')
 ## test
-test_LIWC<-read.csv(file="FakeNewsNet/dataset/LIWC2015_fnn_test.csv",header = TRUE, encoding="UTF-8") %>%
-  as_tibble() %>%
-  mutate(ID = as.character(A), label = B, title = as.character(C), text = as.character(D)) %>%
-  dplyr::select(ID, label, -title, -text, WC:OtherP)
+test_LIWC<-loadFNNLIWC('test')
 
 ## evaluate var imp and aov
 LIWC_ranks <- train_LIWC %>%
@@ -373,20 +274,23 @@ LIWC_ranks %>%
   arrange(avg_rank)
 
 
-############## STYLISTIC ############### 
+############## POS ############### 
 # POS tags
-train_POS <- read.csv(file="coreNLP_annotations/fnn_train_POS.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
-  as_tibble() %>%
-  mutate(ID = as.character(ID)) %>%
-  dplyr::select(ID, label, everything())
-test_POS <- read.csv(file="coreNLP_annotations/fnn_test_POS.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
-  as_tibble() %>%
-  mutate(ID = as.character(ID)) %>%
-  dplyr::select(ID, label, everything())
-
+train_POS <- loadFNNPOS('train')
+test_POS <- loadFNNPOS('test')
 
 ## evaluate var imp and aov
 POS_ranks <- train_POS %>%
+  getVarRanks()
+
+
+############## NER ############### 
+# NER tags
+train_NER <- loadFNNNER('train')
+test_NER <- loadFNNNER('test')
+
+## evaluate var imp and aov
+NER_ranks <- train_NER %>%
   getVarRanks()
 
 ############## MERGE ############### 
@@ -394,33 +298,92 @@ POS_ranks <- train_POS %>%
 train_txtfeat <- train_complexity %>%
   left_join(train_LIWC, by = c("ID", "label")) %>%
   left_join(train_POS, by = c("ID", "label")) %>%
+  left_join(train_NER, by = c("ID", "label")) %>%
   mutate(label = as.factor(2 - unclass(label))) %>%
+  distinct(ID, .keep_all= TRUE) %>%
   dplyr::select(-ID)
 test_txtfeat <- test_complexity %>%
   left_join(test_LIWC, by = c("ID", "label")) %>%
   left_join(test_POS, by = c("ID", "label")) %>%
+  left_join(train_NER, by = c("ID", "label")) %>%
   mutate(label = as.factor(2 - unclass(label))) %>%
+  distinct(ID, .keep_all= TRUE) %>%
   dplyr::select(-ID)
 
 ## merge ranks
 txtfeat_ranks <- complexity_ranks %>%
   full_join(LIWC_ranks) %>%
   full_join(POS_ranks) %>%
+  full_join(NER_ranks) %>%
   dplyr::select(var, max_varimp, p_val) %>%
   mutate(varimp_rank = rank(-max_varimp), p_rank = rank(p_val), avg_rank = (varimp_rank + p_rank) / 2) %>%
   arrange(avg_rank)
 
 ## upsample
-txtfeat_fit <- upSample(train_txtfeat, train_txtfeat$label) %>%
-  dplyr::select(-Class) %>%
-  as_tibble()
+# txtfeat_fit <- upSample(train_txtfeat, train_txtfeat$label) %>%
+#   dplyr::select(-Class) %>%
+#   as_tibble()
 
+## subset predictors
+train_fit <- train_txtfeat %>%
+  dplyr::select(-mu_sentence, -mu_noun_phrase, -sd_sentence, -sd_verb_phrase,-sd_noun_phrase, -num_verb_phrase,
+                -tokens, -WC, -Analytic, -Clout, -WPS, -Sixltr, -Dic, -`function`, -pronoun, -ppron, -article,
+                -prep, -verb, -adj,
+                -compare, -posemo, -negemo, -anx, -anger, -sad, -family, -insight, -discrep, -tentat, -hear,
+                -feel, -health, -sexual,
+                -ingest, -power, -reward, -risk, -focuspast, -focusfuture, -relativ, -leisure, -money, -relig,
+                -swear, -netspeak,
+                -assent, -nonflu, -AllPunc, -Exclam, -Apostro, -OtherP, -CC, -CD, -DT, -EX, -IN, -JJ, -JJR,
+                -JJS, -LS, -NN, -NNS, -NNPS,
+                -PDT, -POS, -PRP, -`PRP$`, -RB, -RBR, -RP, -SYM, -TO, -UH, -VBD, -VBG, -VBN, -VBP, -VBZ, -WDT, -`WP$`, -WRB,
+                -types, -NER, -VB)
 
 ############## MODEL ############### 
 mod <-  glm(label ~ .,
-             data=txtfeat_fit, family="binomial")
+             data=train_fit, family="binomial")
 summary(mod)
 getROC(mod, train_txtfeat)
-calcAccuracyLR(mod, train_txtfeat, cutoff = 0.5)
+calcAccuracyLR(mod, train_txtfeat, cutoff = 0.25) 
 
+## get coefficients
+coef <- coef(mod)
+coef_ranks <- coef %>%
+  enframe() %>%
+  arrange(desc(abs(value))) %>%
+  mutate(var = name, coef = value, coef_rank = rank(-abs(value))) %>%
+  dplyr::select(var, coef, coef_rank)
+
+
+
+## compare with varImp and anova
+total_ranks <- txtfeat_ranks %>%
+  left_join(marg_ranks, by = "var") %>%
+  left_join(coef_ranks, by = "var") %>%
+  filter(!is.na(marg)) %>%
+  mutate(avg_rank = (varimp_rank + p_rank + marg_rank + coef_rank) / 4) %>%
+  dplyr::select(var:p_val, marg, coef, everything())
+
+
+
+############## PREDICTOR SELECTION ############### 
+# LASSO
+y <- as.matrix(train_fit$label)
+x <- as.matrix(train_fit[,-1])
+lasso <- cv.glmnet(x=x,y=y,alpha = 1, family="binomial")
+coef(lasso)
+
+
+# VIF
+vif(mod) %>%
+  enframe %>%
+  arrange(desc(value))
+
+# PCA
+pr.out <- train_txtfeat %>%
+  dplyr::select(-label) %>%
+  prcomp(scale=TRUE)
+
+pr.var <- pr.out$sdev^2
+pve <- pr.var/sum(pr.var)
+plot(pve)
 
