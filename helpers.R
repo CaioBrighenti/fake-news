@@ -16,9 +16,10 @@ calcAccuracyLR <- function(mod,new_data,adj=0, true_labels = NULL, cutoff = 0.5)
   ## [1] = sensitivity/recall, [2] = specificity, [5] = precision, [7] = F1
   cm <- confusionMatrix(table(class, true_labels), positive="1")
   # calculate F1
-  stats <- tibble(accuracy = acc, sensitivity = cm$byClass[1],
-                  specificity = cm$byClass[2], precision = cm$byClass[5],
-                  F1 = cm$byClass[7], c_matrix = cm$table)
+  stats <- tibble(accuracy = round(acc,3), sensitivity = round(cm$byClass[1],3),
+                  specificity = round(cm$byClass[2],3), precision = round(cm$byClass[5],3),
+                  F1 = round(cm$byClass[7],3), c_matrix = cm$table)
+  stats[2,-c(6,7)] <- '-'
   #print(stats)
   return(stats)
 }
@@ -83,9 +84,9 @@ getROC <- function(mod, data){
     pb$tick()
     cutoff <- roc_tib[idx,]$cutoff
     acc_table <- calcAccuracyLR(mod, data, cutoff = cutoff)
-    roc_tib[idx,]$sensitivity <- acc_table$sensitivity[1]
-    roc_tib[idx,]$specificity <- acc_table$specificity[1]
-    roc_tib[idx,]$accuracy <- acc_table$accuracy[1]
+    roc_tib[idx,]$sensitivity <- as.numeric(acc_table$sensitivity[1])
+    roc_tib[idx,]$specificity <- as.numeric(acc_table$specificity[1])
+    roc_tib[idx,]$accuracy <- as.numeric(acc_table$accuracy[1])
   }
   p<-roc_tib %>%
     ggplot(aes(x=1-specificity, y=sensitivity, color=cutoff, size = accuracy)) +
@@ -95,7 +96,9 @@ getROC <- function(mod, data){
   
   best_cut <- roc_tib %>%
     mutate(crit1 = sensitivity + specificity, crit2 = abs(specificity - sensitivity)) %>%
-    mutate(acc_rank = rank(-accuracy), crit1 = rank(-crit1), crit2 = rank(crit2)) %>%
+    mutate(acc_rank = rank(-accuracy,ties.method="min"),
+           crit1 = rank(-crit1,ties.method="min"),
+           crit2 = rank(crit2,ties.method="min")) %>%
     filter(acc_rank == 1 | crit1 == 1 | crit2 == 1)
   
   return(best_cut)
