@@ -1,7 +1,8 @@
 library(caret)
 library(progress)
+library(DescTools)
 ############## HELPER FUNCTIONS ############## 
-calcAccuracyLR <- function(mod,new_data,adj=0, true_labels = NULL, cutoff = 0.5) {
+calcAccuracyLR <- function(mod,new_data,adj=0, true_labels = NULL, cutoff = 0.5, pred=NULL) {
   if (is.null(true_labels)){
     if('_label' %in% names(new_data)) {
       true_labels <- new_data$`_label`
@@ -10,7 +11,9 @@ calcAccuracyLR <- function(mod,new_data,adj=0, true_labels = NULL, cutoff = 0.5)
     }
   }
   levels(true_labels) <- c(0,1)
-  pred <- predict(mod, new_data, type = "response")
+  if (is.null(pred)){
+    pred <- predict(mod, new_data, type = "response")
+  }
   class <- factor(as.numeric(pred > cutoff), levels=c(0,1))
   acc <-  mean(class == true_labels)
   ## [1] = sensitivity/recall, [2] = specificity, [5] = precision, [7] = F1
@@ -62,7 +65,7 @@ getVarRanks <- function(data) {
   ranks <- data %>%
     dplyr::select(-ID, -label) %>%
     filterVarImp(.,data$label) %>%
-    mutate(var = row.names(.), max_varimp = pmax(fake,real), varimp_rank = rank(-max_varimp)) %>%
+    mutate(var = row.names(.), max_varimp = round(pmax(fake,real),3), varimp_rank = rank(-max_varimp)) %>%
     dplyr::select(var, max_varimp, varimp_rank) %>%
     left_join(aovs, by = 'var') %>%
     mutate(p_rank = rank(p_val), avg_rank = (varimp_rank + p_rank) / 2) %>%
@@ -71,29 +74,51 @@ getVarRanks <- function(data) {
   return(ranks)
 }
 
-getROC <- function(mod, data){
+getROC <- function(mod, data, pred = NULL){
+  ## set true labels
+  if('_label' %in% names(data)) {
+    true_labels <- data$`_label`
+  } else {
+    true_labels <- data$label
+  }
+  levels(true_labels) <- c(0,1)
+  ## set colors
   colgate_ter <- c("#64A50A", "#F0AA00","#0096C8", "#005F46","#FF6914","#004682")
+  ## init return dict
   roc_tib <- tibble(
     cutoff = seq(0,1,by=0.01),
     sensitivity = rep(0,length(cutoff)),
     specificity = rep(0,length(cutoff)),
     accuracy = rep(0,length(cutoff))
   )
+  ## get predictions
+  if (is.null(pred)){
+    pred <- predict(mod, data, type = "response")
+  }
+  ## loop through cutoffs
   pb <- progress_bar$new(format = "[:bar] :current/:total (:percent)", total = nrow(roc_tib))
   for (idx in 1:nrow(roc_tib)) {
     pb$tick()
     cutoff <- roc_tib[idx,]$cutoff
-    acc_table <- calcAccuracyLR(mod, data, cutoff = cutoff)
-    roc_tib[idx,]$sensitivity <- as.numeric(acc_table$sensitivity[1])
-    roc_tib[idx,]$specificity <- as.numeric(acc_table$specificity[1])
-    roc_tib[idx,]$accuracy <- as.numeric(acc_table$accuracy[1])
+    class <- factor(as.numeric(pred > cutoff), levels=c(0,1))
+    acc <-  mean(class == true_labels)
+    cm <- confusionMatrix(table(class, true_labels), positive="1")
+    roc_tib[idx,]$sensitivity <- as.numeric(round(cm$byClass[1],3))
+    roc_tib[idx,]$specificity <- as.numeric(round(cm$byClass[2],3))
+    roc_tib[idx,]$accuracy <- as.numeric(acc)
   }
+  ## calculate auc
+  auc <- round(AUC(1-roc_tib$specificity, roc_tib$sensitivity),3)
+  
+  ## make plot
   p<-roc_tib %>%
     ggplot(aes(x=1-specificity, y=sensitivity, color=cutoff, size = accuracy)) +
     geom_point() +
-    scale_color_gradient(low=colgate_ter[2],high=colgate_ter[3])
+    scale_color_gradient(low=colgate_ter[2],high=colgate_ter[3]) +
+    annotate("text", x = 1, y = .75, label = paste("AUC:", auc))
   print(p)
   
+  ## find best cuts
   best_cut <- roc_tib %>%
     mutate(crit1 = sensitivity + specificity, crit2 = abs(specificity - sensitivity)) %>%
     mutate(acc_rank = rank(-accuracy,ties.method="min"),
