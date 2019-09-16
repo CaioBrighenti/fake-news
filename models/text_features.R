@@ -378,11 +378,9 @@ train_fit <- train_txtfeat %>%
                 -JJS, -LS, -NN, -NNS, -NNPS,
                 -PDT, -POS, -PRP, -`PRP$`, -RB, -RBR, -RP, -SYM, -TO, -UH, -VBD, -VBG, -VBN, -VBP, -VBZ, -WDT, -`WP$`, -WRB,
                 -types, -NER, -VB,
-                -filler) %>%
+                -filler, -FK) %>%
   filter(wlen < 7.5 & wlen > 2.5) %>%
-  filter(TTR > .125) %>%
-  filter(FK < 60) %>%
-  mutate_if(is.numeric, funs(scale))
+  filter(TTR > .125) 
 
 ## titles
 train_titles_fit <- train_txtfeat %>%
@@ -398,7 +396,7 @@ mod <-  glm(label ~ .,
              data=train_fit, family="binomial")
 summary(mod)
 getROC(mod, train_fit)
-calcAccuracyLR(mod, train_fit, cutoff = 0.25) 
+calcAccuracyLR(mod, test_txtfeat, cutoff = 0.25) 
 
 ## titles
 mod.titles <-  glm(label ~ .,
@@ -486,25 +484,37 @@ pred_eval <- pred_eval %>%
 # PLOT
 pred_eval %>%
     mutate(coef_sign = ifelse(coef > 0, "+", "-")) %>%
-    ggplot(aes(x = max_varimp, y = coef)) +
+    ggplot(aes(x = abs(coef), y = max_varimp)) +
     geom_point(aes(shape = c_pval, color = coef_sign), size = 3) +
     geom_text_repel(mapping=aes(label=var, color=coef_sign),size=4, box.padding = unit(0.5, "lines"))
   
+## TOP PREDICTORS FOR FAKE
+pred_eval %>%
+  filter(coef_pval < 0.05) %>%
+  left_join(LIWC_groups, by="var") %>%
+  arrange(desc(coef)) %>%
+  head(10)
+
+## TOP PREDICTORS FOR REAL
+pred_eval %>%
+  filter(coef_pval < 0.05) %>%
+  left_join(LIWC_groups, by="var") %>%
+  arrange(coef)
 
 ## invidual predictors
 ### FK 
 train_fit %>%
-  dplyr::select(label, FK) %>%
+  dplyr::select(label, FOG) %>%
   ggplot(aes(x = label, color = label)) +
-  geom_boxplot(aes(y=FK))
+  geom_boxplot(aes(y=FOG))
 train_fit %>%
-  dplyr::select(label, FK) %>%
-  ggplot(aes(x = FK, color = label)) +
+  dplyr::select(label, FOG) %>%
+  ggplot(aes(x = FOG, color = label)) +
   geom_histogram(aes(y = stat(width*density)),fill="white") +
   facet_wrap(~label)
-train_txtfeat %>%
-  dplyr::select(label, FK) %>%
-  ggplot(aes(x = seq(1,nrow(.)), y = FK, color = label)) +
+train_fit %>%
+  dplyr::select(label, FOG) %>%
+  ggplot(aes(x = seq(1,nrow(.)), y = FOG, color = label)) +
   geom_point()
 
 ### filler
