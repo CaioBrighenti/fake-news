@@ -9,7 +9,8 @@ Text-based features were built using a series of tools and libraries, including 
 This is an ongoing project, and is currently in the model fitting and predictor importance analysis phase. Preliminary results using a simple logistic regression classifier have achieved approximately sensitivity, specificity and accuracy values ranging from 0.7-0.8 on a holdout test set. The objective of this project is to reach novel conclusions regarding the textual nature of fake news. To this end, the current focus is on exploring which variables are contributing the most to predictions, and what we might learn from this.
 
 ## Research summary poster
-*Note:* this poster was created approximately a month into the research, and does not represent the current state of the work.
+*Note: this poster was created approximately a month into the research, and does not represent the current state of the work.*
+
 ![Reseach Poster](https://github.com/CaioBrighenti/fake-news/blob/master/plots/Poster-1.png?raw=true)
 
 ## File Structure
@@ -25,7 +26,6 @@ This is an ongoing project, and is currently in the model fitting and predictor 
 * [LIWC2015](http://liwc.wpengine.com/) - Computerized text analysis tool\
 * [Stanford CoreNLP](https://stanfordnlp.github.io/CoreNLP/) - Text annotation toolkit
 * [text2vec](http://text2vec.org/) - R package for text analysis and NLP
-
 
 ## Author
 
