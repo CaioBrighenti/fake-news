@@ -11,7 +11,7 @@ This is an ongoing project, and is currently in the model fitting and predictor 
 ## Research summary poster
 *Note: this poster was created approximately a month into the research, and does not represent the current state of the work.*
 
-![Reseach Poster](https://github.com/CaioBrighenti/fake-news/blob/master/plots/Poster-1.png?raw=true)
+![Reseach Poster](https://github.com/CaioBrighenti/fake-news/blob/master/plots/Poster.png?raw=true)
 
 ## File Structure
 
