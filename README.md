@@ -1,8 +1,8 @@
-# Fake News Detection
+# Fake News Detection: Towards an Interpretable Approach
 
-Fake news is the buzzword of the last two years of politics. After the term gained prominence in the United States during Donald Trump’s campaign to become president, it exploded into a worldwide phenomenon. Fake news poses a significant threat to undermining the democratic process. Thankfully, much machine learning and natural language processing research has focused on fake news detection. However, these approaches nearly always use complex deep neural networks that lack interpretability, and thus do not allow us to reach new conclusions about the nature of fake news. In order to close this gap, this research adopts an interpretable approach, with the overall objective of producing a highly accurate fake news classification model, without compromising on interpretability.
+Fake news poses a significant threat to undermining the democratic process. Thankfully, much machine learning and natural language processing research has focused on fake news detection. However, these approaches nearly always use complex deep neural networks that lack interpretability, and thus do not allow us to reach new conclusions about the nature of fake news. In order to close this gap, this research adopts an **interpretable approach**, with the overall objective of producing a highly accurate fake news classification model, without compromising on interpretability.
 
-This research approaches the problem of fake news classification entirely from a text-based perspective. No metadata such as article author or source is used to predict veracity. Three approaches were taken for feature engineering: document vectors using word embeddings, text frequency using document-term matrices, and hand crafted descriptive text features. The third approach received the most focus, as it retains the most interpretability and maintains a reasonably low number of predictors.
+This research approaches the problem of fake news classification entirely from a **text-based perspective**. No metadata such as article author or source is used to predict veracity. Three approaches were taken for feature engineering: **document vectors** using word embeddings, text frequency using **document-term matrices**, and hand crafted descriptive **text features**. The third approach received the most focus, as it retains the most interpretability and maintains a reasonably low number of predictors.
 
 Text-based features were built using a series of tools and libraries, including the R package *tidytext*, the word processing engine *LIWC*, and the *Stanford CoreNLP* language tools. These features ranged from simple statistics such as mean sentence word count to syntactic variables created using CoreNLP's constituency parsers to psychological measures from LIWC. The code for creating these features can be seen in [text_features.R](https://github.com/CaioBrighenti/fake-news/blob/master/text_features.R) and the final outputs can be found in the [/annotations](https://github.com/CaioBrighenti/fake-news/tree/master/features) and [/features](https://github.com/CaioBrighenti/fake-news/tree/master/features) folders.
 
@@ -11,6 +11,9 @@ This is an ongoing project, and is currently in the model fitting and predictor 
 ## Research summary poster
 *Note:* this poster was created approximately a month into the research, and does not represent the current state of the work.
 ![Reseach Poster](https://github.com/CaioBrighenti/fake-news/blob/master/plots/Poster-1.png?raw=true)
+
+## File Structure
+
 
 ## Datasets and main libraries used
 *Note: this is not a comprehensive list of all packages used.*
