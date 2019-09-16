@@ -6,7 +6,7 @@ library(data.table)
 ##################################
 loadLIARTrain <- function() {
   ## load train data
-  train<-fread(file="data/LIAR/dataset/train.TSV",sep = '\t', quote="", header = FALSE) %>%
+  train<-fread(file="../data/LIAR/dataset/train.TSV",sep = '\t', quote="", header = FALSE) %>%
     as_tibble()
   header<-c("ID","label","text","subject","speaker","speaker.title","state",
             "party","bt.count","f.count","ht.count","mt.count","pof.count","context")
