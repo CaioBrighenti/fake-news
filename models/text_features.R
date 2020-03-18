@@ -12,8 +12,8 @@ library("glmnet")
 library("ggrepel")
 
 # load in data
-source("helpers.R")
-source("loaddata.R")
+source("helpers/helpers.R")
+source("helpers/loaddata.R")
 LIAR_train <- loadLIARTrain()
 LIAR_train$text <- as.character(LIAR_train$text)
 LIAR_test <- loadLIARTest()
@@ -331,6 +331,10 @@ test_txtfeat <- test_complexity %>%
   distinct(ID, .keep_all= TRUE) %>%
   dplyr::select(-ID)
 
+# write to file
+write.csv(train_txtfeat,"data/text_features/fnn_train_txtfeat.csv",row.names = FALSE)
+write.csv(test_txtfeat,"data/text_features/fnn_test_txtfeat.csv",row.names = FALSE)
+
 ## titles
 train_titles_txtfeat <- train_titles_complexity %>%
   left_join(train_titles_LIWC, by = c("ID", "label")) %>%
@@ -347,6 +351,10 @@ test_titles_txtfeat <- test_titles_complexity %>%
   mutate(label = as.factor(2 - unclass(label))) %>%
   distinct(ID, .keep_all= TRUE) %>%
   dplyr::select(-ID)
+
+# write to file
+write.csv(train_titles_txtfeat,"data/text_features/fnn_train_titles_txtfeat.csv",row.names = FALSE)
+write.csv(test_titles_txtfeat,"data/text_features/fnn_test_titles_txtfeat.csv",row.names = FALSE)
 
 ## merge ranks
 txtfeat_ranks <- complexity_ranks %>%

@@ -203,7 +203,30 @@ loadFNNNER <- function(str){
   return(dat_NER)
 }
 
-
+loadFNNtxtfeat <- function(str){
+  # load complexity
+  temp_complexity <- loadFNNComplexity(str)
+  
+  # load LWIC
+  temp_LIWC<-loadFNNLIWC(str)
+  
+  # load POS
+  temp_POS <- loadFNNPOS(str)
+  
+  # load NER
+  temp_NER <- loadFNNNER(str)
+  
+  # merge
+  temp_txtfeat <- temp_complexity %>%
+  left_join(temp_LIWC, by = c("ID", "label")) %>%
+    left_join(temp_POS, by = c("ID", "label")) %>%
+    left_join(temp_NER, by = c("ID", "label")) %>%
+    mutate(label = as.factor(2 - unclass(label))) %>%
+    distinct(ID, .keep_all= TRUE) %>%
+    dplyr::select(-ID)
+  
+  return(temp_txtfeat)
+}
 
 ## write LIAR to fastText format
 # file.create("LIAR/train.txt")
