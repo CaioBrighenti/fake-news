@@ -8,6 +8,10 @@ library(progress)
 library(ggstance)
 library(ggforce)
 
+# load helpers
+source("helpers/loaddata.R")
+source("helpers/helpers.R")
+
 # load in data
 train <- loadFNNtxtfeat("train")
 test <- loadFNNtxtfeat("test")
@@ -22,9 +26,6 @@ train_NER <- loadFNNNER("train")
 
 
 ############## LOOK FOR OUTLIERS ############## 
-
-
-
 # group differences
 train_conf_fake <- tibble(
   var = names(dplyr::select(train,-label)),
@@ -170,5 +171,17 @@ train_conf %>%
        subtitle = "Variables capturing named-entity-recognition",
        x = "Median",
        y = "")
+
+# tables
+pvals <- tibble(
+  var = names(train[,-1]),
+  pval = rep(NA,ncol(train) - 1)
+)
+
+for (idx in seq(2,ncol(train))) {
+  test_temp<-mood.medtest(unlist(train[,idx],use.names = FALSE) ~ train$label,
+                  exact = FALSE)
+  pvals[idx,]$pval <- test_temp$p.value
+}
 
 
