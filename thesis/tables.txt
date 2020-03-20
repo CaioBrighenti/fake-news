@@ -1,0 +1,810 @@
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & achieve & 1.09 & 1.26 & 0.00 \\ 
+  2 & affiliation & 3.14 & 2.64 & 0.00 \\ 
+  3 & drives & 7.85 & 7.55 & 0.00 \\ 
+  4 & power & 2.30 & 2.38 & 0.01 \\ 
+  5 & reward & 1.08 & 1.15 & 0.00 \\ 
+  6 & risk & 0.23 & 0.11 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & adj & 4.40 & 4.55 & 0.00 \\ 
+  2 & compare & 2.27 & 2.28 & 0.75 \\ 
+  3 & interrog & 1.06 & 1.12 & 0.00 \\ 
+  4 & number & 2.16 & 2.37 & 0.00 \\ 
+  5 & quant & 1.81 & 1.85 & 0.10 \\ 
+  6 & verb & 13.86 & 12.61 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & adverb & 3.88 & 3.34 & 0.00 \\ 
+  2 & article & 7.21 & 7.27 & 0.18 \\ 
+  3 & auxverb & 7.35 & 6.09 & 0.00 \\ 
+  4 & conj & 5.37 & 5.16 & 0.00 \\ 
+  5 & function & 46.59 & 44.44 & 0.00 \\ 
+  6 & i & 0.19 & 0.64 & 0.00 \\ 
+  7 & ipron & 3.80 & 3.56 & 0.00 \\ 
+  8 & negate & 1.10 & 0.81 & 0.00 \\ 
+  9 & ppron & 6.45 & 6.37 & 0.33 \\ 
+  10 & prep & 13.75 & 13.87 & 0.01 \\ 
+  11 & pronoun & 10.43 & 10.04 & 0.00 \\ 
+  12 & shehe & 3.24 & 2.61 & 0.00 \\ 
+  13 & they & 0.68 & 0.44 & 0.00 \\ 
+  14 & we & 0.34 & 0.33 & 0.35 \\ 
+  15 & you & 0.27 & 0.40 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & affect & 4.42 & 4.58 & 0.00 \\ 
+  2 & anger & 0.23 & 0.09 & 0.00 \\ 
+  3 & anx & 0.07 & 0.00 & 0.00 \\ 
+  4 & negemo & 1.19 & 0.95 & 0.00 \\ 
+  5 & posemo & 2.78 & 3.12 & 0.00 \\ 
+  6 & sad & 0.06 & 0.00 & 0.01 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & AllPunc & 20.19 & 20.61 & 0.00 \\ 
+  2 & Apostro & 2.74 & 2.54 & 0.00 \\ 
+  3 & Colon & 0.22 & 0.35 & 0.00 \\ 
+  4 & Comma & 5.38 & 5.39 & 0.77 \\ 
+  5 & Dash & 0.84 & 0.91 & 0.00 \\ 
+  6 & Exclam & 0.09 & 0.02 & 0.03 \\ 
+  7 & OtherP & 0.33 & 0.43 & 0.00 \\ 
+  8 & Parenth & 0.00 & 0.28 & 0.00 \\ 
+  9 & Period & 4.93 & 5.10 & 0.00 \\ 
+  10 & QMark & 0.00 & 0.00 & 0.00 \\ 
+  11 & Quote & 2.72 & 2.33 & 0.00 \\ 
+  12 & SemiC & 0.00 & 0.00 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & Analytic & 83.51 & 88.38 & 0.00 \\ 
+  2 & Authentic & 17.46 & 22.88 & 0.00 \\ 
+  3 & Clout & 82.72 & 80.15 & 0.00 \\ 
+  4 & Dic & 79.39 & 78.34 & 0.00 \\ 
+  5 & Sixltr & 19.92 & 19.76 & 0.15 \\ 
+  6 & Tone & 53.85 & 64.65 & 0.00 \\ 
+  7 & WC & 363.00 & 345.00 & 0.00 \\ 
+  8 & WPS & 18.91 & 19.00 & 0.73 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & ARI & 10.15 & 9.93 & 0.00 \\ 
+  2 & CL & 48.60 & 48.95 & 0.00 \\ 
+  3 & FK & 9.76 & 9.71 & 0.48 \\ 
+  4 & FOG & 12.42 & 12.34 & 0.16 \\ 
+  5 & iqr\_noun\_phrase & 0.50 & 1.00 & 0.00 \\ 
+  6 & iqr\_sentence & 5.00 & 5.00 & 0.02 \\ 
+  7 & iqr\_verb\_phrase & 4.75 & 4.25 & 0.00 \\ 
+  8 & mu\_noun\_phrase & 3.93 & 3.98 & 0.00 \\ 
+  9 & mu\_sentence & 12.40 & 12.12 & 0.00 \\ 
+  10 & mu\_verb\_phrase & 7.62 & 7.54 & 0.00 \\ 
+  11 & num\_verb\_phrase & 77.00 & 66.00 & 0.00 \\ 
+  12 & sd\_noun\_phrase & 2.22 & 2.28 & 0.00 \\ 
+  13 & sd\_sentence & 4.05 & 4.02 & 0.28 \\ 
+  14 & sd\_verb\_phrase & 3.56 & 3.50 & 0.00 \\ 
+  15 & SMOG & 11.56 & 11.50 & 0.29 \\ 
+  16 & swc & 22.50 & 21.50 & 0.00 \\ 
+  17 & tokens & 451.00 & 434.00 & 0.01 \\ 
+  18 & TTR & 0.50 & 0.50 & 0.68 \\ 
+  19 & types & 225.00 & 217.00 & 0.00 \\ 
+  20 & wlen & 4.02 & 3.99 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & assent & 0.00 & 0.00 & 0.02 \\ 
+  2 & filler & 0.00 & 0.00 & 0.04 \\ 
+  3 & informal & 0.39 & 0.38 & 0.81 \\ 
+  4 & netspeak & 0.00 & 0.00 & 0.00 \\ 
+  5 & nonflu & 0.00 & 0.00 & 0.41 \\ 
+  6 & swear & 0.00 & 0.00 & 0.45 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & bio & 1.30 & 1.47 & 0.00 \\ 
+  2 & body & 0.27 & 0.34 & 0.00 \\ 
+  3 & health & 0.34 & 0.31 & 0.06 \\ 
+  4 & ingest & 0.00 & 0.00 & 0.22 \\ 
+  5 & sexual & 0.00 & 0.00 & 0.55 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & cause & 1.32 & 1.09 & 0.00 \\ 
+  2 & certain & 1.07 & 0.97 & 0.00 \\ 
+  3 & cogproc & 8.91 & 7.58 & 0.00 \\ 
+  4 & differ & 2.41 & 1.80 & 0.00 \\ 
+  5 & discrep & 0.80 & 0.62 & 0.00 \\ 
+  6 & insight & 1.63 & 1.54 & 0.00 \\ 
+  7 & tentat & 1.62 & 1.41 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & CC & 12.00 & 11.00 & 0.00 \\ 
+  2 & CD & 6.00 & 6.00 & 0.00 \\ 
+  3 & DT & 31.00 & 30.00 & 0.00 \\ 
+  4 & EX & 0.00 & 0.00 & 0.00 \\ 
+  5 & FW & 0.00 & 0.00 & 0.00 \\ 
+  6 & IN & 42.00 & 39.00 & 0.00 \\ 
+  7 & JJ & 21.00 & 21.00 & 0.94 \\ 
+  8 & JJR & 1.00 & 1.00 & 0.87 \\ 
+  9 & JJS & 1.00 & 1.00 & 0.00 \\ 
+  10 & LS & 0.00 & 0.00 & 0.03 \\ 
+  11 & MD & 3.00 & 2.00 & 0.00 \\ 
+  12 & NN & 50.00 & 51.00 & 0.42 \\ 
+  13 & NNP & 40.00 & 41.00 & 0.15 \\ 
+  14 & NNPS & 0.00 & 0.00 & 0.02 \\ 
+  15 & NNS & 13.00 & 12.50 & 0.32 \\ 
+  16 & PDT & 0.00 & 0.00 & 0.01 \\ 
+  17 & POS & 3.00 & 3.00 & 0.02 \\ 
+  18 & PRP & 18.00 & 16.00 & 0.00 \\ 
+  19 & PRP\$ & 8.00 & 8.00 & 0.00 \\ 
+  20 & RB & 20.00 & 15.00 & 0.00 \\ 
+  21 & RBR & 0.00 & 0.00 & 0.10 \\ 
+  22 & RBS & 0.00 & 0.00 & 0.00 \\ 
+  23 & RP & 2.00 & 2.00 & 0.04 \\ 
+  24 & SYM & 0.00 & 0.00 & 0.28 \\ 
+  25 & TO & 9.00 & 8.00 & 0.00 \\ 
+  26 & UH & 0.00 & 0.00 & 0.13 \\ 
+  27 & VB & 12.00 & 11.00 & 0.00 \\ 
+  28 & VBD & 14.00 & 14.00 & 0.92 \\ 
+  29 & VBG & 9.00 & 8.00 & 0.00 \\ 
+  30 & VBN & 8.00 & 7.00 & 0.00 \\ 
+  31 & VBP & 6.00 & 6.00 & 1.00 \\ 
+  32 & VBZ & 12.00 & 9.00 & 0.00 \\ 
+  33 & WDT & 1.00 & 1.00 & 0.02 \\ 
+  34 & WP & 1.00 & 1.00 & 0.98 \\ 
+  35 & WP\$ & 0.00 & 0.00 & 0.12 \\ 
+  36 & WRB & 2.00 & 1.00 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & death & 0.00 & 0.00 & 0.00 \\ 
+  2 & home & 0.27 & 0.26 & 0.37 \\ 
+  3 & leisure & 1.81 & 2.05 & 0.00 \\ 
+  4 & money & 0.25 & 0.20 & 0.00 \\ 
+  5 & relig & 0.00 & 0.00 & 0.01 \\ 
+  6 & work & 1.68 & 1.70 & 0.27 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & family & 0.77 & 0.42 & 0.00 \\ 
+  2 & female & 2.27 & 1.83 & 0.00 \\ 
+  3 & friend & 0.28 & 0.20 & 0.00 \\ 
+  4 & male & 1.46 & 1.00 & 0.00 \\ 
+  5 & social & 13.16 & 11.65 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & feel & 0.28 & 0.26 & 0.10 \\ 
+  2 & hear & 0.76 & 0.71 & 0.00 \\ 
+  3 & percept & 2.75 & 3.23 & 0.00 \\ 
+  4 & see & 1.20 & 1.58 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & focusfuture & 0.87 & 0.80 & 0.00 \\ 
+  2 & focuspast & 4.36 & 4.23 & 0.01 \\ 
+  3 & focuspresent & 7.93 & 6.92 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & motion & 1.53 & 1.60 & 0.00 \\ 
+  2 & relativ & 14.60 & 14.99 & 0.00 \\ 
+  3 & space & 6.85 & 6.96 & 0.02 \\ 
+  4 & time & 6.11 & 6.18 & 0.14 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:28 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & NER & 55.00 & 49.00 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & achieve & 1.09 & 1.26 & 0.00 \\ 
+  2 & affiliation & 3.14 & 2.64 & 0.00 \\ 
+  3 & drives & 7.85 & 7.55 & 0.00 \\ 
+  4 & power & 2.30 & 2.38 & 0.01 \\ 
+  5 & reward & 1.08 & 1.15 & 0.00 \\ 
+  6 & risk & 0.23 & 0.11 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & adj & 4.40 & 4.55 & 0.00 \\ 
+  2 & compare & 2.27 & 2.28 & 0.75 \\ 
+  3 & interrog & 1.06 & 1.12 & 0.00 \\ 
+  4 & number & 2.16 & 2.37 & 0.00 \\ 
+  5 & quant & 1.81 & 1.85 & 0.10 \\ 
+  6 & verb & 13.86 & 12.61 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & adverb & 3.88 & 3.34 & 0.00 \\ 
+  2 & article & 7.21 & 7.27 & 0.18 \\ 
+  3 & auxverb & 7.35 & 6.09 & 0.00 \\ 
+  4 & conj & 5.37 & 5.16 & 0.00 \\ 
+  5 & function & 46.59 & 44.44 & 0.00 \\ 
+  6 & i & 0.19 & 0.64 & 0.00 \\ 
+  7 & ipron & 3.80 & 3.56 & 0.00 \\ 
+  8 & negate & 1.10 & 0.81 & 0.00 \\ 
+  9 & ppron & 6.45 & 6.37 & 0.33 \\ 
+  10 & prep & 13.75 & 13.87 & 0.01 \\ 
+  11 & pronoun & 10.43 & 10.04 & 0.00 \\ 
+  12 & shehe & 3.24 & 2.61 & 0.00 \\ 
+  13 & they & 0.68 & 0.44 & 0.00 \\ 
+  14 & we & 0.34 & 0.33 & 0.35 \\ 
+  15 & you & 0.27 & 0.40 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & affect & 4.42 & 4.58 & 0.00 \\ 
+  2 & anger & 0.23 & 0.09 & 0.00 \\ 
+  3 & anx & 0.07 & 0.00 & 0.00 \\ 
+  4 & negemo & 1.19 & 0.95 & 0.00 \\ 
+  5 & posemo & 2.78 & 3.12 & 0.00 \\ 
+  6 & sad & 0.06 & 0.00 & 0.01 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & AllPunc & 20.19 & 20.61 & 0.00 \\ 
+  2 & Apostro & 2.74 & 2.54 & 0.00 \\ 
+  3 & Colon & 0.22 & 0.35 & 0.00 \\ 
+  4 & Comma & 5.38 & 5.39 & 0.77 \\ 
+  5 & Dash & 0.84 & 0.91 & 0.00 \\ 
+  6 & Exclam & 0.09 & 0.02 & 0.03 \\ 
+  7 & OtherP & 0.33 & 0.43 & 0.00 \\ 
+  8 & Parenth & 0.00 & 0.28 & 0.00 \\ 
+  9 & Period & 4.93 & 5.10 & 0.00 \\ 
+  10 & QMark & 0.00 & 0.00 & 0.00 \\ 
+  11 & Quote & 2.72 & 2.33 & 0.00 \\ 
+  12 & SemiC & 0.00 & 0.00 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & Analytic & 83.51 & 88.38 & 0.00 \\ 
+  2 & Authentic & 17.46 & 22.88 & 0.00 \\ 
+  3 & Clout & 82.72 & 80.15 & 0.00 \\ 
+  4 & Dic & 79.39 & 78.34 & 0.00 \\ 
+  5 & Sixltr & 19.92 & 19.76 & 0.15 \\ 
+  6 & Tone & 53.85 & 64.65 & 0.00 \\ 
+  7 & WC & 363.00 & 345.00 & 0.00 \\ 
+  8 & WPS & 18.91 & 19.00 & 0.73 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & ARI & 10.15 & 9.93 & 0.00 \\ 
+  2 & CL & 48.60 & 48.95 & 0.00 \\ 
+  3 & FK & 9.76 & 9.71 & 0.48 \\ 
+  4 & FOG & 12.42 & 12.34 & 0.16 \\ 
+  5 & iqr\_noun\_phrase & 0.50 & 1.00 & 0.00 \\ 
+  6 & iqr\_sentence & 5.00 & 5.00 & 0.02 \\ 
+  7 & iqr\_verb\_phrase & 4.75 & 4.25 & 0.00 \\ 
+  8 & mu\_noun\_phrase & 3.93 & 3.98 & 0.00 \\ 
+  9 & mu\_sentence & 12.40 & 12.12 & 0.00 \\ 
+  10 & mu\_verb\_phrase & 7.62 & 7.54 & 0.00 \\ 
+  11 & num\_verb\_phrase & 77.00 & 66.00 & 0.00 \\ 
+  12 & sd\_noun\_phrase & 2.22 & 2.28 & 0.00 \\ 
+  13 & sd\_sentence & 4.05 & 4.02 & 0.28 \\ 
+  14 & sd\_verb\_phrase & 3.56 & 3.50 & 0.00 \\ 
+  15 & SMOG & 11.56 & 11.50 & 0.29 \\ 
+  16 & swc & 22.50 & 21.50 & 0.00 \\ 
+  17 & tokens & 451.00 & 434.00 & 0.01 \\ 
+  18 & TTR & 0.50 & 0.50 & 0.68 \\ 
+  19 & types & 225.00 & 217.00 & 0.00 \\ 
+  20 & wlen & 4.02 & 3.99 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & assent & 0.00 & 0.00 & 0.02 \\ 
+  2 & filler & 0.00 & 0.00 & 0.04 \\ 
+  3 & informal & 0.39 & 0.38 & 0.81 \\ 
+  4 & netspeak & 0.00 & 0.00 & 0.00 \\ 
+  5 & nonflu & 0.00 & 0.00 & 0.41 \\ 
+  6 & swear & 0.00 & 0.00 & 0.45 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & bio & 1.30 & 1.47 & 0.00 \\ 
+  2 & body & 0.27 & 0.34 & 0.00 \\ 
+  3 & health & 0.34 & 0.31 & 0.06 \\ 
+  4 & ingest & 0.00 & 0.00 & 0.22 \\ 
+  5 & sexual & 0.00 & 0.00 & 0.55 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & cause & 1.32 & 1.09 & 0.00 \\ 
+  2 & certain & 1.07 & 0.97 & 0.00 \\ 
+  3 & cogproc & 8.91 & 7.58 & 0.00 \\ 
+  4 & differ & 2.41 & 1.80 & 0.00 \\ 
+  5 & discrep & 0.80 & 0.62 & 0.00 \\ 
+  6 & insight & 1.63 & 1.54 & 0.00 \\ 
+  7 & tentat & 1.62 & 1.41 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & CC & 12.00 & 11.00 & 0.00 \\ 
+  2 & CD & 6.00 & 6.00 & 0.00 \\ 
+  3 & DT & 31.00 & 30.00 & 0.00 \\ 
+  4 & EX & 0.00 & 0.00 & 0.00 \\ 
+  5 & FW & 0.00 & 0.00 & 0.00 \\ 
+  6 & IN & 42.00 & 39.00 & 0.00 \\ 
+  7 & JJ & 21.00 & 21.00 & 0.94 \\ 
+  8 & JJR & 1.00 & 1.00 & 0.87 \\ 
+  9 & JJS & 1.00 & 1.00 & 0.00 \\ 
+  10 & LS & 0.00 & 0.00 & 0.03 \\ 
+  11 & MD & 3.00 & 2.00 & 0.00 \\ 
+  12 & NN & 50.00 & 51.00 & 0.42 \\ 
+  13 & NNP & 40.00 & 41.00 & 0.15 \\ 
+  14 & NNPS & 0.00 & 0.00 & 0.02 \\ 
+  15 & NNS & 13.00 & 12.50 & 0.32 \\ 
+  16 & PDT & 0.00 & 0.00 & 0.01 \\ 
+  17 & POS & 3.00 & 3.00 & 0.02 \\ 
+  18 & PRP & 18.00 & 16.00 & 0.00 \\ 
+  19 & PRP\$ & 8.00 & 8.00 & 0.00 \\ 
+  20 & RB & 20.00 & 15.00 & 0.00 \\ 
+  21 & RBR & 0.00 & 0.00 & 0.10 \\ 
+  22 & RBS & 0.00 & 0.00 & 0.00 \\ 
+  23 & RP & 2.00 & 2.00 & 0.04 \\ 
+  24 & SYM & 0.00 & 0.00 & 0.28 \\ 
+  25 & TO & 9.00 & 8.00 & 0.00 \\ 
+  26 & UH & 0.00 & 0.00 & 0.13 \\ 
+  27 & VB & 12.00 & 11.00 & 0.00 \\ 
+  28 & VBD & 14.00 & 14.00 & 0.92 \\ 
+  29 & VBG & 9.00 & 8.00 & 0.00 \\ 
+  30 & VBN & 8.00 & 7.00 & 0.00 \\ 
+  31 & VBP & 6.00 & 6.00 & 1.00 \\ 
+  32 & VBZ & 12.00 & 9.00 & 0.00 \\ 
+  33 & WDT & 1.00 & 1.00 & 0.02 \\ 
+  34 & WP & 1.00 & 1.00 & 0.98 \\ 
+  35 & WP\$ & 0.00 & 0.00 & 0.12 \\ 
+  36 & WRB & 2.00 & 1.00 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & death & 0.00 & 0.00 & 0.00 \\ 
+  2 & home & 0.27 & 0.26 & 0.37 \\ 
+  3 & leisure & 1.81 & 2.05 & 0.00 \\ 
+  4 & money & 0.25 & 0.20 & 0.00 \\ 
+  5 & relig & 0.00 & 0.00 & 0.01 \\ 
+  6 & work & 1.68 & 1.70 & 0.27 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & family & 0.77 & 0.42 & 0.00 \\ 
+  2 & female & 2.27 & 1.83 & 0.00 \\ 
+  3 & friend & 0.28 & 0.20 & 0.00 \\ 
+  4 & male & 1.46 & 1.00 & 0.00 \\ 
+  5 & social & 13.16 & 11.65 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & feel & 0.28 & 0.26 & 0.10 \\ 
+  2 & hear & 0.76 & 0.71 & 0.00 \\ 
+  3 & percept & 2.75 & 3.23 & 0.00 \\ 
+  4 & see & 1.20 & 1.58 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & focusfuture & 0.87 & 0.80 & 0.00 \\ 
+  2 & focuspast & 4.36 & 4.23 & 0.01 \\ 
+  3 & focuspresent & 7.93 & 6.92 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & motion & 1.53 & 1.60 & 0.00 \\ 
+  2 & relativ & 14.60 & 14.99 & 0.00 \\ 
+  3 & space & 6.85 & 6.96 & 0.02 \\ 
+  4 & time & 6.11 & 6.18 & 0.14 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Thu Mar 19 23:08:44 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & var & Fake & Real & pval \\ 
+  \hline
+1 & NER & 55.00 & 49.00 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+

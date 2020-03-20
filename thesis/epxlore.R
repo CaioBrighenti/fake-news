@@ -7,6 +7,7 @@ library(boot)
 library(progress)
 library(ggstance)
 library(ggforce)
+library(xtable)
 
 # load helpers
 source("helpers/loaddata.R")
@@ -19,13 +20,19 @@ train_titles <- loadFNNtxtfeat("train_titles")
 test_titles <- loadFNNtxtfeat("test_titles")
 
 # individual parts
-train_complexity <- loadFNNComplexity("train")
-train_LIWC <- loadFNNLIWC("train")
-train_POS <- loadFNNPOS("train")
-train_NER <- loadFNNNER("train")
+train_complexity <- loadFNNComplexity("train") %>% filter(!grepl("gossipcop",ID))
+train_LIWC <- loadFNNLIWC("train") %>% filter(!grepl("gossipcop",ID))
+train_POS <- loadFNNPOS("train") %>% filter(!grepl("gossipcop",ID))
+train_NER <- loadFNNNER("train") %>% filter(!grepl("gossipcop",ID))
 
+# LWIC groups
+LWIC_groups <- loadLIWCGroups()
 
 ############## LOOK FOR OUTLIERS ############## 
+
+
+
+############## EXPLORE GROUP DIFFERENCES ############## 
 # group differences
 train_conf_fake <- tibble(
   var = names(dplyr::select(train,-label)),
@@ -95,7 +102,16 @@ for (idx in seq(2,ncol(train))) {
 train_conf <- rbind(train_conf_true,train_conf_fake) %>%
   mutate(lower_bound = as.numeric(lower_bound),
          upper_bound = as.numeric(upper_bound),
-         label = if_else(label == 1,"Fake","Real"))
+         label = if_else(label == 1,"Fake","Real"),
+         group = case_when(
+    var %in% names(train_complexity) ~ "complexity",
+    var %in% names(train_POS) ~ "POS",
+    var %in% names(train_NER) ~ "NER"
+  )) %>%
+  left_join(LWIC_groups, by=c("var")) %>%
+  mutate(group.x = if_else(is.na(group.x),group.y,group.x)) %>%
+  rename(group = group.x) %>%
+  dplyr::select(-group.y)
 
 # plots
 names(train)
@@ -112,65 +128,22 @@ train_conf %>%
   geom_point() +
   geom_errorbarh(aes(xmin=lower_bound,xmax=upper_bound)) 
 
-# facet plot
-### complexity
-train_conf %>%
-  filter(var %in% colnames(train_complexity)) %>%
-  mutate(label = as.factor(label)) %>%
-  ggplot(aes(y=label,x=median)) +
-  geom_point() +
-  geom_errorbarh(aes(xmin=lower_bound,xmax=upper_bound)) +
-  facet_wrap(~var,scales="free_x") +
-  theme_bw() +
-  labs(title = "Confidence interval for medians of textual properties for fake and real articles",
-       subtitle = "Variables capturing textual complexity",
-       x = "Median",
-       y = "")
-
-### LIWC
-for (i in seq(1,5)){
+### all groups
+for (var_group in unique(train_conf$group)){
   p<-train_conf %>%
-    filter(var %in% colnames(train_LIWC)) %>%
+    filter(group == var_group) %>%
     mutate(label = as.factor(label)) %>%
     ggplot(aes(y=label,x=median)) +
     geom_point() +
     geom_errorbarh(aes(xmin=lower_bound,xmax=upper_bound)) +
-    facet_wrap_paginate(~var,scales="free_x",nrow=4,ncol=5,page=i) +
+    facet_wrap(~var,scales="free_x") +
     theme_bw() +
     labs(title = "Confidence interval for medians of textual properties for fake and real articles",
-         subtitle = "Variables capturing properties from LWIC dictionary",
+         subtitle = paste("Variables capturing",var_group),
          x = "Median",
          y = "")
   print(p)
 }
-
-### POS
-train_conf %>%
-  filter(var %in% colnames(train_POS)) %>%
-  mutate(label = as.factor(label)) %>%
-  ggplot(aes(y=label,x=median)) +
-  geom_point() +
-  geom_errorbarh(aes(xmin=lower_bound,xmax=upper_bound)) +
-  facet_wrap(~var,scales="free_x") +
-  theme_bw() +
-  labs(title = "Confidence interval for medians of textual properties for fake and real articles",
-       subtitle = "Variables capturing parts-of-speech distribution",
-       x = "Median",
-       y = "")
-
-### NER
-train_conf %>%
-  filter(var %in% colnames(train_NER)) %>%
-  mutate(label = as.factor(label)) %>%
-  ggplot(aes(y=label,x=median)) +
-  geom_point() +
-  geom_errorbarh(aes(xmin=lower_bound,xmax=upper_bound)) +
-  facet_wrap(~var,scales="free_x") +
-  theme_bw() +
-  labs(title = "Confidence interval for medians of textual properties for fake and real articles",
-       subtitle = "Variables capturing named-entity-recognition",
-       x = "Median",
-       y = "")
 
 # tables
 pvals <- tibble(
@@ -181,7 +154,33 @@ pvals <- tibble(
 for (idx in seq(2,ncol(train))) {
   test_temp<-mood.medtest(unlist(train[,idx],use.names = FALSE) ~ train$label,
                   exact = FALSE)
-  pvals[idx,]$pval <- test_temp$p.value
+  pvals[idx-1,]$pval <- test_temp$p.value
 }
+
+# add group names
+pval_table <- pvals %>%
+  left_join(
+    dplyr::select(train_conf,var,group),
+    by=c("var")
+  ) %>%
+  left_join(
+    dplyr::select(train_conf,var,label,median),
+    by=c("var")
+  ) %>%
+  distinct() %>%
+  spread(label,median) %>%
+  dplyr::select(var,group,Fake,Real,pval)
+
+for (var_group in unique(pval_table$group)) {
+  vars_temp <- filter(pval_table, group == var_group) %>%
+    dplyr::select(-group)
+  
+  x<-print.xtable(xtable(vars_temp))
+  
+  write(x,file="thesis/tables.txt",append=TRUE)
+  write("\n\n",file="thesis/tables.txt",append=TRUE)
+}
+
+
 
 
