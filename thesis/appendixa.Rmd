@@ -1,0 +1,430 @@
+---
+title: "Appendix A"
+subtitle: "Variable Description and Group Differences"
+author: "Caio Brighenti"
+output: pdf_document
+bibliography: bibliography.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Variable Description
+
+This section briefly lists and describes each variable available in the dataset of text features for real and fake articles. Each variable is a metric quantifying the semantic properties of the text body.
+
+### Complexity Metrics
+
+These features are intended to capture the complexity of the text. Some of these are direct textual complexity metrics calculated using the ```quanteda``` [@quanteda] package in R. Others describe the mean, standard deviation, and interquatile range of text parse tree depths calculated using the Stanford Core NLP [@CoreNLP] toolset, which constructs consituency trees for each sentence in the text body. There are other miscelleanouscomplexity metrics described below.
+
+* ```mu_sentence``` - Mean number of sentences
+* ```mu_verb_phrase``` - Mean depth of verb-phrase trees
+* ```mu_noun_phrase``` - Mean depth of noun-phrase trees
+* ```sd_sentence``` - Standard deviation of number of sentences
+* ```sd_verb_phrase``` - Standard deviation of depth of verb-phrase trees
+* ```sd_noun_phrase``` - Standard deviation of depth of noun-phrase trees
+* ```iqr_sentence``` - Interquantile range of number of sentences
+* ```iqr_verb_phrase``` - Interquantile range of depth of verb-phrase trees
+* ```iqr_noun_phrase``` - Interquantile range of depth of verb-phrase trees
+* ```num_verb_phrase``` - Number of verb-phrase trees
+* ```swc``` - Mean sentence word count
+* ```wlen``` - Mean word length
+* ```types``` - Number of unique words
+* ```tokens``` - number of total words
+* ```TTR``` - Type-token ration
+* ```FOG``` - Gunning's Fog Index
+* ```SMOG``` - Simple Measure of Gobbledygook
+* ```FK``` - Flesch-Kincaid Readability Score
+* ```CL``` - Coleman-Liau Index
+* ```ARI``` - Automated Readability Index
+
+### LIWC Dictionary
+
+The variables in this section come from the Linguistic Inquiry and Word Count [@LIWC2015] dictionary tool. At a high level, LIWC reads a given text and counts the percentage of words that reflect different emotions, thinking styles, social concerns, and even parts of speech. The variables are broken up into conceptual groups.
+
+#### ```summary``` - Summary variables
+
+* ```WC``` - Word count
+* ```Analytic``` - Words reflecting formal, logical, and hierarchical thinking
+* ```Clout``` - Words suggesting author is speaking from a position of authority
+* ```Authentic``` - Words associated with a more honest, personal, and disclosing text
+* ```Tone``` - Words associated with positive, upbeat style
+* ```WPS``` - Words per sentence
+* ```Sixltr``` - Number of six+ letter words
+* ```Dic``` - 
+
+#### ```function``` - Function words
+
+* ```function``` - Function words
+* ```pronoun``` - Pronouns
+* ```ppron``` - Personal pronouns
+* ```i``` - 1st person singular
+* ```we``` - 1st person plural
+* ```you``` - 2nd person
+* ```shehe``` - 3rd person singular
+* ```they``` - 3rd person plural
+* ```ipron``` - Impersonal pronoun
+* ```article``` - Articles
+* ```prep``` - Prepositions
+* ```auxverb``` - Auxiliary verbs
+* ```adverb``` - Common adverbs
+* ```conj``` - Conjuctions
+* ```negate``` - Negations
+
+#### ```othergram``` - Other grammar
+
+* ```verb``` - Regular verbs
+* ```adj``` - Adjectives
+* ```compare``` - Comparatives
+* ```interrog``` - Interrogatives
+* ```number``` - Numbers
+* ```quant``` - Quantifiers
+
+#### ```affect``` - Affect words
+
+* ```affect``` - Affect words
+* ```posemo``` - Positive emotions
+* ```negemo``` - Negative emotions
+* ```anx``` - Anxiety
+* ```anger``` - Anger
+* ```sad``` - Sad
+
+#### ```social```
+
+* ```social``` - Social words
+* ```family``` - Family
+* ```friend``` - Friends
+* ```female``` - Female referents
+* ```male``` - Male referents
+
+#### ```cogproc``` - Cognitive processes
+
+* ```cogproc``` - Cognitive processes
+* ```insight``` - Insight 
+* ```cause``` - Cause
+* ```discrep``` - Discrepancies
+* ```tentat``` - Tentativeness
+* ```certain``` - Certainty
+* ```differ``` - Differentiation
+
+#### ```percept``` - Perceptual processes
+
+* ```percept``` - Perceptual processes
+* ```see``` - Seeing
+* ```hear``` - Hearing
+* ```feel``` - Feeling
+
+#### ```bio``` - Biological processes
+
+* ```bio``` - Biological processes
+* ```body``` - Body
+* ```health``` - Health/illness
+* ```sexual``` - Sexuality
+* ```ingest``` - Ingesting
+
+#### ```drives``` - Core drives and needs
+
+* ```drives``` - Core drives
+* ```affiliation``` - Affiliation
+* ```achieve``` - Achievement
+* ```power``` - Power
+* ```reward``` - Reward focus
+* ```risk``` - Risk/prevention focus
+
+#### ```timeorient``` - Time orientation
+
+* ```focuspast``` - Past focus
+* ```focuspresent``` - Present focus
+* ```focusfuture``` - Future focus
+
+#### ```relativ``` - Relativity
+
+* ```relativ``` - Relativity
+* ```motion``` - Motion
+* ```space``` - Space
+* ```time``` - Time
+
+#### ```personc``` - Personal Concerns
+
+* ```work``` - Work
+* ```leisure``` - Leisure
+* ```home``` - Home
+* ```money``` - Money
+* ```relig``` - Religion
+* ```death``` - Death
+
+#### ```informal``` - Informal speech
+
+* ```informal``` - Informal speech
+* ```swear``` - Swear words
+* ```netspeak``` - Netspeak
+* ```assent``` - Assent
+* ```nonflu``` - Nonfluencies
+* ```filler``` - Fillers
+
+#### ```punc``` - Punctuation
+
+* ```AllPunc``` - All punctuation
+* ```Period``` - Periods
+* ```Comma``` - Commas
+* ```Colon``` - Colons
+* ```SemiC``` - Semicolons
+* ```QMark``` - Question marks
+* ```Exclam``` - Exclamation marks
+* ```Dash``` - Dashes
+* ```Quote``` - Quotes
+* ```Apostro``` - Apostrophes
+* ```Parenth``` - Parentheses (pairs)
+* ```OtherP``` - Other punctuation
+
+### Parts-Of-Speech Tagging
+
+These variables count the frequency of categories of parts-of-speech (verb, nouns, etc), created using the Stanford CoreNLP [@CoreNLP] parts-of-speech tagger. For further detail, see [this document](https://catalog.ldc.upenn.edu/docs/LDC99T42/tagguid1.pdf) detailing each category.
+
+* ```CC``` - Coordinating conjunctions
+* ```CD``` - Cardinal numeral
+* ```DT``` - Determiner
+* ```EX``` - Existential
+* ```FW``` - Foreign word
+* ```IN``` - Preposition or subordinating conjunction
+* ```JJ``` - Ordinal number
+* ```JJR``` - Comparative adjective
+* ```JJS``` - Superlative adjective
+* ```LS``` - List item marker
+* ```MD``` - Model verb
+* ```NN``` - Noun, singular or mass
+* ```NNS``` - Plural noun
+* ```NNP``` - Singular proper noun
+* ```NNPS``` - Plural proper noun
+* ```PDT``` - Predeterminer
+* ```POS``` - Possessive ending
+* ```PRP``` - Personal pronoun
+* ```PRP$``` - Possessive pronoun
+* ```RB``` - Adverb
+* ```RBR``` - Comparative adverb
+* ```RBS``` - Superlative adverb
+* ```RP``` - Particle
+* ```SYM``` - Symbol
+* ```TO``` - To
+* ```UH``` - Exclamation/interjection
+* ```VB``` - Verb, base form
+* ```VBD``` - Past tense verb
+* ```VBG``` - Present participle
+* ```VBN``` - Past participle
+* ```VBP``` - Present tense verb, other than 3rd person singular
+* ```VBZ``` - Present tense verb, 3rd person singular
+* ```WDT``` - Wh-determiner
+* ```WP``` - Wh-pronoun
+* ```WP$``` - Possessive wh-pronoun
+* ```WRB``` - Wh-adverb
+
+### Named Entity Recognition
+
+This includes only a single variable: the number of named entities in the text, counted by the Stanford CoreNLP [@CoreNLP] Named Entity Recognition tool.
+
+* ```NER``` - Number of named entities
+
+## Outlier Removal
+
+The dataset of labels (true/fake), article title, and article text body were gathered using the JSON scraper included by the authors of the FakeNewsNet dataset [@FNN]. However, given that web pages often change structure, move to a different address, or are removed from the internet entirely, many of the entries have changed since the dataset was initially compiled, and are now unavailable or in an incorrect format. These articles must be removed from the dataset.
+
+To identify these outliers, I fit a baseline logistic regression model and identified overly influential observations with Cook's Distance 4 times larger than the mean. I then manually inspected each of the 575 potential outliers and labeled true outliers, such as pages who's text is simply "404 Error: Page not found," or articles that are actually just lists. Out of the 575 potential outliers, I found 422 to be true outliers.
+
+For further error removal, I intend to use a similar process to manually isolate articles including the text "error," and either too long or too short, and identify whether these are indeed outliers.
+
+## Group Differences
+
+This section includes preliminary data exploration demonstrating differences in each variable accross the two labels. First, I incude tables with significance levels of a Mood's Median hypothesis test calculated using the RVAideMemoire package [@RVAideMemoire]. Next, I include plots showing 95% confidence intervals of medians for each variable by group calculated using bootstrapping.
+
+### Mood's Median Test
+
+```{r, echo=FALSE, warning = FALSE, results='hide', message='hide'}
+library(dplyr)
+library(knitr)
+options(digits=2)
+pval_table <- readRDS("C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/pval_table.RDS") %>%
+  rename(Variable = var, `p-value` = pval, `Median - Fake` = Fake, `Median - Real` = Real)
+```
+
+#### Complexity Metrics
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="complexity"),-group))
+```
+
+
+#### LIWC Dictionary
+
+* ```summary```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="summary"),-group))
+```
+
+* ```function```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="function"),-group))
+```
+
+* ```othergram```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="othergram"),-group))
+```
+
+* ```affect```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="affect"),-group))
+```
+
+* ```social```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="social"),-group))
+```
+
+* ```cogproc```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="cogproc"),-group))
+```
+
+* ```percept```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="percept"),-group))
+```
+
+
+* ```bio```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="bio"),-group))
+```
+
+* ```drives```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="drives"),-group))
+```
+
+* ```timeorient```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="timeorient"),-group))
+```
+
+* ```relativ```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="relativ"),-group))
+```
+
+* ```personc```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="personc"),-group))
+```
+
+* ```informal```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="informal"),-group))
+```
+
+* ```punc```
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="punc"),-group))
+```
+
+#### Parts-Of-Speech Tagging
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="POS"),-group))
+```
+
+#### Named Entity Recognition
+
+```{r echo = FALSE, results = 'asis'}
+kable(select(filter(pval_table,group=="NER"),-group))
+```
+
+### 95% Median Confidence Intervals
+
+#### Complexity Metrics
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/complexity.png)
+
+#### LIWC Dictionary
+
+* ```summary```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/summary.png)
+
+* ```function```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/function.png)
+
+* ```othergram```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/othergram.png)
+
+* ```affect```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/affect.png)
+
+* ```social```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/social.png)
+
+* ```cogproc```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/cogproc.png)
+
+* ```percept```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/percept.png)
+
+* ```bio```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/bio.png)
+
+* ```drives```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/drives.png)
+
+* ```timeorient```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/timeorient.png)
+
+* ```relativ```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/relativ.png)
+
+* ```personc```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/personc.png)
+
+* ```informal```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/informal.png)
+
+* ```punc```
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/punc.png)
+
+#### Parts-Of-Speech Tagging
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/POS.png)
+
+#### Named Entity Recognition
+
+![](C:/Users/Caio Laptop/Documents/Repositories/fake-news/thesis/plots/NER.png)
+
+\newpage
+
+## References

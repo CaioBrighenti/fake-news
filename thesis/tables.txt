@@ -1,809 +1,302 @@
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & achieve & 1.09 & 1.26 & 0.00 \\ 
-  2 & affiliation & 3.14 & 2.64 & 0.00 \\ 
-  3 & drives & 7.85 & 7.55 & 0.00 \\ 
-  4 & power & 2.30 & 2.38 & 0.01 \\ 
-  5 & reward & 1.08 & 1.15 & 0.00 \\ 
-  6 & risk & 0.23 & 0.11 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & adj & 4.40 & 4.55 & 0.00 \\ 
-  2 & compare & 2.27 & 2.28 & 0.75 \\ 
-  3 & interrog & 1.06 & 1.12 & 0.00 \\ 
-  4 & number & 2.16 & 2.37 & 0.00 \\ 
-  5 & quant & 1.81 & 1.85 & 0.10 \\ 
-  6 & verb & 13.86 & 12.61 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & adverb & 3.88 & 3.34 & 0.00 \\ 
-  2 & article & 7.21 & 7.27 & 0.18 \\ 
-  3 & auxverb & 7.35 & 6.09 & 0.00 \\ 
-  4 & conj & 5.37 & 5.16 & 0.00 \\ 
-  5 & function & 46.59 & 44.44 & 0.00 \\ 
-  6 & i & 0.19 & 0.64 & 0.00 \\ 
-  7 & ipron & 3.80 & 3.56 & 0.00 \\ 
-  8 & negate & 1.10 & 0.81 & 0.00 \\ 
-  9 & ppron & 6.45 & 6.37 & 0.33 \\ 
-  10 & prep & 13.75 & 13.87 & 0.01 \\ 
-  11 & pronoun & 10.43 & 10.04 & 0.00 \\ 
-  12 & shehe & 3.24 & 2.61 & 0.00 \\ 
-  13 & they & 0.68 & 0.44 & 0.00 \\ 
-  14 & we & 0.34 & 0.33 & 0.35 \\ 
-  15 & you & 0.27 & 0.40 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & affect & 4.42 & 4.58 & 0.00 \\ 
-  2 & anger & 0.23 & 0.09 & 0.00 \\ 
-  3 & anx & 0.07 & 0.00 & 0.00 \\ 
-  4 & negemo & 1.19 & 0.95 & 0.00 \\ 
-  5 & posemo & 2.78 & 3.12 & 0.00 \\ 
-  6 & sad & 0.06 & 0.00 & 0.01 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & AllPunc & 20.19 & 20.61 & 0.00 \\ 
-  2 & Apostro & 2.74 & 2.54 & 0.00 \\ 
-  3 & Colon & 0.22 & 0.35 & 0.00 \\ 
-  4 & Comma & 5.38 & 5.39 & 0.77 \\ 
-  5 & Dash & 0.84 & 0.91 & 0.00 \\ 
-  6 & Exclam & 0.09 & 0.02 & 0.03 \\ 
-  7 & OtherP & 0.33 & 0.43 & 0.00 \\ 
-  8 & Parenth & 0.00 & 0.28 & 0.00 \\ 
-  9 & Period & 4.93 & 5.10 & 0.00 \\ 
-  10 & QMark & 0.00 & 0.00 & 0.00 \\ 
-  11 & Quote & 2.72 & 2.33 & 0.00 \\ 
-  12 & SemiC & 0.00 & 0.00 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & Analytic & 83.51 & 88.38 & 0.00 \\ 
-  2 & Authentic & 17.46 & 22.88 & 0.00 \\ 
-  3 & Clout & 82.72 & 80.15 & 0.00 \\ 
-  4 & Dic & 79.39 & 78.34 & 0.00 \\ 
-  5 & Sixltr & 19.92 & 19.76 & 0.15 \\ 
-  6 & Tone & 53.85 & 64.65 & 0.00 \\ 
-  7 & WC & 363.00 & 345.00 & 0.00 \\ 
-  8 & WPS & 18.91 & 19.00 & 0.73 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & ARI & 10.15 & 9.93 & 0.00 \\ 
-  2 & CL & 48.60 & 48.95 & 0.00 \\ 
-  3 & FK & 9.76 & 9.71 & 0.48 \\ 
-  4 & FOG & 12.42 & 12.34 & 0.16 \\ 
-  5 & iqr\_noun\_phrase & 0.50 & 1.00 & 0.00 \\ 
-  6 & iqr\_sentence & 5.00 & 5.00 & 0.02 \\ 
-  7 & iqr\_verb\_phrase & 4.75 & 4.25 & 0.00 \\ 
-  8 & mu\_noun\_phrase & 3.93 & 3.98 & 0.00 \\ 
-  9 & mu\_sentence & 12.40 & 12.12 & 0.00 \\ 
-  10 & mu\_verb\_phrase & 7.62 & 7.54 & 0.00 \\ 
-  11 & num\_verb\_phrase & 77.00 & 66.00 & 0.00 \\ 
-  12 & sd\_noun\_phrase & 2.22 & 2.28 & 0.00 \\ 
-  13 & sd\_sentence & 4.05 & 4.02 & 0.28 \\ 
-  14 & sd\_verb\_phrase & 3.56 & 3.50 & 0.00 \\ 
-  15 & SMOG & 11.56 & 11.50 & 0.29 \\ 
-  16 & swc & 22.50 & 21.50 & 0.00 \\ 
-  17 & tokens & 451.00 & 434.00 & 0.01 \\ 
-  18 & TTR & 0.50 & 0.50 & 0.68 \\ 
-  19 & types & 225.00 & 217.00 & 0.00 \\ 
-  20 & wlen & 4.02 & 3.99 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & assent & 0.00 & 0.00 & 0.02 \\ 
-  2 & filler & 0.00 & 0.00 & 0.04 \\ 
-  3 & informal & 0.39 & 0.38 & 0.81 \\ 
-  4 & netspeak & 0.00 & 0.00 & 0.00 \\ 
-  5 & nonflu & 0.00 & 0.00 & 0.41 \\ 
-  6 & swear & 0.00 & 0.00 & 0.45 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & bio & 1.30 & 1.47 & 0.00 \\ 
-  2 & body & 0.27 & 0.34 & 0.00 \\ 
-  3 & health & 0.34 & 0.31 & 0.06 \\ 
-  4 & ingest & 0.00 & 0.00 & 0.22 \\ 
-  5 & sexual & 0.00 & 0.00 & 0.55 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & cause & 1.32 & 1.09 & 0.00 \\ 
-  2 & certain & 1.07 & 0.97 & 0.00 \\ 
-  3 & cogproc & 8.91 & 7.58 & 0.00 \\ 
-  4 & differ & 2.41 & 1.80 & 0.00 \\ 
-  5 & discrep & 0.80 & 0.62 & 0.00 \\ 
-  6 & insight & 1.63 & 1.54 & 0.00 \\ 
-  7 & tentat & 1.62 & 1.41 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & CC & 12.00 & 11.00 & 0.00 \\ 
-  2 & CD & 6.00 & 6.00 & 0.00 \\ 
-  3 & DT & 31.00 & 30.00 & 0.00 \\ 
-  4 & EX & 0.00 & 0.00 & 0.00 \\ 
-  5 & FW & 0.00 & 0.00 & 0.00 \\ 
-  6 & IN & 42.00 & 39.00 & 0.00 \\ 
-  7 & JJ & 21.00 & 21.00 & 0.94 \\ 
-  8 & JJR & 1.00 & 1.00 & 0.87 \\ 
-  9 & JJS & 1.00 & 1.00 & 0.00 \\ 
-  10 & LS & 0.00 & 0.00 & 0.03 \\ 
-  11 & MD & 3.00 & 2.00 & 0.00 \\ 
-  12 & NN & 50.00 & 51.00 & 0.42 \\ 
-  13 & NNP & 40.00 & 41.00 & 0.15 \\ 
-  14 & NNPS & 0.00 & 0.00 & 0.02 \\ 
-  15 & NNS & 13.00 & 12.50 & 0.32 \\ 
-  16 & PDT & 0.00 & 0.00 & 0.01 \\ 
-  17 & POS & 3.00 & 3.00 & 0.02 \\ 
-  18 & PRP & 18.00 & 16.00 & 0.00 \\ 
-  19 & PRP\$ & 8.00 & 8.00 & 0.00 \\ 
-  20 & RB & 20.00 & 15.00 & 0.00 \\ 
-  21 & RBR & 0.00 & 0.00 & 0.10 \\ 
-  22 & RBS & 0.00 & 0.00 & 0.00 \\ 
-  23 & RP & 2.00 & 2.00 & 0.04 \\ 
-  24 & SYM & 0.00 & 0.00 & 0.28 \\ 
-  25 & TO & 9.00 & 8.00 & 0.00 \\ 
-  26 & UH & 0.00 & 0.00 & 0.13 \\ 
-  27 & VB & 12.00 & 11.00 & 0.00 \\ 
-  28 & VBD & 14.00 & 14.00 & 0.92 \\ 
-  29 & VBG & 9.00 & 8.00 & 0.00 \\ 
-  30 & VBN & 8.00 & 7.00 & 0.00 \\ 
-  31 & VBP & 6.00 & 6.00 & 1.00 \\ 
-  32 & VBZ & 12.00 & 9.00 & 0.00 \\ 
-  33 & WDT & 1.00 & 1.00 & 0.02 \\ 
-  34 & WP & 1.00 & 1.00 & 0.98 \\ 
-  35 & WP\$ & 0.00 & 0.00 & 0.12 \\ 
-  36 & WRB & 2.00 & 1.00 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & death & 0.00 & 0.00 & 0.00 \\ 
-  2 & home & 0.27 & 0.26 & 0.37 \\ 
-  3 & leisure & 1.81 & 2.05 & 0.00 \\ 
-  4 & money & 0.25 & 0.20 & 0.00 \\ 
-  5 & relig & 0.00 & 0.00 & 0.01 \\ 
-  6 & work & 1.68 & 1.70 & 0.27 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & family & 0.77 & 0.42 & 0.00 \\ 
-  2 & female & 2.27 & 1.83 & 0.00 \\ 
-  3 & friend & 0.28 & 0.20 & 0.00 \\ 
-  4 & male & 1.46 & 1.00 & 0.00 \\ 
-  5 & social & 13.16 & 11.65 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & feel & 0.28 & 0.26 & 0.10 \\ 
-  2 & hear & 0.76 & 0.71 & 0.00 \\ 
-  3 & percept & 2.75 & 3.23 & 0.00 \\ 
-  4 & see & 1.20 & 1.58 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & focusfuture & 0.87 & 0.80 & 0.00 \\ 
-  2 & focuspast & 4.36 & 4.23 & 0.01 \\ 
-  3 & focuspresent & 7.93 & 6.92 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & motion & 1.53 & 1.60 & 0.00 \\ 
-  2 & relativ & 14.60 & 14.99 & 0.00 \\ 
-  3 & space & 6.85 & 6.96 & 0.02 \\ 
-  4 & time & 6.11 & 6.18 & 0.14 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:28 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & NER & 55.00 & 49.00 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & achieve & 1.09 & 1.26 & 0.00 \\ 
-  2 & affiliation & 3.14 & 2.64 & 0.00 \\ 
-  3 & drives & 7.85 & 7.55 & 0.00 \\ 
-  4 & power & 2.30 & 2.38 & 0.01 \\ 
-  5 & reward & 1.08 & 1.15 & 0.00 \\ 
-  6 & risk & 0.23 & 0.11 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & adj & 4.40 & 4.55 & 0.00 \\ 
-  2 & compare & 2.27 & 2.28 & 0.75 \\ 
-  3 & interrog & 1.06 & 1.12 & 0.00 \\ 
-  4 & number & 2.16 & 2.37 & 0.00 \\ 
-  5 & quant & 1.81 & 1.85 & 0.10 \\ 
-  6 & verb & 13.86 & 12.61 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & adverb & 3.88 & 3.34 & 0.00 \\ 
-  2 & article & 7.21 & 7.27 & 0.18 \\ 
-  3 & auxverb & 7.35 & 6.09 & 0.00 \\ 
-  4 & conj & 5.37 & 5.16 & 0.00 \\ 
-  5 & function & 46.59 & 44.44 & 0.00 \\ 
-  6 & i & 0.19 & 0.64 & 0.00 \\ 
-  7 & ipron & 3.80 & 3.56 & 0.00 \\ 
-  8 & negate & 1.10 & 0.81 & 0.00 \\ 
-  9 & ppron & 6.45 & 6.37 & 0.33 \\ 
-  10 & prep & 13.75 & 13.87 & 0.01 \\ 
-  11 & pronoun & 10.43 & 10.04 & 0.00 \\ 
-  12 & shehe & 3.24 & 2.61 & 0.00 \\ 
-  13 & they & 0.68 & 0.44 & 0.00 \\ 
-  14 & we & 0.34 & 0.33 & 0.35 \\ 
-  15 & you & 0.27 & 0.40 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & affect & 4.42 & 4.58 & 0.00 \\ 
-  2 & anger & 0.23 & 0.09 & 0.00 \\ 
-  3 & anx & 0.07 & 0.00 & 0.00 \\ 
-  4 & negemo & 1.19 & 0.95 & 0.00 \\ 
-  5 & posemo & 2.78 & 3.12 & 0.00 \\ 
-  6 & sad & 0.06 & 0.00 & 0.01 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & AllPunc & 20.19 & 20.61 & 0.00 \\ 
-  2 & Apostro & 2.74 & 2.54 & 0.00 \\ 
-  3 & Colon & 0.22 & 0.35 & 0.00 \\ 
-  4 & Comma & 5.38 & 5.39 & 0.77 \\ 
-  5 & Dash & 0.84 & 0.91 & 0.00 \\ 
-  6 & Exclam & 0.09 & 0.02 & 0.03 \\ 
-  7 & OtherP & 0.33 & 0.43 & 0.00 \\ 
-  8 & Parenth & 0.00 & 0.28 & 0.00 \\ 
-  9 & Period & 4.93 & 5.10 & 0.00 \\ 
-  10 & QMark & 0.00 & 0.00 & 0.00 \\ 
-  11 & Quote & 2.72 & 2.33 & 0.00 \\ 
-  12 & SemiC & 0.00 & 0.00 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & Analytic & 83.51 & 88.38 & 0.00 \\ 
-  2 & Authentic & 17.46 & 22.88 & 0.00 \\ 
-  3 & Clout & 82.72 & 80.15 & 0.00 \\ 
-  4 & Dic & 79.39 & 78.34 & 0.00 \\ 
-  5 & Sixltr & 19.92 & 19.76 & 0.15 \\ 
-  6 & Tone & 53.85 & 64.65 & 0.00 \\ 
-  7 & WC & 363.00 & 345.00 & 0.00 \\ 
-  8 & WPS & 18.91 & 19.00 & 0.73 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & ARI & 10.15 & 9.93 & 0.00 \\ 
-  2 & CL & 48.60 & 48.95 & 0.00 \\ 
-  3 & FK & 9.76 & 9.71 & 0.48 \\ 
-  4 & FOG & 12.42 & 12.34 & 0.16 \\ 
-  5 & iqr\_noun\_phrase & 0.50 & 1.00 & 0.00 \\ 
-  6 & iqr\_sentence & 5.00 & 5.00 & 0.02 \\ 
-  7 & iqr\_verb\_phrase & 4.75 & 4.25 & 0.00 \\ 
-  8 & mu\_noun\_phrase & 3.93 & 3.98 & 0.00 \\ 
-  9 & mu\_sentence & 12.40 & 12.12 & 0.00 \\ 
-  10 & mu\_verb\_phrase & 7.62 & 7.54 & 0.00 \\ 
-  11 & num\_verb\_phrase & 77.00 & 66.00 & 0.00 \\ 
-  12 & sd\_noun\_phrase & 2.22 & 2.28 & 0.00 \\ 
-  13 & sd\_sentence & 4.05 & 4.02 & 0.28 \\ 
-  14 & sd\_verb\_phrase & 3.56 & 3.50 & 0.00 \\ 
-  15 & SMOG & 11.56 & 11.50 & 0.29 \\ 
-  16 & swc & 22.50 & 21.50 & 0.00 \\ 
-  17 & tokens & 451.00 & 434.00 & 0.01 \\ 
-  18 & TTR & 0.50 & 0.50 & 0.68 \\ 
-  19 & types & 225.00 & 217.00 & 0.00 \\ 
-  20 & wlen & 4.02 & 3.99 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & assent & 0.00 & 0.00 & 0.02 \\ 
-  2 & filler & 0.00 & 0.00 & 0.04 \\ 
-  3 & informal & 0.39 & 0.38 & 0.81 \\ 
-  4 & netspeak & 0.00 & 0.00 & 0.00 \\ 
-  5 & nonflu & 0.00 & 0.00 & 0.41 \\ 
-  6 & swear & 0.00 & 0.00 & 0.45 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & bio & 1.30 & 1.47 & 0.00 \\ 
-  2 & body & 0.27 & 0.34 & 0.00 \\ 
-  3 & health & 0.34 & 0.31 & 0.06 \\ 
-  4 & ingest & 0.00 & 0.00 & 0.22 \\ 
-  5 & sexual & 0.00 & 0.00 & 0.55 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & cause & 1.32 & 1.09 & 0.00 \\ 
-  2 & certain & 1.07 & 0.97 & 0.00 \\ 
-  3 & cogproc & 8.91 & 7.58 & 0.00 \\ 
-  4 & differ & 2.41 & 1.80 & 0.00 \\ 
-  5 & discrep & 0.80 & 0.62 & 0.00 \\ 
-  6 & insight & 1.63 & 1.54 & 0.00 \\ 
-  7 & tentat & 1.62 & 1.41 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & CC & 12.00 & 11.00 & 0.00 \\ 
-  2 & CD & 6.00 & 6.00 & 0.00 \\ 
-  3 & DT & 31.00 & 30.00 & 0.00 \\ 
-  4 & EX & 0.00 & 0.00 & 0.00 \\ 
-  5 & FW & 0.00 & 0.00 & 0.00 \\ 
-  6 & IN & 42.00 & 39.00 & 0.00 \\ 
-  7 & JJ & 21.00 & 21.00 & 0.94 \\ 
-  8 & JJR & 1.00 & 1.00 & 0.87 \\ 
-  9 & JJS & 1.00 & 1.00 & 0.00 \\ 
-  10 & LS & 0.00 & 0.00 & 0.03 \\ 
-  11 & MD & 3.00 & 2.00 & 0.00 \\ 
-  12 & NN & 50.00 & 51.00 & 0.42 \\ 
-  13 & NNP & 40.00 & 41.00 & 0.15 \\ 
-  14 & NNPS & 0.00 & 0.00 & 0.02 \\ 
-  15 & NNS & 13.00 & 12.50 & 0.32 \\ 
-  16 & PDT & 0.00 & 0.00 & 0.01 \\ 
-  17 & POS & 3.00 & 3.00 & 0.02 \\ 
-  18 & PRP & 18.00 & 16.00 & 0.00 \\ 
-  19 & PRP\$ & 8.00 & 8.00 & 0.00 \\ 
-  20 & RB & 20.00 & 15.00 & 0.00 \\ 
-  21 & RBR & 0.00 & 0.00 & 0.10 \\ 
-  22 & RBS & 0.00 & 0.00 & 0.00 \\ 
-  23 & RP & 2.00 & 2.00 & 0.04 \\ 
-  24 & SYM & 0.00 & 0.00 & 0.28 \\ 
-  25 & TO & 9.00 & 8.00 & 0.00 \\ 
-  26 & UH & 0.00 & 0.00 & 0.13 \\ 
-  27 & VB & 12.00 & 11.00 & 0.00 \\ 
-  28 & VBD & 14.00 & 14.00 & 0.92 \\ 
-  29 & VBG & 9.00 & 8.00 & 0.00 \\ 
-  30 & VBN & 8.00 & 7.00 & 0.00 \\ 
-  31 & VBP & 6.00 & 6.00 & 1.00 \\ 
-  32 & VBZ & 12.00 & 9.00 & 0.00 \\ 
-  33 & WDT & 1.00 & 1.00 & 0.02 \\ 
-  34 & WP & 1.00 & 1.00 & 0.98 \\ 
-  35 & WP\$ & 0.00 & 0.00 & 0.12 \\ 
-  36 & WRB & 2.00 & 1.00 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & death & 0.00 & 0.00 & 0.00 \\ 
-  2 & home & 0.27 & 0.26 & 0.37 \\ 
-  3 & leisure & 1.81 & 2.05 & 0.00 \\ 
-  4 & money & 0.25 & 0.20 & 0.00 \\ 
-  5 & relig & 0.00 & 0.00 & 0.01 \\ 
-  6 & work & 1.68 & 1.70 & 0.27 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & family & 0.77 & 0.42 & 0.00 \\ 
-  2 & female & 2.27 & 1.83 & 0.00 \\ 
-  3 & friend & 0.28 & 0.20 & 0.00 \\ 
-  4 & male & 1.46 & 1.00 & 0.00 \\ 
-  5 & social & 13.16 & 11.65 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & feel & 0.28 & 0.26 & 0.10 \\ 
-  2 & hear & 0.76 & 0.71 & 0.00 \\ 
-  3 & percept & 2.75 & 3.23 & 0.00 \\ 
-  4 & see & 1.20 & 1.58 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & focusfuture & 0.87 & 0.80 & 0.00 \\ 
-  2 & focuspast & 4.36 & 4.23 & 0.01 \\ 
-  3 & focuspresent & 7.93 & 6.92 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & motion & 1.53 & 1.60 & 0.00 \\ 
-  2 & relativ & 14.60 & 14.99 & 0.00 \\ 
-  3 & space & 6.85 & 6.96 & 0.02 \\ 
-  4 & time & 6.11 & 6.18 & 0.14 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-
-
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Mar 19 23:08:44 2020
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrr}
-  \hline
- & var & Fake & Real & pval \\ 
-  \hline
-1 & NER & 55.00 & 49.00 & 0.00 \\ 
-   \hline
-\end{tabular}
-\end{table}
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:44 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> achieve </td> <td align="right"> 1.09 </td> <td align="right"> 1.26 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> affiliation </td> <td align="right"> 3.20 </td> <td align="right"> 2.64 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> drives </td> <td align="right"> 7.87 </td> <td align="right"> 7.55 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> power </td> <td align="right"> 2.29 </td> <td align="right"> 2.37 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> reward </td> <td align="right"> 1.10 </td> <td align="right"> 1.15 </td> <td align="right"> 0.02 </td> </tr>
+  <tr> <td align="right"> 6 </td> <td> risk </td> <td align="right"> 0.24 </td> <td align="right"> 0.12 </td> <td align="right"> 0.00 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:44 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> adj </td> <td align="right"> 4.41 </td> <td align="right"> 4.56 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> compare </td> <td align="right"> 2.29 </td> <td align="right"> 2.28 </td> <td align="right"> 0.66 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> interrog </td> <td align="right"> 1.10 </td> <td align="right"> 1.12 </td> <td align="right"> 0.05 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> number </td> <td align="right"> 2.16 </td> <td align="right"> 2.37 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> quant </td> <td align="right"> 1.85 </td> <td align="right"> 1.86 </td> <td align="right"> 0.88 </td> </tr>
+  <tr> <td align="right"> 6 </td> <td> verb </td> <td align="right"> 13.96 </td> <td align="right"> 12.61 </td> <td align="right"> 0.00 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:44 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> adverb </td> <td align="right"> 3.97 </td> <td align="right"> 3.35 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> article </td> <td align="right"> 7.25 </td> <td align="right"> 7.27 </td> <td align="right"> 0.74 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> auxverb </td> <td align="right"> 7.46 </td> <td align="right"> 6.09 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> conj </td> <td align="right"> 5.42 </td> <td align="right"> 5.17 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> function </td> <td align="right"> 46.89 </td> <td align="right"> 44.44 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 6 </td> <td> i </td> <td align="right"> 0.22 </td> <td align="right"> 0.65 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 7 </td> <td> ipron </td> <td align="right"> 3.85 </td> <td align="right"> 3.57 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 8 </td> <td> negate </td> <td align="right"> 1.15 </td> <td align="right"> 0.81 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 9 </td> <td> ppron </td> <td align="right"> 6.52 </td> <td align="right"> 6.39 </td> <td align="right"> 0.09 </td> </tr>
+  <tr> <td align="right"> 10 </td> <td> prep </td> <td align="right"> 13.76 </td> <td align="right"> 13.89 </td> <td align="right"> 0.01 </td> </tr>
+  <tr> <td align="right"> 11 </td> <td> pronoun </td> <td align="right"> 10.50 </td> <td align="right"> 10.07 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 12 </td> <td> shehe </td> <td align="right"> 3.41 </td> <td align="right"> 2.62 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 13 </td> <td> they </td> <td align="right"> 0.76 </td> <td align="right"> 0.44 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 14 </td> <td> we </td> <td align="right"> 0.37 </td> <td align="right"> 0.33 </td> <td align="right"> 0.05 </td> </tr>
+  <tr> <td align="right"> 15 </td> <td> you </td> <td align="right"> 0.28 </td> <td align="right"> 0.40 </td> <td align="right"> 0.00 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:44 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> affect </td> <td align="right"> 4.40 </td> <td align="right"> 4.58 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> anger </td> <td align="right"> 0.25 </td> <td align="right"> 0.10 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> anx </td> <td align="right"> 0.12 </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> negemo </td> <td align="right"> 1.22 </td> <td align="right"> 0.95 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> posemo </td> <td align="right"> 2.76 </td> <td align="right"> 3.13 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 6 </td> <td> sad </td> <td align="right"> 0.11 </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:44 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> AllPunc </td> <td align="right"> 20.12 </td> <td align="right"> 20.60 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> Apostro </td> <td align="right"> 2.79 </td> <td align="right"> 2.55 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> Colon </td> <td align="right"> 0.23 </td> <td align="right"> 0.35 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> Comma </td> <td align="right"> 5.39 </td> <td align="right"> 5.40 </td> <td align="right"> 0.93 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> Dash </td> <td align="right"> 0.87 </td> <td align="right"> 0.92 </td> <td align="right"> 0.03 </td> </tr>
+  <tr> <td align="right"> 6 </td> <td> Exclam </td> <td align="right"> 0.14 </td> <td align="right"> 0.02 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 7 </td> <td> OtherP </td> <td align="right"> 0.35 </td> <td align="right"> 0.43 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 8 </td> <td> Parenth </td> <td align="right"> 0.00 </td> <td align="right"> 0.29 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 9 </td> <td> Period </td> <td align="right"> 4.92 </td> <td align="right"> 5.10 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 10 </td> <td> QMark </td> <td align="right"> 0.06 </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 11 </td> <td> Quote </td> <td align="right"> 2.88 </td> <td align="right"> 2.34 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 12 </td> <td> SemiC </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:45 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> Analytic </td> <td align="right"> 83.08 </td> <td align="right"> 88.38 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> Authentic </td> <td align="right"> 17.46 </td> <td align="right"> 22.99 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> Clout </td> <td align="right"> 82.92 </td> <td align="right"> 80.15 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> Dic </td> <td align="right"> 79.63 </td> <td align="right"> 78.38 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> Sixltr </td> <td align="right"> 19.85 </td> <td align="right"> 19.75 </td> <td align="right"> 0.34 </td> </tr>
+  <tr> <td align="right"> 6 </td> <td> Tone </td> <td align="right"> 53.27 </td> <td align="right"> 64.84 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 7 </td> <td> WC </td> <td align="right"> 372.00 </td> <td align="right"> 346.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 8 </td> <td> WPS </td> <td align="right"> 19.04 </td> <td align="right"> 19.00 </td> <td align="right"> 0.65 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:45 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> ARI </td> <td align="right"> 10.19 </td> <td align="right"> 9.93 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> CL </td> <td align="right"> 48.64 </td> <td align="right"> 48.96 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> FK </td> <td align="right"> 9.78 </td> <td align="right"> 9.71 </td> <td align="right"> 0.39 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> FOG </td> <td align="right"> 12.43 </td> <td align="right"> 12.35 </td> <td align="right"> 0.09 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> iqr_noun_phrase </td> <td align="right"> 0.50 </td> <td align="right"> 1.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 6 </td> <td> iqr_sentence </td> <td align="right"> 5.00 </td> <td align="right"> 5.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 7 </td> <td> iqr_verb_phrase </td> <td align="right"> 5.00 </td> <td align="right"> 4.25 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 8 </td> <td> mu_noun_phrase </td> <td align="right"> 3.93 </td> <td align="right"> 3.99 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 9 </td> <td> mu_sentence </td> <td align="right"> 12.44 </td> <td align="right"> 12.12 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 10 </td> <td> mu_verb_phrase </td> <td align="right"> 7.65 </td> <td align="right"> 7.54 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 11 </td> <td> num_verb_phrase </td> <td align="right"> 79.00 </td> <td align="right"> 66.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 12 </td> <td> sd_noun_phrase </td> <td align="right"> 2.23 </td> <td align="right"> 2.28 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 13 </td> <td> sd_sentence </td> <td align="right"> 4.08 </td> <td align="right"> 4.02 </td> <td align="right"> 0.01 </td> </tr>
+  <tr> <td align="right"> 14 </td> <td> sd_verb_phrase </td> <td align="right"> 3.59 </td> <td align="right"> 3.50 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 15 </td> <td> SMOG </td> <td align="right"> 11.59 </td> <td align="right"> 11.51 </td> <td align="right"> 0.12 </td> </tr>
+  <tr> <td align="right"> 16 </td> <td> swc </td> <td align="right"> 23.00 </td> <td align="right"> 21.50 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 17 </td> <td> tokens </td> <td align="right"> 460.00 </td> <td align="right"> 435.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 18 </td> <td> TTR </td> <td align="right"> 0.50 </td> <td align="right"> 0.50 </td> <td align="right"> 0.49 </td> </tr>
+  <tr> <td align="right"> 19 </td> <td> types </td> <td align="right"> 228.00 </td> <td align="right"> 218.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 20 </td> <td> wlen </td> <td align="right"> 4.02 </td> <td align="right"> 3.99 </td> <td align="right"> 0.00 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:45 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> assent </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.01 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> filler </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.11 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> informal </td> <td align="right"> 0.40 </td> <td align="right"> 0.39 </td> <td align="right"> 0.13 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> netspeak </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> nonflu </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.91 </td> </tr>
+  <tr> <td align="right"> 6 </td> <td> swear </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.49 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:45 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> bio </td> <td align="right"> 1.33 </td> <td align="right"> 1.48 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> body </td> <td align="right"> 0.29 </td> <td align="right"> 0.34 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> health </td> <td align="right"> 0.37 </td> <td align="right"> 0.32 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> ingest </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.98 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> sexual </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.10 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:45 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> cause </td> <td align="right"> 1.35 </td> <td align="right"> 1.09 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> certain </td> <td align="right"> 1.11 </td> <td align="right"> 0.98 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> cogproc </td> <td align="right"> 9.01 </td> <td align="right"> 7.59 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> differ </td> <td align="right"> 2.46 </td> <td align="right"> 1.80 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> discrep </td> <td align="right"> 0.84 </td> <td align="right"> 0.62 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 6 </td> <td> insight </td> <td align="right"> 1.67 </td> <td align="right"> 1.54 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 7 </td> <td> tentat </td> <td align="right"> 1.67 </td> <td align="right"> 1.41 </td> <td align="right"> 0.00 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:45 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> CC </td> <td align="right"> 12.00 </td> <td align="right"> 11.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> CD </td> <td align="right"> 6.00 </td> <td align="right"> 6.00 </td> <td align="right"> 0.06 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> DT </td> <td align="right"> 32.00 </td> <td align="right"> 30.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> EX </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> FW </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 6 </td> <td> IN </td> <td align="right"> 43.00 </td> <td align="right"> 39.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 7 </td> <td> JJ </td> <td align="right"> 22.00 </td> <td align="right"> 21.00 </td> <td align="right"> 0.13 </td> </tr>
+  <tr> <td align="right"> 8 </td> <td> JJR </td> <td align="right"> 1.00 </td> <td align="right"> 1.00 </td> <td align="right"> 0.34 </td> </tr>
+  <tr> <td align="right"> 9 </td> <td> JJS </td> <td align="right"> 1.00 </td> <td align="right"> 1.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 10 </td> <td> LS </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 11 </td> <td> MD </td> <td align="right"> 3.00 </td> <td align="right"> 2.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 12 </td> <td> NN </td> <td align="right"> 51.00 </td> <td align="right"> 51.00 </td> <td align="right"> 0.80 </td> </tr>
+  <tr> <td align="right"> 13 </td> <td> NNP </td> <td align="right"> 41.00 </td> <td align="right"> 41.00 </td> <td align="right"> 0.65 </td> </tr>
+  <tr> <td align="right"> 14 </td> <td> NNPS </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.19 </td> </tr>
+  <tr> <td align="right"> 15 </td> <td> NNS </td> <td align="right"> 13.00 </td> <td align="right"> 13.00 </td> <td align="right"> 0.01 </td> </tr>
+  <tr> <td align="right"> 16 </td> <td> PDT </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.06 </td> </tr>
+  <tr> <td align="right"> 17 </td> <td> POS </td> <td align="right"> 3.00 </td> <td align="right"> 3.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 18 </td> <td> PRP </td> <td align="right"> 18.00 </td> <td align="right"> 16.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 19 </td> <td> PRP$ </td> <td align="right"> 9.00 </td> <td align="right"> 8.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 20 </td> <td> RB </td> <td align="right"> 20.00 </td> <td align="right"> 15.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 21 </td> <td> RBR </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.95 </td> </tr>
+  <tr> <td align="right"> 22 </td> <td> RBS </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 23 </td> <td> RP </td> <td align="right"> 2.00 </td> <td align="right"> 2.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 24 </td> <td> SYM </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.04 </td> </tr>
+  <tr> <td align="right"> 25 </td> <td> TO </td> <td align="right"> 10.00 </td> <td align="right"> 8.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 26 </td> <td> UH </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.07 </td> </tr>
+  <tr> <td align="right"> 27 </td> <td> VB </td> <td align="right"> 13.00 </td> <td align="right"> 11.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 28 </td> <td> VBD </td> <td align="right"> 15.00 </td> <td align="right"> 14.00 </td> <td align="right"> 0.02 </td> </tr>
+  <tr> <td align="right"> 29 </td> <td> VBG </td> <td align="right"> 10.00 </td> <td align="right"> 8.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 30 </td> <td> VBN </td> <td align="right"> 8.00 </td> <td align="right"> 7.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 31 </td> <td> VBP </td> <td align="right"> 6.00 </td> <td align="right"> 6.00 </td> <td align="right"> 0.08 </td> </tr>
+  <tr> <td align="right"> 32 </td> <td> VBZ </td> <td align="right"> 13.00 </td> <td align="right"> 9.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 33 </td> <td> WDT </td> <td align="right"> 1.00 </td> <td align="right"> 1.00 </td> <td align="right"> 0.48 </td> </tr>
+  <tr> <td align="right"> 34 </td> <td> WP </td> <td align="right"> 1.00 </td> <td align="right"> 1.00 </td> <td align="right"> 0.11 </td> </tr>
+  <tr> <td align="right"> 35 </td> <td> WP$ </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.02 </td> </tr>
+  <tr> <td align="right"> 36 </td> <td> WRB </td> <td align="right"> 2.00 </td> <td align="right"> 1.00 </td> <td align="right"> 0.00 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:45 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> death </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> home </td> <td align="right"> 0.28 </td> <td align="right"> 0.26 </td> <td align="right"> 0.03 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> leisure </td> <td align="right"> 1.81 </td> <td align="right"> 2.05 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> money </td> <td align="right"> 0.25 </td> <td align="right"> 0.20 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> relig </td> <td align="right"> 0.00 </td> <td align="right"> 0.00 </td> <td align="right"> 0.04 </td> </tr>
+  <tr> <td align="right"> 6 </td> <td> work </td> <td align="right"> 1.68 </td> <td align="right"> 1.70 </td> <td align="right"> 0.45 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:45 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> family </td> <td align="right"> 0.86 </td> <td align="right"> 0.43 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> female </td> <td align="right"> 2.41 </td> <td align="right"> 1.84 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> friend </td> <td align="right"> 0.30 </td> <td align="right"> 0.20 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> male </td> <td align="right"> 1.53 </td> <td align="right"> 1.01 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> social </td> <td align="right"> 13.38 </td> <td align="right"> 11.65 </td> <td align="right"> 0.00 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:45 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> feel </td> <td align="right"> 0.30 </td> <td align="right"> 0.26 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> hear </td> <td align="right"> 0.79 </td> <td align="right"> 0.71 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> percept </td> <td align="right"> 2.75 </td> <td align="right"> 3.23 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> see </td> <td align="right"> 1.21 </td> <td align="right"> 1.58 </td> <td align="right"> 0.00 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:45 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> focusfuture </td> <td align="right"> 0.90 </td> <td align="right"> 0.80 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> focuspast </td> <td align="right"> 4.47 </td> <td align="right"> 4.24 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> focuspresent </td> <td align="right"> 7.99 </td> <td align="right"> 6.91 </td> <td align="right"> 0.00 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:45 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> motion </td> <td align="right"> 1.54 </td> <td align="right"> 1.60 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> relativ </td> <td align="right"> 14.64 </td> <td align="right"> 15.00 </td> <td align="right"> 0.00 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> space </td> <td align="right"> 6.87 </td> <td align="right"> 6.96 </td> <td align="right"> 0.04 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> time </td> <td align="right"> 6.17 </td> <td align="right"> 6.20 </td> <td align="right"> 0.53 </td> </tr>
+   </table>
+
+
+
+
+<!-- html table generated in R 3.6.0 by xtable 1.8-4 package -->
+<!-- Mon Mar 23 19:42:45 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> var </th> <th> Fake </th> <th> Real </th> <th> pval </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> NER </td> <td align="right"> 56.00 </td> <td align="right"> 50.00 </td> <td align="right"> 0.00 </td> </tr>
+   </table>
 
 
 
