@@ -27,6 +27,28 @@ calcAccuracyLR <- function(mod,new_data,adj=0, true_labels = NULL, cutoff = 0.5,
   return(stats)
 }
 
+calcAccuracyLasso <- function(mod,new_data,cutoff=0.5,pred=NULL) {
+  # make predictions
+  if (is.null(pred)){
+    pred <- getLassoProbs(mod,new_data)
+  }
+  
+  # put prediction into class
+  class <- factor(as.numeric(pred > cutoff), levels=c(0,1))
+  acc <-  mean(class == true_labels)
+  
+  ## [1] = sensitivity/recall, [2] = specificity, [5] = precision, [7] = F1
+  cm <- confusionMatrix(table(class, true_labels), positive="1")
+  
+  # calculate F1
+  stats <- tibble(accuracy = round(acc,3), sensitivity = round(cm$byClass[1],3),
+                  specificity = round(cm$byClass[2],3), precision = round(cm$byClass[5],3),
+                  F1 = round(cm$byClass[7],3), c_matrix = cm$table)
+  stats[2,-c(6,7)] <- '-'
+  
+  return(stats)
+}
+
 calcAccuracy <- function(mod,new_data,adj=0) {
   true_labels <- new_data$label
   pred <- predict(mod, newdata = new_data, type="class")
@@ -40,6 +62,33 @@ calcAccuracy <- function(mod,new_data,adj=0) {
                   F1 = cm$byClass[7], c_matrix = cm$table)
   print(stats)
   return(stats)
+}
+
+calcAccuracy <- function(mod,new_data,adj=0) {
+  true_labels <- new_data$label
+  pred <- predict(mod, newdata = new_data, type="class")
+  dist <- abs(as.numeric(pred)-(as.numeric(true_labels)))
+  acc <-  mean(dist <= adj)
+  ## [1] = sensitivity/recall, [2] = specificity, [5] = precision, [7] = F1
+  cm <- confusionMatrix(as.factor(pred), true_labels, positive="1")
+  # calculate F1
+  stats <- tibble(accuracy = acc, sensitivity = cm$byClass[1],
+                  specificity = cm$byClass[2], precision = cm$byClass[5],
+                  F1 = cm$byClass[7], c_matrix = cm$table)
+  print(stats)
+  return(stats)
+}
+
+getLassoProbs <- function(mod, new_data){
+  # extract labels
+  new_y <- new_data$label
+  
+  # extract data
+  new_x <- model.matrix(label ~ . - ID, new_data)[,-1]
+  
+  # make prediction
+  pred <- predict(mod, newx = x.test, type = "response")
+  return(pred)
 }
 
 plotPredictions <- function(mods,dat_test){
@@ -86,7 +135,7 @@ getROC <- function(mod, data, pred = NULL){
   colgate_ter <- c("#64A50A", "#F0AA00","#0096C8", "#005F46","#FF6914","#004682")
   ## init return dict
   roc_tib <- tibble(
-    cutoff = seq(0,1,by=0.01),
+    cutoff = seq(0,1,by=0.001),
     sensitivity = rep(0,length(cutoff)),
     specificity = rep(0,length(cutoff)),
     accuracy = rep(0,length(cutoff))
@@ -112,10 +161,17 @@ getROC <- function(mod, data, pred = NULL){
   
   ## make plot
   p<-roc_tib %>%
-    ggplot(aes(x=1-specificity, y=sensitivity, color=cutoff, size = accuracy)) +
+    ggplot(aes(x=1-specificity, y=sensitivity, color=accuracy)) +
     geom_point() +
     scale_color_gradient(low=colgate_ter[2],high=colgate_ter[3]) +
-    annotate("text", x = 1, y = .75, label = paste("AUC:", auc))
+    #annotate("text", x = 0.85, y = .25, label = paste("AUC:", auc)) +
+    geom_abline(intercept=0,slope=1,linetype="longdash") +
+    theme_minimal() +
+    labs(
+      title = "ROC curve",
+      subtitle = paste("AUC:", auc)
+    )
+  
   print(p)
   
   ## find best cuts

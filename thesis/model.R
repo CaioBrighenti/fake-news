@@ -1,6 +1,8 @@
 ############## LOAD ############## 
 ## load in libs
 library(tidyverse)
+library(glmnet)
+library(caret)
 
 # load helpers
 source("helpers/loaddata.R")
@@ -23,36 +25,65 @@ train_NER <- loadFNNNER("train") %>% filter(!grepl("gossipcop",ID))
 LWIC_groups <- loadLIWCGroups()
 
 ############## FIT LASSO ############## 
-# Dumy code categorical predictor variables
-x <- model.matrix(label ~ . - ID, train)[,-1]
+fitLasso <- function(train_data, seed = 13){
+  # Dumy code categorical predictor variables
+  x <- model.matrix(label ~ . - ID, train_data)[,-1]
+  
+  # Convert the outcome (class) to a numerical variable
+  y <- train_data$label
+  
+  # Find the best lambda using cross-validation
+  set.seed(seed) 
+  print("Starting cross validation")
+  cv.lasso <- cv.glmnet(x, y, alpha = 1, family = "binomial")
+  
+  #visualize
+  plot(cv.lasso)
+  cv.lasso$lambda.min
+  cv.lasso$lambda.1se
+  
+  # Fit the final model on the training data
+  print("Fitting final model")
+  model <- glmnet(x, y, alpha = 1, family = "binomial",
+                  lambda = cv.lasso$lambda.1se)
+  
+  # return final model
+  return(model)
+}
 
-# Convert the outcome (class) to a numerical variable
-y <- train$label
-
-
-library(glmnet)
-# Find the best lambda using cross-validation
-set.seed(13) 
-cv.lasso <- cv.glmnet(x, y, alpha = 1, family = "binomial")
-
-#visualize
-plot(cv.lasso)
-cv.lasso$lambda.min
-cv.lasso$lambda.1se
-
-# Fit the final model on the training data
-model <- glmnet(x, y, alpha = 1, family = "binomial",
-                lambda = cv.lasso$lambda.1se)
-
-# Make predictions on the test data
-x.test <- model.matrix(label ~ . - ID, test)[,-1]
-probabilities <- model %>% predict(newx = x.test)
-predicted.classes <- ifelse(probabilities > 0.5, 1, 0)
-# Model accuracy
-observed.classes <- test$label
-mean(predicted.classes == observed.classes)
+# fit model
+mod.lasso <- fitLasso(train)
 
 # Display regression coefficients
-mod.coefs <- coef(model)
+mod.coefs <- coef(mod.lasso)
 
-as_tibble(data.frame(mod.coefs))
+# get predictions
+pred <- getLassoProbs(mod.lasso, test)
+
+# get accuracy
+calcAccuracyLasso(mod.lasso, test, pred=pred)
+
+# ROC
+getROC(mod.lasso, test, pred)
+
+# try again with data balancing
+train2 <- caret::upSample(train, train$label) %>% as_tibble() %>% select(-Class)
+
+# fit model
+mod.lasso2 <- fitLasso(train2)
+
+# Display regression coefficients
+mod.coefs2 <- coef(mod.lasso2)
+
+# get predictions
+pred2 <- getLassoProbs(mod.lasso2, test)
+
+# ROC
+getROC(mod.lasso2, test, pred2)
+
+# get accuracy
+calcAccuracyLasso(mod.lasso2, test, pred=pred2, cutoff=0.537)
+
+# variable importance
+var.imp <- filterVarImp(train[,-c(1,2)], unlist(train[,2]))
+plot(var.imp$X0, var.imp$X1)
