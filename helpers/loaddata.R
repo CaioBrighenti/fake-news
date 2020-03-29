@@ -1,6 +1,10 @@
 library(readr)
 library(dplyr)
 library(data.table)
+
+# load in FNN outliers
+fnn_outliers <- as.character(read.csv("thesis/outliers.csv")$x)
+
 ##################################
 ############## LIAR ##############
 ##################################
@@ -57,7 +61,8 @@ splitDataFNN <- function() {
 loadFNNTrain <- function() {
   train<-fread(file="data/FakeNewsNet/dataset/fnn_train.tsv",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
     as_tibble() %>%
-    mutate(label = as.factor(label))
+    mutate(label = as.factor(label)) %>%
+    filter(!(ID %in% fnn_outliers))
   return(train)
 }
 loadFNNTest <- function() {
@@ -72,7 +77,8 @@ loadFNNComplexity <- function(str){
   dat_complexity <- fread(file=path,sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
     as_tibble() %>%
     mutate(ID = as.character(ID), label = as.factor(label)) %>%
-    dplyr::select(-text)
+    dplyr::select(-text) %>%
+    filter(!(ID %in% fnn_outliers))
   return(dat_complexity)
 }
 
@@ -181,7 +187,8 @@ loadFNNLIWC <- function(str){
   dat_LIWC<-fread(file=path,header = TRUE, encoding="UTF-8") %>%
     as_tibble() %>%
     mutate(ID = as.character(A), label = as.factor(B), title = as.character(C), text = as.character(D)) %>%
-    dplyr::select(ID, label, -title, -text, WC:OtherP)
+    dplyr::select(ID, label, -title, -text, WC:OtherP) %>%
+    filter(!(ID %in% fnn_outliers))
   return(dat_LIWC)
 }
 
@@ -190,7 +197,8 @@ loadFNNPOS <- function(str){
   dat_POS <- fread(file=path,sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
     as_tibble() %>%
     mutate(ID = as.character(ID), label = as.factor(label)) %>%
-    dplyr::select(ID, label, everything())
+    dplyr::select(ID, label, everything()) %>%
+    filter(!(ID %in% fnn_outliers))
   return(dat_POS)
 }
 
@@ -199,7 +207,8 @@ loadFNNNER <- function(str){
   dat_NER <- fread(file=path,sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
     as_tibble() %>%
     mutate(ID = as.character(ID), label=as.factor(label)) %>%
-    dplyr::select(ID, label, everything())
+    dplyr::select(ID, label, everything()) %>%
+    filter(!(ID %in% fnn_outliers))
   return(dat_NER)
 }
 
@@ -222,8 +231,7 @@ loadFNNtxtfeat <- function(str){
     left_join(temp_POS, by = c("ID", "label")) %>%
     left_join(temp_NER, by = c("ID", "label")) %>%
     mutate(label = as.factor(2 - unclass(label))) %>%
-    distinct(ID, .keep_all= TRUE) %>%
-    dplyr::select(-ID)
+    distinct(ID, .keep_all= TRUE)
   
   return(temp_txtfeat)
 }
