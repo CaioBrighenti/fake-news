@@ -84,6 +84,20 @@ getROC(mod.lasso2, test, pred2)
 # get accuracy
 calcAccuracyLasso(mod.lasso2, test, pred=pred2, cutoff=0.537)
 
+
+############## GET IMPORTANT VARIABLES ############## 
 # variable importance
 var.imp <- filterVarImp(train[,-c(1,2)], unlist(train[,2]))
+var.imp <- tibble(
+  var = row.names(var.imp),
+  varimp = var.imp[,1]
+)
 plot(var.imp$X0, var.imp$X1)
+
+# get coefficients
+coefs <- tibble(
+  var = row.names(mod.coefs2),
+  coef = mod.coefs2[,1]
+)
+
+
