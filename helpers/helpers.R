@@ -35,10 +35,10 @@ calcAccuracyLasso <- function(mod,new_data,cutoff=0.5,pred=NULL) {
   
   # put prediction into class
   class <- factor(as.numeric(pred > cutoff), levels=c(0,1))
-  acc <-  mean(class == true_labels)
+  acc <-  mean(class == new_data$label)
   
   ## [1] = sensitivity/recall, [2] = specificity, [5] = precision, [7] = F1
-  cm <- confusionMatrix(table(class, true_labels), positive="1")
+  cm <- confusionMatrix(table(class, new_data$label), positive="1")
   
   # calculate F1
   stats <- tibble(accuracy = round(acc,3), sensitivity = round(cm$byClass[1],3),
@@ -80,14 +80,11 @@ calcAccuracy <- function(mod,new_data,adj=0) {
 }
 
 getLassoProbs <- function(mod, new_data){
-  # extract labels
-  new_y <- new_data$label
-  
   # extract data
   new_x <- model.matrix(label ~ . - ID, new_data)[,-1]
   
   # make prediction
-  pred <- predict(mod, newx = x.test, type = "response")
+  pred <- predict(mod, newx = new_x, type = "response")
   return(pred)
 }
 
@@ -135,7 +132,7 @@ getROC <- function(mod, data, pred = NULL){
   colgate_ter <- c("#64A50A", "#F0AA00","#0096C8", "#005F46","#FF6914","#004682")
   ## init return dict
   roc_tib <- tibble(
-    cutoff = seq(0,1,by=0.001),
+    cutoff = seq(0,1,by=0.01),
     sensitivity = rep(0,length(cutoff)),
     specificity = rep(0,length(cutoff)),
     accuracy = rep(0,length(cutoff))
