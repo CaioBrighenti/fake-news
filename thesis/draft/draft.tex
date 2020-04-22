@@ -255,10 +255,18 @@ Fine-grained truthfulness; 12. Various sources or publishers.\footnote{Oshikawa,
 the article-level \emph{FakeNewsNet} (FNN) dataset meets most.\footnote{FNN}\\
 \hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}\hspace*{0.333em}FNN
 is an article-level dataset that includes the title and body of each
-article (2), each of which have been profesionally fact-checked by
-Politifact or Gossicop(3). FNN provides both political and celebrity
-news articles, but this paper chooses to use only the political articles
-in order to maintain a roughly consistent corpus ()
+article (2), each of which have been profesionally fact-checked and
+labeled as true or false by Politifact or Gossicop(1, 3). FNN provides
+both political and celebrity news articles, but this paper chooses to
+use only the political articles in order to maintain a roughly
+consistent corpus (4,5,7). These articles are all in English, largely
+center around American politics, and come from a variety of sources (9,
+12). Finally, there is little work needed to obtain the dataset, as FNN
+provides an API to quickly obtain the body and title of each article
+(10). The biggest limitation for FNN is that it lacks a fine-grained
+scale of truth, labeling only as binary true/false (11). However, given
+that it meets the majority of the criteria, and contains XXX
+observations, it is overall a good fit for this paper.
 
 \section{Results}
 
