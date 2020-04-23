@@ -1,0 +1,90 @@
+\ProvidesPackage{thesis}
+
+%% --------------
+%% | Typography |
+%% --------------
+
+% T1 font encoding
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% serif type: Linux Libertine
+\usepackage{libertine}
+% Linux Libertine in math mode
+\usepackage[libertine]{newtxmath}
+
+% grotesque type: Adobe Source Sans Pro
+\usepackage[scaled=.92]{sourcesanspro}
+
+% monospace type: Bera Mono
+\usepackage[scaled=.78]{beramono}
+
+% semi-bold type (for subsections and paragraphs)
+\newcommand*{\sbdefault}{sb}
+\DeclareRobustCommand{\sbseries}{%
+  \not@math@alphabet\sbseries\relax
+  \fontseries\sbdefault\selectfont}
+
+\DeclareTextFontCommand{\textsb}{\sbseries}
+
+\addtokomafont{subsection}{\sbseries}
+\addtokomafont{subsubsection}{\sbseries}
+\addtokomafont{paragraph}{\sbseries}
+
+% microtype for nicer typography
+\usepackage[protrusion=true,expansion=true]{microtype}
+
+% commands for code and model keywords in text
+%\newcommand{\code}[1]{\texttt{\hyphenchar\font45\relax #1}}
+%\newcommand{\model}[1]{\textsf{#1}}
+
+% nicer spacing for enumerations
+\usepackage{enumitem}
+
+%\usepackage{times}
+\typearea[current]{current}
+%\newenvironment{code}{\begingroup\footnotesize \verbatim}{\endverbatim\endgroup}
+
+\addtokomafont{caption}{\small}
+\setkomafont{captionlabel}{\sffamily\bfseries}
+
+%\bibliographystyle{plain}
+\bibliographystyle{abbrv}
+
+\usepackage[english]{babel}
+
+\setlength\parskip{\medskipamount}
+\setlength\parindent{0pt}
+
+\usepackage{latexsym,amsmath,mathtools,textcomp}
+
+\let\openbox\relax
+\usepackage{amsthm}
+
+%\newtheorem{Satz}{Satz}[section]
+%\newtheorem{Definition}[Satz]{Definition}
+%\newtheorem{Lemma}[Satz]{Lemma}
+
+\numberwithin{equation}{section}
+
+\usepackage{graphicx}
+\graphicspath{{figures/}{../figures/}}
+
+\usepackage{array,multirow}
+
+\usepackage{enumitem}
+
+\setlist[enumerate]{topsep=0pt}
+\setlist[itemize]{topsep=0pt}
+\setlist[description]{font=\normalfont,topsep=0pt}
+
+\setlist[enumerate,1]{label= (\roman*)}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\usepackage{subcaption}
+
+\usepackage{xcolor}
+
+\usepackage[plainpages=false,pdfpagelabels=false,citecolor=Black, linkcolor=Black]{hyperref}
