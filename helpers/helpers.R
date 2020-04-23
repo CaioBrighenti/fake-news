@@ -88,6 +88,15 @@ getLassoProbs <- function(mod, new_data){
   return(pred)
 }
 
+getLassoProbsTitles <- function(mod, new_data){
+  # extract data
+  new_x <- as.matrix(new_data[,-1])
+  
+  # make prediction
+  pred <- predict(mod, newx = new_x, type = "response")
+  return(pred)
+}
+
 plotPredictions <- function(mods,dat_test){
   par(mfrow=c(1,length(mods)+1))
   plot(test$label)
@@ -132,7 +141,7 @@ getROC <- function(mod, data, pred = NULL){
   colgate_ter <- c("#64A50A", "#F0AA00","#0096C8", "#005F46","#FF6914","#004682")
   ## init return dict
   roc_tib <- tibble(
-    cutoff = seq(0,1,by=0.01),
+    cutoff = seq(0,1,by=0.001),
     sensitivity = rep(0,length(cutoff)),
     specificity = rep(0,length(cutoff)),
     accuracy = rep(0,length(cutoff))
