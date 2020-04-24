@@ -9,6 +9,7 @@ library(extrafont)
 library(lubridate)
 library(knitr)
 library(kableExtra)
+library(RVAideMemoire)
 
 
 # load fonts
@@ -19,16 +20,45 @@ loadfonts(device = "win", quiet = TRUE)
 source("helpers/loaddata.R")
 source("helpers/helpers.R")
 
-# load in data
+# load in articles
 train_articles <- loadFNNTrain()
+test_articles <- loadFNNTest()
+
+# get lengths
+train_articles$title_length <- sapply(train_articles$title, str_length)
+train_articles$body_length <- sapply(train_articles$text, str_length)
+test_articles$title_length <- sapply(test_articles$title, str_length)
+test_articles$body_length <- sapply(test_articles$text, str_length)
+
+# load in text features
 train <- loadFNNtxtfeat("train") %>% filter(!grepl("gossipcop",ID)) %>%
-  rename(function. = `function`)
+  rename(function. = `function`) %>%
+  left_join(
+    dplyr::select(train_articles, ID, body_length),
+    by = c("ID")
+  ) %>%
+  rename(len  = body_length)
 test <- loadFNNtxtfeat("test") %>% filter(!grepl("gossipcop",ID)) %>%
-  rename(function. = `function`)
+  rename(function. = `function`) %>%
+  left_join(
+    dplyr::select(test_articles, ID, body_length),
+    by = c("ID")
+  ) %>%
+  rename(len  = body_length)
 train_titles <- loadFNNtxtfeat("train_titles") %>% filter(!grepl("gossipcop",ID)) %>%
-  rename(function. = `function`)
+  rename(function. = `function`) %>%
+  left_join(
+    dplyr::select(train_articles, ID, title_length),
+    by = c("ID")
+  ) %>%
+  rename(len  = title_length)
 test_titles <- loadFNNtxtfeat("test_titles") %>% filter(!grepl("gossipcop",ID)) %>%
-  rename(function. = `function`)
+  rename(function. = `function`) %>%
+  left_join(
+    dplyr::select(test_articles, ID, title_length),
+    by = c("ID")
+  ) %>%
+  rename(len  = title_length)
 
 # individual parts
 train_complexity <- loadFNNComplexity("train") %>% filter(!grepl("gossipcop",ID))
@@ -38,6 +68,19 @@ train_NER <- loadFNNNER("train") %>% filter(!grepl("gossipcop",ID))
 
 # LWIC groups
 LWIC_groups <- loadLIWCGroups()
+
+############## PREPROCCESS ##############
+train[,c(117,152)] <- train[,c(117,152)] / train$len * 100
+test[,c(117,152)] <- test[,c(117,152)] / test$len * 100
+train_titles[,c(117,152)] <- train_titles[,c(117,152)] / train_titles$len * 100
+test_titles[,c(117,152)] <- test_titles[,c(117,152)] / test_titles$len * 100
+
+# scale data
+train[,-c(1,2)] <- scale(train[,-c(1,2)])
+test[,-c(1,2)] <- scale(test[,-c(1,2)])
+train_titles[,-c(1,2)] <- scale(train_titles[,-c(1,2)])
+test_titles[,-c(1,2)] <- scale(test_titles[,-c(1,2)])
+
 
 ############## FIT LASSO ############## 
 fitLasso <- function(train_data, seed = 13){
@@ -66,9 +109,7 @@ fitLasso <- function(train_data, seed = 13){
   return(model)
 }
 
-# scale data
-train[,-c(1,2)] <- scale(train[,-c(1,2)])
-test[,-c(1,2)] <- scale(test[,-c(1,2)])
+
 
 # fit model
 mod.lasso <- fitLasso(train)
@@ -101,7 +142,7 @@ pred2 <- getLassoProbs(mod.lasso2, test)
 getROC(mod.lasso2, test, pred2)
 
 # get accuracy
-calcAccuracyLasso(mod.lasso2, test, pred=pred2, cutoff=0.537)
+calcAccuracyLasso(mod.lasso2, test, pred=pred2, cutoff=0.5)
 
 # grab reduced variables
 vars_kept <- names(mod.coefs2[,1][which(abs(mod.coefs2[,1]) > 0)])[-1]
@@ -125,7 +166,7 @@ pred3 <- predict(mod3, test2, type="response")
 getROC(mod3, test2, pred3)
 
 # get accuracy
-calcAccuracyLasso(mod3, test2, pred=pred3, cutoff=0.5)
+calcAccuracyLasso(mod3, test2, pred=pred3, cutoff=0.2)
 
 
 ############## GET IMPORTANT VARIABLES ############## 
@@ -204,9 +245,6 @@ fitLassoTitles <- function(train_data, seed = 13){
   # return final model
   return(model)
 }
-# scale data
-train_titles[,-c(1,2)] <- scale(train_titles[,-c(1,2)])
-test_titles[,-c(1,2)] <- scale(test_titles[,-c(1,2)])
 
 # drop ID
 train_titles2 <- train_titles %>% dplyr::select(-ID, -LS, -PDT, -swear, -assent, -nonflu, -filler, -LS, -RBS, -UH, -`WP$`) %>% drop_na()
@@ -253,7 +291,7 @@ pred.titles2 <- predict(mod.titles2, test_titles3, type="response")
 getROC(mod.titles2, test_titles3, pred.titles2)
 
 # get accuracy
-calcAccuracyLasso(mod.titles2, test_titles3, pred=pred.titles2, cutoff=0.47)
+calcAccuracyLasso(mod.titles2, test_titles3, pred=pred.titles2, cutoff=0.365)
 
 ############## GET IMPORTANT VARIABLES ############## 
 # variable importance
@@ -289,6 +327,7 @@ coefs_merge.titles %>%
   filter(pval_group != "> 0.1") %>%
   ggplot(aes(x=coef,y=varimp)) +
   geom_point(aes(shape=pval_group)) +
+  xlim(-1.5,1.5) + 
   geom_vline(xintercept = 0, linetype="longdash", alpha=0.5) + 
   geom_text_repel(aes(label = var)) +
   theme_minimal() +
@@ -474,3 +513,52 @@ POS_table <- tibble(
 "Wh-pronoun",
 "Possessive wh-pronoun",
 "Wh-adverb"))
+
+
+
+################# MEDIAN TEST TABLES
+test_table <- tibble(
+  var = names(train[,-c(1,2)]),
+  med_false = rep(NA,ncol(train) - 2),
+  med_true = rep(NA,ncol(train) - 2),
+  pval = rep(NA,ncol(train) - 2)
+)
+
+for (idx in seq(3,ncol(train))) {
+  test_temp<-mood.medtest(unlist(train[,idx],use.names = FALSE) ~ train$label,
+                          exact = FALSE)
+  meds <- train[,c(2,idx)] %>%
+    group_by(label) %>%
+    summarize_all(median)
+  
+  test_table[idx-2,]$med_false <- pull(filter(meds,label==0)[,2])
+  test_table[idx-2,]$med_true <- pull(filter(meds,label==1)[,2])
+    
+  test_table[idx-2,]$pval <- test_temp$p.value
+}
+
+
+
+tests_sig <- filter(test_table, pval <= 0.05, med_false != med_true) %>%
+  mutate(Result = if_else(med_false > med_true, "Fake > Real", "Real > Fake")) %>%
+  mutate(
+    pval_group = case_when(
+      pval <= 0.001 ~ "< 0.001",
+      pval <= 0.01 ~ "< 0.01",
+      pval <= 0.05 ~ "< 0.05",
+      pval <= 0.1 ~ "< 0.1",
+      TRUE ~ "> 0.1"
+    )
+  )
+
+
+gruppi_table <- tibble(
+  var = c("SMOG","FK","WC","WPS","shehe","auxverb"),
+  `Gruppi et al.` = c("Agree","Disagree","Disagree","Agree","Agree","Agree")
+)
+
+obrien_table <- tibble(
+  var = c("wc","Quote","FK","NN","DT","shehe","TTR","mu_sentence")
+)
+
+

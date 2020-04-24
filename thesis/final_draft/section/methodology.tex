@@ -19,11 +19,14 @@ The choice of using features capturing exclusively textual properties is motivat
 
 This paper uses the FNN dataset to obtain the title and body of articles as well as a true/false label, then leverages a series of natural language processing tools to engineer features describing the text. Each feature is calculated for both the body and the title seperately. Each feature falls under one of four categories: 1) complexity metrics, 2) summary, grammatical, and psychological metrics from the Linguistic Inquiry and Word Count engine,\footnote{} 3) parts-of-speech tagging, and 4) named entity recognition. Each category represents a different method or tool for feature engineering. Each feature engineered is displayed in the tables below.\footnote{And described in detail in Appendix A}
 
+The complexity metrics are calculated in three different ways. Several of these metrics are indexes of textual complexity calculated using the ```quanteda``` package in R. Others are variables describing the structure of verb-phrase and noun-phrase trees obtained for each sentence using the Stanford CoreNLP constituency parser. The final complexity metric is a manually computed type-token ratio, where types are all the unique words in a document and tokens are the total words in that document, capturing the diversity of the vocabulary used.
+
 \begin{longtable}[t]{ll}
 \caption{\label{tab:}Complexity Metrics}\\
 \toprule
 Variable & Description\\
 \midrule
+len & Document length \\
 mu\_sentence & Mean number of sentences\\
 mu\_verb\_phrase & Mean depth of verb-phrase trees\\
 mu\_noun\_phrase & Mean depth of noun-phrase trees\\
@@ -49,6 +52,8 @@ CL & Coleman-Liau Index\\
 ARI & Automated Readability Index\\
 \bottomrule
 \end{longtable}
+
+The LIWC features comprise a diverse range of different metrics, many capturing the different psychological components within the text such as cognitive processeses, or core drives and needs.\footnote{For a full description of each of these variables, consult Appendix A or the LIWC Operator's Manual available at}. Some LIWC variables capture simpler properties, such as the frequency of informal speech or specific punctuation marks. As LIWC's metrics are heavily dependent on counting words from dictionaries, each metric is normalized by the text of the document, providing a sense of how frequently types of words occur in a standard document size.
 
 \begin{longtable}[t]{ll}
 \caption{\label{tab:}LIWC Metrics}\\
@@ -169,6 +174,8 @@ OtherP & Other punctuation\\
 \bottomrule
 \end{longtable}
 
+All features falling under the third and fourth categories were obtained using the Stanford CoreNLP toolkit. Specifically, the grammatical incidence variables were obtained using the CoreNLP parts-of-speech tagger, which counts the frequency of types of words (for instance, verbs) within a document. As before, these metrics were normalized to account for differing document lengths. Finally, the named entity recognition feature is obtained using the CoreNLP named entity recognition annotator, which simply counts the total number of words that refer to named proper nouns.
+
 \begin{longtable}[t]{ll}
 \caption{\label{tab:}POS Metrics}\\
 \toprule
@@ -219,12 +226,6 @@ WP\$ & Possessive wh-pronoun\\
 WRB & Wh-adverb\\
 \bottomrule
 \end{longtable}
-
-The complexity metrics are calculated in three different ways. Several of these metrics are indexes of textual complexity calculated using the ```quanteda``` package in R. Others are variables describing the structure of verb-phrase and noun-phrase trees obtained for each sentence using the Stanford CoreNLP constituency parser. The final complexity metric is a manually computed type-token ratio, where types are all the unique words in a document and tokens are the total words in that document, capturing the diversity of the vocabulary used.
-
-The LIWC features comprise a diverse range of different metrics, many capturing the different psychological components within the text such as cognitive processeses, or core drives and needs.\footnote{For a full description of each of these variables, consult Appendix A or the LIWC Operator's Manual available at}. Some LIWC variables capture simpler properties, such as the frequency of informal speech or specific punctuation marks. As LIWC's metrics are heavily dependent on counting words from dictionaries, each metric is normalized by the text of the document, providing a sense of how frequently types of words occur in a standard document size.
-
-All features falling under the third and fourth categories were obtained using the Stanford CoreNLP toolkit. Specifically, the grammatical incidence variables were obtained using the CoreNLP parts-of-speech tagger, which counts the frequency of types of words (for instance, verbs) within a document. As before, these metrics were normalized to account for differing document lengths. Finally, the named entity recognition feature is obtained using the CoreNLP named entity recognition annotator, which simply counts the total number of words that refer to named proper nouns.
 
 \section{Outlier Removal}
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7380 64-bit) (preloaded format=pdflatex 2020.4.16)  23 APR 2020 14:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7380 64-bit) (preloaded format=pdflatex 2020.4.16)  24 APR 2020 17:42
 entering extended mode
 **./results.tex
 (results.tex
@@ -1370,20 +1370,162 @@ Package: numprint 2012/08/20 v1.39 Print numbers (HH)
 \c@nprt@blockcnt=\count333
 \c@nprt@cntprint=\count334
  No configuration file `numprint.cfg' found.)
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/tools\longtable.st
+y"
+Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
+\LTleft=\skip88
+\LTright=\skip89
+\LTpre=\skip90
+\LTpost=\skip91
+\LTchunksize=\count335
+\LTcapwidth=\dimen279
+\LT@head=\box67
+\LT@firsthead=\box68
+\LT@foot=\box69
+\LT@lastfoot=\box70
+\LT@cols=\count336
+\LT@rows=\count337
+\c@LT@tables=\count338
+\c@LT@chunks=\count339
+\LT@p@ftn=\toks57
+)
+Class scrbook Info: longtable captions redefined on input line 19.
+
 ("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/natbib\natbib.sty"
 Package: natbib 2010/09/13 8.31b (PWD, AO)
-\bibhang=\skip88
-\bibsep=\skip89
+\bibhang=\skip92
+\bibsep=\skip93
 LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count335
-)))
-No file results.aux.
+\c@NAT@ctr=\count340
+)
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/booktabs\booktabs.
+sty"
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen280
+\lightrulewidth=\dimen281
+\cmidrulewidth=\dimen282
+\belowrulesep=\dimen283
+\belowbottomsep=\dimen284
+\aboverulesep=\dimen285
+\abovetopsep=\dimen286
+\cmidrulesep=\dimen287
+\cmidrulekern=\dimen288
+\defaultaddspace=\dimen289
+\@cmidla=\count341
+\@cmidlb=\count342
+\@aboverulesep=\dimen290
+\@belowrulesep=\dimen291
+\@thisruleclass=\count343
+\@lastruleclass=\count344
+\@thisrulewidth=\dimen292
+)
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/wrapfig\wrapfig.st
+y"
+\wrapoverhang=\dimen293
+\WF@size=\dimen294
+\c@WF@wrappedlines=\count345
+\WF@box=\box71
+\WF@everypar=\toks58
+Package: wrapfig 2003/01/31  v 3.6
+)
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/colortbl\colortbl.
+sty"
+Package: colortbl 2020/01/04 v1.0e Color table columns (DPC)
+\everycr=\toks59
+\minrowclearance=\skip94
+)
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/pdflscape\pdflscap
+e.sty"
+Package: pdflscape 2019/12/05 v0.12 Display of landscape pages in PDF (HO)
+
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\lscape.st
+y"
+Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
+) ("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/tabu\tabu.sty"
+Package: tabu 2019/01/11 v2.9 - flexible LaTeX tabulars (FC+tabu-fixed)
+
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/varwidth\varwidth.
+sty"
+Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
+\@vwid@box=\box72
+\sift@deathcycles=\count346
+\@vwid@loff=\dimen295
+\@vwid@roff=\dimen296
+)
+\c@taburow=\count347
+\tabu@nbcols=\count348
+\tabu@cnt=\count349
+\tabu@Xcol=\count350
+\tabu@alloc=\count351
+\tabu@nested=\count352
+\tabu@target=\dimen297
+\tabu@spreadtarget=\dimen298
+\tabu@naturalX=\dimen299
+\tabucolX=\dimen300
+\tabu@Xsum=\dimen301
+\extrarowdepth=\dimen302
+\abovetabulinesep=\dimen303
+\belowtabulinesep=\dimen304
+\tabustrutrule=\dimen305
+\tabu@thebody=\toks60
+\tabu@footnotes=\toks61
+\tabu@box=\box73
+\tabu@arstrutbox=\box74
+\tabu@hleads=\box75
+\tabu@vleads=\box76
+\tabu@cellskip=\skip95
+)
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/threeparttable\thr
+eeparttable.sty"
+Package: threeparttable 2003/06/13  v 3.0
+\@tempboxb=\box77
+)
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/threeparttablex\th
+reeparttablex.sty"
+Package: threeparttablex 2013/07/23 v0.3 by daleif
+
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/environ\environ.st
+y"
+Package: environ 2014/05/04 v0.3 A new way to define environments
+
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/trimspaces\trimspa
+ces.sty"
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+))
+\TPTL@width=\skip96
+)
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/ulem\ulem.sty"
+\UL@box=\box78
+\UL@hyphenbox=\box79
+\UL@skip=\skip97
+\UL@hook=\toks62
+\UL@height=\dimen306
+\UL@pe=\count353
+\UL@pixel=\dimen307
+\ULC@box=\box80
+Package: ulem 2019/11/18
+\ULdepth=\dimen308
+)
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/makecell\makecell.
+sty"
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+\rotheadsize=\dimen309
+\c@nlinenum=\count354
+\TeXr@lab=\toks63
+))) (results.aux
+
+LaTeX Warning: Label `tab:' multiply defined.
+
+)
 \openout1 = `results.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/nxlmi/m/it on input line 2.
 LaTeX Font Info:    Trying to load font information for OML+nxlmi on input line
  2.
-("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/newtx\omlnxlmi.fd"
+ ("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/newtx\omlnxlmi.fd
+"
 File: omlnxlmi.fd 2013/11/19 Fontinst v1.933 font definitions for OML/nxlmi.
 )
 LaTeX Font Info:    ... okay on input line 2.
@@ -1400,14 +1542,14 @@ LaTeX Font Info:    ... okay on input line 2.
 LaTeX Font Info:    Checking defaults for U/ntxexa/m/n on input line 2.
 LaTeX Font Info:    Trying to load font information for U+ntxexa on input line 
 2.
- ("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/newtx\untxexa.fd"
+
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/newtx\untxexa.fd"
 File: untxexa.fd 2012/04/16 Fontinst v1.933 font definitions for U/ntxexa.
 )
 LaTeX Font Info:    ... okay on input line 2.
 LaTeX Font Info:    Checking defaults for LMS/ntxsy/m/n on input line 2.
 LaTeX Font Info:    Trying to load font information for LMS+ntxsy on input line
  2.
-
 ("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/newtx\lmsntxsy.fd"
 File: lmsntxsy.fd 2016/07/02 Fontinst v1.933 font definitions for LMS/ntxsy.
 )
@@ -1433,8 +1575,8 @@ LaTeX Font Info:    ... okay on input line 2.
 Package scrbase Info: activating english \contentsname on input line 2.
 Package scrbase Info: activating english \listfigurename on input line 2.
 Package scrbase Info: activating english \listtablename on input line 2.
-\c@mv@tabular=\count336
-\c@mv@boldtabular=\count337
+\c@mv@tabular=\count355
+\c@mv@boldtabular=\count356
 LaTeX Info: Redefining \microtypecontext on input line 2.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
@@ -1454,37 +1596,37 @@ Package microtype Info: Loading generic protrusion settings for font family
 ("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/context/base/mkii\supp-p
 df.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count338
-\scratchdimen=\dimen279
-\scratchbox=\box67
-\nofMPsegments=\count339
-\nofMParguments=\count340
-\everyMPshowfont=\toks57
-\MPscratchCnt=\count341
-\MPscratchDim=\dimen280
-\MPnumerator=\count342
-\makeMPintoPDFobject=\count343
-\everyMPtoPDFconversion=\toks58
+\scratchcounter=\count357
+\scratchdimen=\dimen310
+\scratchbox=\box81
+\nofMPsegments=\count358
+\nofMParguments=\count359
+\everyMPshowfont=\toks64
+\MPscratchCnt=\count360
+\MPscratchDim=\dimen311
+\MPnumerator=\count361
+\makeMPintoPDFobject=\count362
+\everyMPtoPDFconversion=\toks65
 )
 ("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/epstopdf-pkg\epsto
 pdf-base.sty"
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
-
-("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/grfext\grfext.sty"
-Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
-)
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 85.
-Package grfext Info: Graphics extension search list:
-(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
-G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 504.
 ) ABD: EveryShipout initializing macros
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
+Package caption Info: longtable package is loaded.
+
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\ltcaption.
+sty"
+Package: ltcaption 2018/08/26 v1.4a longtable captions (AR)
+)
+Package caption Info: threeparttable package is loaded.
+Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
-\AtBeginShipoutBox=\box68
+\AtBeginShipoutBox=\box82
 Package hyperref Info: Link coloring OFF on input line 2.
 
 ("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/hyperref\nameref.s
@@ -1499,11 +1641,12 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ettitlestring.sty"
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count344
+\c@section@level=\count363
 )
 LaTeX Info: Redefining \ref on input line 2.
 LaTeX Info: Redefining \pageref on input line 2.
 LaTeX Info: Redefining \nameref on input line 2.
+ (results.out) (results.out)
 \@outlinefile=\write4
 \openout4 = `results.out'.
 
@@ -1526,7 +1669,7 @@ File: bkm-pdftex.def 2019/12/03 v1.28 bookmark driver for pdfTeX (HO)
 Package auxhook Info: \AddLineBeginMainAux comes a little late,
 (auxhook)             because the main .aux file is already opened on input lin
 e 168.
-\BKM@id=\count345
+\BKM@id=\count364
 ))
 chapter 1.
 
@@ -1562,45 +1705,113 @@ LaTeX Font Info:    Font shape `T1/SourceSansPro-LF/b/n' will be
 (Font)              scaled to size 11.03998pt on input line 4.
 LaTeX Font Info:    Font shape `T1/SourceSansPro-LF/b/n' will be
 (Font)              scaled to size 22.88956pt on input line 4.
- [1
+LaTeX Font Info:    Font shape `T1/SourceSansPro-LF/b/n' will be
+(Font)              scaled to size 15.89755pt on input line 9.
+LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/n' will be
+(Font)              scaled to size 12.0pt on input line 11.
+
+
+LaTeX Warning: Reference `methodology' on page 1 undefined on input line 11.
+
+LaTeX Font Info:    Trying to load font information for OT1+LinuxLibertineT-TLF
+ on input line 11.
+
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/libertine\ot1linux
+libertinet-tlf.fd"
+File: OT1LinuxLibertineT-TLF.fd 2017/03/20 (autoinst) Font definitions for OT1/
+LinuxLibertineT-TLF.
+)
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 12.0pt on input line 11.
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `LinuxLibertineT-TLF' (encoding: OT1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 8.8pt on input line 11.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 6.6pt on input line 11.
+LaTeX Font Info:    Trying to load font information for U+ntxmia on input line 
+11.
+
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/newtx\untxmia.fd"
+File: untxmia.fd 2018/04/14 Fontinst v1.933 font definitions for U/ntxmia.
+)
+LaTeX Font Info:    Trying to load font information for U+ntxsym on input line 
+11.
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/newtx\untxsym.fd"
+File: untxsym.fd 2015/03/20 Fontinst v1.933 font definitions for U/ntxsym.
+)
+LaTeX Font Info:    Trying to load font information for U+ntxsyc on input line 
+11.
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/newtx\untxsyc.fd"
+File: untxsyc.fd 2012/04/12 Fontinst v1.933 font definitions for U/ntxsyc.
+)
+LaTeX Font Info:    Trying to load font information for U+lasy on input line 11
+.
+("C:\Users\caiob\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\ulasy.fd"
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 10.95pt on input line 14.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-LF/m/n' will be
+(Font)              scaled to size 10.07397pt on input line 14.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-LF/b/n' will be
+(Font)              scaled to size 10.07397pt on input line 14.
+
+[1
 
 
 
 {C:/Users/caiob/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 9.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 9.
+LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/sl' in size <12> not a
+vailable
+(Font)              Font shape `T1/LinuxLibertineT-TLF/m/it' tried instead on i
+nput line 99.
+LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/it' will be
+(Font)              scaled to size 12.0pt on input line 99.
+ [2]
+[3] [4]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 132.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 132.
  (results.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 9.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 9.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 132.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 132.
+Package rerunfilecheck Info: File `results.out' has not changed.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
 
-Package rerunfilecheck Warning: File `results.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
+LaTeX Warning: There were undefined references.
 
-Package rerunfilecheck Info: Checksums for `results.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  D41D8CD98F00B204E9800998ECF8427E;0.
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 29130 strings out of 480930
- 549383 string characters out of 2899761
- 1067575 words of memory out of 3000000
- 44438 multiletter control sequences out of 15000+200000
- 568422 words of font info for 42 fonts, out of 3000000 for 9000
+ 30785 strings out of 480930
+ 576411 string characters out of 2899761
+ 1080575 words of memory out of 3000000
+ 45932 multiletter control sequences out of 15000+200000
+ 632112 words of font info for 111 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 86i,7n,137p,10169b,365s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 86i,10n,137p,10169b,621s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/caiob/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/libertine/l
-btn_76gpa5.enc}{C:/Users/caiob/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvip
-s/sourcesanspro/a_ggs4wk.enc}<C:/Users/caiob/AppData/Local/Programs/MiKTeX 2.9/
-fonts/type1/public/libertine/LinLibertineT.pfb><C:/Users/caiob/AppData/Local/Pr
-ograms/MiKTeX 2.9/fonts/type1/adobe/sourcesanspro/SourceSansPro-Bold.pfb>
-Output written on results.pdf (1 page, 130200 bytes).
+btn_7grukw.enc}{C:/Users/caiob/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvip
+s/libertine/lbtn_oexx6f.enc}{C:/Users/caiob/AppData/Local/Programs/MiKTeX 2.9/f
+onts/enc/dvips/libertine/lbtn_nh77jq.enc}{C:/Users/caiob/AppData/Local/Programs
+/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_76gpa5.enc}{C:/Users/caiob/AppData/L
+ocal/Programs/MiKTeX 2.9/fonts/enc/dvips/sourcesanspro/a_ggs4wk.enc}<C:/Users/c
+aiob/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/newtx/LibertineMathMI
+.pfb><C:/Users/caiob/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/liber
+tine/LinLibertineT.pfb><C:/Users/caiob/AppData/Local/Programs/MiKTeX 2.9/fonts/
+type1/public/libertine/LinLibertineTB.pfb><C:/Users/caiob/AppData/Local/Program
+s/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineTI.pfb><C:/Users/caiob/Ap
+pData/Local/Programs/MiKTeX 2.9/fonts/type1/public/newtx/NewTXMI.pfb><C:/Users/
+caiob/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/adobe/sourcesanspro/SourceS
+ansPro-Bold.pfb>
+Output written on results.pdf (4 pages, 280517 bytes).
 PDF statistics:
- 29 PDF objects out of 1000 (max. 8388607)
- 3 named destinations out of 1000 (max. 500000)
- 7189 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 74 PDF objects out of 1000 (max. 8388607)
+ 10 named destinations out of 1000 (max. 500000)
+ 24101 words of extra memory for PDF output out of 24883 (max. 10000000)
 

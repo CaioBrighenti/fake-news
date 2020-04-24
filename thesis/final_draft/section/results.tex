@@ -6,4 +6,127 @@
 
 This section summarizes the results of the analysis, starting with the pairwise Mood's Median tests followed by the results of the modeling process. Results are compared with the work of Horne et al. and Gruppi et al. to highlight overlaps and disagreements between their results and the results of this paper.
 
+\section{Mood's Median Test}
+
+For each feature described in \ref{methodology}, a Mood's Median Test was used to test for differences between real and fake news. The table below includes the result of these tests, excluding tests with resulting p-values of $>0.05$. For each predictor, the p-value of the test is given, along with a comparison of the groupwise medians to indicate which group is higher. Furthermore, as many of the features used in this paper are also used in O'Brien et al. and Gruppi et al., we indicate, when available, whether the results of these tests agree with the results found in both papers. As both papers First, a table including results for the body of articles is included, then for the titles. 
+
+\begin{longtable}[t]{lllll}
+\caption{\label{tab:}Results of Mood's Median Tests - Article Body}\\
+\toprule
+var & Result & pval\_group & Gruppi et al. & O'Brien et al.\\
+\midrule
+mu\_sentence & Real > Fake & < 0.001 & - & Disagree\\
+mu\_verb\_phrase & Real > Fake & < 0.001 & - & -\\
+num\_verb\_phrase & Fake > Real & < 0.05 & - & -\\
+swc & Real > Fake & < 0.001 & - & -\\
+types & Fake > Real & < 0.05 & - & -\\
+\addlinespace
+tokens & Fake > Real & < 0.001 & - & -\\
+TTR & Real > Fake & < 0.001 & - & Disagree\\
+FOG & Real > Fake & < 0.001 & - & -\\
+SMOG & Real > Fake & < 0.001 & Agree & -\\
+FK & Real > Fake & < 0.001 & Disagree & Agree\\
+\addlinespace
+CL & Fake > Real & < 0.01 & - & -\\
+ARI & Real > Fake & < 0.001 & - & -\\
+WC & Fake > Real & < 0.01 & Disagree & -\\
+Tone & Fake > Real & < 0.001 & - & -\\
+WPS & Real > Fake & < 0.001 & Agree & -\\
+\addlinespace
+shehe & Real > Fake & < 0.001 & Agree & Disagree\\
+article & Real > Fake & < 0.001 & - & -\\
+prep & Real > Fake & < 0.001 & - & -\\
+auxverb & Real > Fake & < 0.05 & Agree & -\\
+conj & Fake > Real & < 0.001 & - & -\\
+\addlinespace
+posemo & Fake > Real & < 0.001 & - & -\\
+negemo & Real > Fake & < 0.001 & - & -\\
+anger & Real > Fake & < 0.001 & - & -\\
+male & Real > Fake & < 0.001 & - & -\\
+cogproc & Fake > Real & < 0.001 & - & -\\
+\addlinespace
+insight & Real > Fake & < 0.05 & - & -\\
+discrep & Fake > Real & < 0.05 & - & -\\
+differ & Fake > Real & < 0.01 & - & -\\
+percept & Real > Fake & < 0.05 & - & -\\
+see & Real > Fake & < 0.001 & - & -\\
+\addlinespace
+hear & Real > Fake & < 0.001 & - & -\\
+feel & Real > Fake & < 0.01 & - & -\\
+bio & Real > Fake & < 0.001 & - & -\\
+body & Real > Fake & < 0.01 & - & -\\
+health & Real > Fake & < 0.05 & - & -\\
+\addlinespace
+drives & Fake > Real & < 0.001 & - & -\\
+affiliation & Fake > Real & < 0.001 & - & -\\
+achieve & Fake > Real & < 0.001 & - & -\\
+focuspast & Real > Fake & < 0.001 & - & -\\
+focuspresent & Fake > Real & < 0.001 & - & -\\
+\addlinespace
+relativ & Real > Fake & < 0.01 & - & -\\
+time & Real > Fake & < 0.001 & - & -\\
+work & Fake > Real & < 0.05 & - & -\\
+leisure & Real > Fake & < 0.001 & - & -\\
+money & Fake > Real & < 0.001 & - & -\\
+\addlinespace
+AllPunc & Fake > Real & < 0.01 & - & -\\
+Period & Fake > Real & < 0.001 & - & -\\
+Dash & Fake > Real & < 0.01 & - & -\\
+Quote & Real > Fake & < 0.001 & - & Agree\\
+Apostro & Real > Fake & < 0.05 & - & -\\
+\addlinespace
+Parenth & Fake > Real & < 0.01 & - & -\\
+CC & Fake > Real & < 0.01 & - & -\\
+DT & Fake > Real & < 0.05 & - & Disagree\\
+IN & Fake > Real & < 0.05 & - & -\\
+JJ & Fake > Real & < 0.01 & - & -\\
+\addlinespace
+MD & Fake > Real & < 0.05 & - & -\\
+NN & Fake > Real & < 0.001 & - & Disagree\\
+NNS & Fake > Real & < 0.001 & - & -\\
+NNP & Fake > Real & < 0.05 & - & -\\
+NNPS & Fake > Real & < 0.001 & - & -\\
+\addlinespace
+TO & Fake > Real & < 0.001 & - & -\\
+VB & Fake > Real & < 0.05 & - & -\\
+VBN & Fake > Real & < 0.01 & - & -\\
+VBP & Fake > Real & < 0.05 & - & -\\
+VBZ & Fake > Real & < 0.01 & - & -\\
+\addlinespace
+NER & Real > Fake & < 0.001 & - & -\\
+len & Fake > Real & < 0.001 & - & -\\
+\bottomrule
+\end{longtable}
+
+blabla text body
+
+\begin{longtable}[t]{lll}
+\caption{\label{tab:}Results of Mood's Median Tests - Article Titles}\\
+\toprule
+var & Result & pval\_group\\
+\midrule
+types & Real > Fake & < 0.001\\
+tokens & Real > Fake & < 0.001\\
+TTR & Fake > Real & < 0.001\\
+SMOG & Real > Fake & < 0.001\\
+FK & Real > Fake & < 0.05\\
+\addlinespace
+CL & Fake > Real & < 0.01\\
+ARI & Real > Fake & < 0.05\\
+WC & Real > Fake & < 0.001\\
+WPS & Real > Fake & < 0.001\\
+function. & Real > Fake & < 0.001\\
+\addlinespace
+prep & Real > Fake & < 0.05\\
+verb & Real > Fake & < 0.001\\
+social & Real > Fake & < 0.001\\
+space & Real > Fake & < 0.05\\
+NNP & Real > Fake & < 0.001\\
+\addlinespace
+len & Real > Fake & < 0.001\\
+\bottomrule
+\end{longtable}
+
+\section{Modeling}
+
 \end{document}
