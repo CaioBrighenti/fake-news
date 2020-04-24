@@ -558,6 +558,60 @@ gruppi_table <- tibble(
 )
 
 obrien_table <- tibble(
+  var = c("wc","Quote","FK","NN","DT","shehe","TTR","mu_sentence"),
+  `O'Brien et al.` = c("Disagree","Agree","Agree","Disagree","Disagree","Disagree","Disagree","Disagree")
+)
+
+tests_sig <- tests_sig %>%
+  left_join(gruppi_table) %>%
+  left_join(obrien_table) %>%
+  mutate(
+    `Gruppi et al.` = ifelse(is.na(`Gruppi et al.`),"-",`Gruppi et al.`),
+    `O'Brien et al.` = ifelse(is.na(`O'Brien et al.`),"-",`O'Brien et al.`)
+  )
+
+################# MEDIAN TEST TABLES - TITLES
+test_table <- tibble(
+  var = names(train_titles[,-c(1,2)]),
+  med_false = rep(NA,ncol(train_titles) - 2),
+  med_true = rep(NA,ncol(train_titles) - 2),
+  pval = rep(NA,ncol(train_titles) - 2)
+)
+
+for (idx in seq(3,ncol(train_titles))) {
+  test_temp<-mood.medtest(unlist(train_titles[,idx],use.names = FALSE) ~ train_titles$label,
+                          exact = FALSE)
+  meds <- train_titles[,c(2,idx)] %>%
+    group_by(label) %>%
+    summarize_all(median)
+  
+  test_table[idx-2,]$med_false <- pull(filter(meds,label==0)[,2])
+  test_table[idx-2,]$med_true <- pull(filter(meds,label==1)[,2])
+  
+  test_table[idx-2,]$pval <- test_temp$p.value
+}
+
+
+
+tests_sig <- filter(test_table, pval <= 0.05, med_false != med_true) %>%
+  mutate(Result = if_else(med_false > med_true, "Fake > Real", "Real > Fake")) %>%
+  mutate(
+    pval_group = case_when(
+      pval <= 0.001 ~ "< 0.001",
+      pval <= 0.01 ~ "< 0.01",
+      pval <= 0.05 ~ "< 0.05",
+      pval <= 0.1 ~ "< 0.1",
+      TRUE ~ "> 0.1"
+    )
+  )
+
+
+gruppi_table <- tibble(
+  var = c("SMOG","FK","WC","WPS","shehe","auxverb"),
+  `Gruppi et al.` = c("Agree","Disagree","Disagree","Agree","Agree","Agree")
+)
+
+obrien_table <- tibble(
   var = c("wc","Quote","FK","NN","DT","shehe","TTR","mu_sentence")
 )
 
