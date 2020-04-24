@@ -3,7 +3,6 @@
 library(tidyverse)
 library(glmnet)
 library(caret)
-library(xgboost)
 library(ggrepel)
 library(margins)
 library(extrafont)
@@ -364,7 +363,6 @@ liwc_table <- tibble(
 "Common adverbs",
 "Conjuctions",
 "Negations",
-"Other grammar",
 "Regular verbs",
 "Adjectives",
 "Comparatives",
@@ -435,3 +433,44 @@ liwc_table <- tibble(
 "Apostrophes",
 "Parentheses (pairs)",
 "Other punctuation"))
+
+POS_table <- tibble(
+  var = c("CC","CD","DT","EX","FW","IN","JJ","JJR","JJS","LS",
+  "MD","NN","NNS","NNP","NNPS","PDT","POS","PRP","PRP$","RB","RBR","RBS",
+   "RP","SYM","TO","UH","VB","VBD","VBG","VBN","VBP","VBZ","WDT","WP","WP$","WRB"),
+  description = c("Coordinating conjunctions",
+"Cardinal numeral",
+"Determiner",
+"Existential",
+"Foreign word",
+"Preposition or subordinating conjunction",
+"Ordinal number",
+"Comparative adjective",
+"Superlative adjective",
+"List item marker",
+"Model verb",
+"Noun, singular or mass",
+"Plural noun",
+"Singular proper noun",
+"Plural proper noun",
+"Predeterminer",
+"Possessive ending",
+"Personal pronoun",
+"Possessive pronoun",
+"Adverb",
+"Comparative adverb",
+"Superlative adverb",
+"Particle",
+"Symbol",
+"To",
+"Exclamation/interjection",
+"Verb, base form",
+"Past tense verb",
+"Present participle",
+"Past participle",
+"Present tense verb, other than 3rd person singular",
+"Present tense verb, 3rd person singular",
+"Wh-determiner",
+"Wh-pronoun",
+"Possessive wh-pronoun",
+"Wh-adverb"))

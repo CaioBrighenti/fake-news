@@ -24,16 +24,6 @@ This paper uses the FNN dataset to obtain the title and body of articles as well
 \toprule
 Variable & Description\\
 \midrule
-\endfirsthead
-\caption[]{Complexity Metrics \textit{(continued)}}\\
-\toprule
-Variable & Description\\
-\midrule
-\endhead
-\
-\endfoot
-\bottomrule
-\endlastfoot
 mu\_sentence & Mean number of sentences\\
 mu\_verb\_phrase & Mean depth of verb-phrase trees\\
 mu\_noun\_phrase & Mean depth of noun-phrase trees\\
@@ -56,7 +46,178 @@ FOG & Gunning's Fog Index\\
 SMOG & Simple Measure of Gobbledygook\\
 FK & Flesch-Kincaid Readability Score\\
 CL & Coleman-Liau Index\\
-ARI & Automated Readability Index\\*
+ARI & Automated Readability Index\\
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[t]{ll}
+\caption{\label{tab:}LIWC Metrics}\\
+\toprule
+Variable & Description\\
+\midrule
+WC & Word count\\
+Analytic & Words reflecting formal, logical, and hierarchical thinking\\
+Clout & Words suggesting author is speaking from a position of authority\\
+Authentic & Words associated with a more honest, personal, and disclosing text\\
+Tone & Words associated with positive, upbeat style\\
+\addlinespace
+WPS & Words per sentence\\
+Sixltr & Number of six+ letter words\\
+Dic & unsure\\
+function & Function words\\
+pronoun & Pronouns\\
+\addlinespace
+ppron & Personal pronouns\\
+i & 1st person singular\\
+we & 1st person plural\\
+you & 2nd person\\
+shehe & 3rd person singular\\
+\addlinespace
+they & 3rd person plural\\
+ipron & Impersonal pronoun\\
+article & Articles\\
+prep & Prepositions\\
+auxverb & Auxiliary verbs\\
+\addlinespace
+adverb & Common adverbs\\
+conj & Conjuctions\\
+negate & Negations\\
+verb & Regular verbs\\
+adj & Adjectives\\
+\addlinespace
+compare & Comparatives\\
+interrog & Interrogatives\\
+number & Numbers\\
+quant & Quantifiers\\
+affect & Affect words\\
+\addlinespace
+posemo & Positive emotions\\
+negemo & Negative emotions\\
+anx & Anxiety\\
+anger & Anger\\
+sad & Sad\\
+\addlinespace
+social & Social words\\
+family & Family\\
+friend & Friends\\
+female & Female referents\\
+male & Male referents\\
+\addlinespace
+cogproc & Cognitive processes\\
+insight & Insight\\
+cause & Cause\\
+discrep & Discrepancies\\
+tentat & Tentativeness\\
+\addlinespace
+certain & Certainty\\
+differ & Differentiation\\
+percept & Perceptual processes\\
+see & Seeing\\
+hear & Hearing\\
+\addlinespace
+feel & Feeling\\
+bio & Biological processes\\
+body & Body\\
+health & Health/illness\\
+sexual & Sexuality\\
+\addlinespace
+ingest & Ingesting\\
+drives & Core drives\\
+affiliation & Affiliation\\
+achieve & Achievement\\
+power & Power\\
+\addlinespace
+reward & Reward focus\\
+risk & Risk/prevention focus\\
+focuspast & Past focus\\
+focuspresent & Present focus\\
+focusfuture & Future focus\\
+\addlinespace
+relativ & Relativity\\
+motion & Motion\\
+space & Space\\
+time & Time\\
+work & Work\\
+\addlinespace
+leisure & Leisure\\
+home & Home\\
+money & Money\\
+relig & Religion\\
+death & Death\\
+\addlinespace
+informal & Informal speech\\
+swear & Swear words\\
+netspeak & Netspeak\\
+assent & Assent\\
+nonflu & Nonfluencies\\
+\addlinespace
+filler & Fillers\\
+AllPunc & All punctuation\\
+Period & Periods\\
+Comma & Commas\\
+Colon & Colons\\
+\addlinespace
+SemiC & Semicolons\\
+QMark & Question marks\\
+Exclam & Exclamation marks\\
+Dash & Dashes\\
+Quote & Quotes\\
+\addlinespace
+Apostro & Apostrophes\\
+Parenth & Parentheses (pairs)\\
+OtherP & Other punctuation\\
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[t]{ll}
+\caption{\label{tab:}POS Metrics}\\
+\toprule
+Variable & Description\\
+\midrule
+CC & Coordinating conjunctions\\
+CD & Cardinal numeral\\
+DT & Determiner\\
+EX & Existential\\
+FW & Foreign word\\
+\addlinespace
+IN & Preposition or subordinating conjunction\\
+JJ & Ordinal number\\
+JJR & Comparative adjective\\
+JJS & Superlative adjective\\
+LS & List item marker\\
+\addlinespace
+MD & Model verb\\
+NN & Noun, singular or mass\\
+NNS & Plural noun\\
+NNP & Singular proper noun\\
+NNPS & Plural proper noun\\
+\addlinespace
+PDT & Predeterminer\\
+POS & Possessive ending\\
+PRP & Personal pronoun\\
+PRP. & Possessive pronoun\\
+RB & Adverb\\
+\addlinespace
+RBR & Comparative adverb\\
+RBS & Superlative adverb\\
+RP & Particle\\
+SYM & Symbol\\
+TO & To\\
+\addlinespace
+UH & Exclamation/interjection\\
+VB & Verb, base form\\
+VBD & Past tense verb\\
+VBG & Present participle\\
+VBN & Past participle\\
+\addlinespace
+VBP & Present tense verb, other than 3rd person singular\\
+VBZ & Present tense verb, 3rd person singular\\
+WDT & Wh-determiner\\
+WP & Wh-pronoun\\
+WP\$ & Possessive wh-pronoun\\
+\addlinespace
+WRB & Wh-adverb\\
+\bottomrule
 \end{longtable}
 
 The complexity metrics are calculated in three different ways. Several of these metrics are indexes of textual complexity calculated using the ```quanteda``` package in R. Others are variables describing the structure of verb-phrase and noun-phrase trees obtained for each sentence using the Stanford CoreNLP constituency parser. The final complexity metric is a manually computed type-token ratio, where types are all the unique words in a document and tokens are the total words in that document, capturing the diversity of the vocabulary used.
