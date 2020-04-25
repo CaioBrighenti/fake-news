@@ -166,7 +166,7 @@ pred3 <- predict(mod3, test2, type="response")
 getROC(mod3, test2, pred3)
 
 # get accuracy
-calcAccuracyLasso(mod3, test2, pred=pred3, cutoff=0.2)
+calcAccuracyLasso(mod3, test2, pred=pred3, cutoff=0.5)
 
 
 ############## GET IMPORTANT VARIABLES ############## 
@@ -217,7 +217,7 @@ coefs_merge %>%
     legend.position = "bottom",
     text = element_text(family = "Roboto")
   )
-
+ggsave("thesis/final_draft/figures/body.png",dpi=600)
 
 ############## TITLE MODELS ############## 
 fitLassoTitles <- function(train_data, seed = 13){
@@ -291,7 +291,7 @@ pred.titles2 <- predict(mod.titles2, test_titles3, type="response")
 getROC(mod.titles2, test_titles3, pred.titles2)
 
 # get accuracy
-calcAccuracyLasso(mod.titles2, test_titles3, pred=pred.titles2, cutoff=0.365)
+calcAccuracyLasso(mod.titles2, test_titles3, pred=pred.titles2, cutoff=0.36)
 
 ############## GET IMPORTANT VARIABLES ############## 
 # variable importance
@@ -343,7 +343,7 @@ coefs_merge.titles %>%
     legend.position = "bottom",
     text = element_text(family = "Roboto")
   )
-
+ggsave("thesis/final_draft/figures/titles.png")
 
 ########### SETUP TABLES #############
 complexity_table <- tibble(
@@ -515,7 +515,6 @@ POS_table <- tibble(
 "Wh-adverb"))
 
 
-
 ################# MEDIAN TEST TABLES
 test_table <- tibble(
   var = names(train[,-c(1,2)]),
@@ -558,7 +557,63 @@ gruppi_table <- tibble(
 )
 
 obrien_table <- tibble(
-  var = c("wc","Quote","FK","NN","DT","shehe","TTR","mu_sentence")
+  var = c("wc","Quote","FK","NN","DT","shehe","TTR","mu_sentence"),
+  `Obrien et al.` = c("Disagree","Agree","Agree","Disagree","Disagree","Disagree","Disagree",
+                      "Disagree")
 )
 
+tests_sig <- tests_sig %>%
+  left_join(gruppi_table) %>%
+  left_join(obrien_table) %>%
+  mutate(`Gruppi et al.` = ifelse(is.na(`Gruppi et al.`),"-",`Gruppi et al.`),
+         `Obrien et al.` = ifelse(is.na(`Obrien et al.`),"-",`Obrien et al.`))
+kable(dplyr::select(tests_sig,-med_false,-med_true,-pval), "latex", longtable = T, booktabs = T, caption = "Longtable")
+
+
+################# MEDIAN TEST TABLES - TITLES
+test_table <- tibble(
+  var = names(train_titles[,-c(1,2)]),
+  med_false = rep(NA,ncol(train_titles) - 2),
+  med_true = rep(NA,ncol(train_titles) - 2),
+  pval = rep(NA,ncol(train_titles) - 2)
+)
+
+for (idx in seq(3,ncol(train_titles))) {
+  test_temp<-mood.medtest(unlist(train_titles[,idx],use.names = FALSE) ~ train_titles$label,
+                          exact = FALSE)
+  meds <- train_titles[,c(2,idx)] %>%
+    group_by(label) %>%
+    summarize_all(median)
+  
+  test_table[idx-2,]$med_false <- pull(filter(meds,label==0)[,2])
+  test_table[idx-2,]$med_true <- pull(filter(meds,label==1)[,2])
+  
+  test_table[idx-2,]$pval <- test_temp$p.value
+}
+
+
+
+tests_sig <- filter(test_table, pval <= 0.05, med_false != med_true) %>%
+  mutate(Result = if_else(med_false > med_true, "Fake > Real", "Real > Fake")) %>%
+  mutate(
+    pval_group = case_when(
+      pval <= 0.001 ~ "< 0.001",
+      pval <= 0.01 ~ "< 0.01",
+      pval <= 0.05 ~ "< 0.05",
+      pval <= 0.1 ~ "< 0.1",
+      TRUE ~ "> 0.1"
+    )
+  )
+
+
+obrien_table <- tibble(
+  var = c("WPS","FK","NNP"),
+  `Obrien et al.` = c("Disagree","Agree","Disagree")
+)
+
+tests_sig <- tests_sig %>%
+  left_join(obrien_table) %>%
+  mutate(
+         `Obrien et al.` = ifelse(is.na(`Obrien et al.`),"-",`Obrien et al.`))
+kable(dplyr::select(tests_sig,-med_false,-med_true,-pval), "latex", longtable = T, booktabs = T, caption = "Longtable")
 

@@ -13,6 +13,8 @@
 \contentsline {section}{\numberline {3.3}Outlier Removal}{14}{section.3.3}%
 \contentsline {section}{\numberline {3.4}Data Analysis and Modeling}{14}{section.3.4}%
 \contentsline {chapter}{\numberline {4}Results}{17}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Conclusion}{19}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Contributions}{19}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Future Work}{19}{section.5.2}%
+\contentsline {section}{\numberline {4.1}Mood's Median Test}{17}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Modeling}{20}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Conclusion}{25}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Contributions}{25}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future Work}{26}{section.5.2}%

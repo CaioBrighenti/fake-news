@@ -1,9 +1,22 @@
 \documentclass[../thesis.tex]{subfiles}
 \begin{document}
 \chapter{Conclusion}
-\ldots
+
+This section summarizes the contributions of this paper, describing the effectiveness of an interpretable text-only model, discussing the implications of the divergence in results to comparable papers, outlining the biggest takeways with respect to identifying fake news, and finally offering suggestions for future work in this area.
+
 \section{Contributions}
-\lipsum[21]
+
+This paper set out to build an interpretable model using only features describing the textual properties of fake news. Aditionally, one objective was to demonstrate that such a model can perform close to deep learning approaches, while simultaneously preserving the learning opportunity offered by interpreting results and human-understandable features. Given that the accuracy of both models were similar to that of more advanced models using the same dataset (FNN), it is clear that one need not forgo accuracy entirely when focusing on interpretability.
+
+A significant contribution of this paper is the divergence from prior work following a similar methodology. Given that so few works exist deeply engaging with features describing the text of fake news, it is important to reproduce and verify the little work that has been done. Unfortunately, few of the results in this paper agree with the prior work of O'Brien et al. and Gruppi et al. This suggests that while fake news detection using text factors is certainly possible within a dataset, it may not generalize well to other datasets. 
+
+Considering only the observed results of this paper, several text features make for good predictors of fake news. Fake news uses more prepositions and auxiliary verbs, focuses more on the past, tends to have longer sentences, and uses more exclamation marks, on average, in the body of articles. At the title level, this paper finds less significant distinctions between fake and real articles,  though the model is still quite accurate. Titles of fake news articles tend to use more exclamation points, adverbs, words referring to females, and words referring to the human body than the titles of real news.
+
 \section{Future Work}
-\lipsum[22]
+
+The results of this paper suggest several different viable research paths for fake news detection. Firstly, it is obvious more works following the methodology of this paper, Gruppi et al., and O'Brien et al. Given the significant divergence between the results across the three papers, there is a serious need for further work to identify which properties of fake news are truly significant and not spurious or a product of the particular dataset. Additionally, further work of this type should apply the final model to a completely different dataset, and not simply an out-of-sample test set belonging to the same dataset.
+
+The results of this paper also demonstrate that the gap in interpretable studies is unjustified, given the performance of a simple logistic regression model. As the overreliance on black box models has been identified as a significant limitation of prior work in this field, it would seem particularly prudent for future researchers to follow this direction as opposed to constantly racing for the next state-of-the-art model.
+
+Finally, while an interpretable model can serve as a learning opportunity regarding fake news, offering specific textual properties distinguishing real and fake news, a computer science researcher is not qualified to fully interpret these properties. The overall research objective of identifying relevant textual properties of fake news and using them to better understand the phenomenon in general can only be done in collaboration with researchers from other fields, such as linguists and psychologists. Given the threat that fake news poses, this type of interdisciplinary work is critical, and should be pursued immediately. If understanding fake news is not treated as a serious research objective, the democratic process of the upcoming U.S. presidential election is in significant risk of being compromised.
 \end{document}
