@@ -3,7 +3,7 @@ library(dplyr)
 library(data.table)
 
 # load in FNN outliers
-fnn_outliers <- as.character(read.csv("thesis/outliers.csv")$x)
+fnn_outliers <- as.character(read.csv("thesis/fnn_outliers.csv")$x)
 
 ##################################
 ############## LIAR ##############

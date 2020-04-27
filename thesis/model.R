@@ -75,11 +75,65 @@ test[,c(117,152)] <- test[,c(117,152)] / test$len * 100
 train_titles[,c(117,152)] <- train_titles[,c(117,152)] / train_titles$len * 100
 test_titles[,c(117,152)] <- test_titles[,c(117,152)] / test_titles$len * 100
 
+
+
+
+
+############## PCA ############## 
+library(factoextra)
+train_titlesp <- train_titles[,-c(125,131)]
+res.pca <- prcomp(train_titlesp[,-c(1,2)], scale = TRUE)
+
+fviz_eig(res.pca)
+
+
+fviz_pca_var(res.pca,
+             col.var = "contrib", # Color by contributions to the PC
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE     # Avoid text overlapping
+)
+
+# Results for Variables
+res.var <- get_pca_var(res.pca)
+coord <- as_tibble(res.var$coord) %>% mutate(var = row.names(res.var$coord)) %>% dplyr::select(var,everything())
+contrib <- as_tibble(res.var$contrib) %>% mutate(var = row.names(res.var$contrib)) %>% dplyr::select(var,everything())
+
+coord %>%
+  left_join(contrib, by = c("var"), suffix = c(".coord",".contrib")) %>%
+  dplyr::select(var, Dim.1.contrib, Dim.2.contrib, Dim.1.coord, Dim.2.coord) %>% 
+  mutate(contrib = pmax(Dim.1.contrib,Dim.2.contrib)) %>%
+  filter(contrib >= mean(contrib) + (sd(contrib) * 0.5)) %>%
+  ggplot(aes(x=Dim.2.coord,y=Dim.1.coord,color=contrib)) +
+  geom_text_repel(aes(label=var)) +
+  geom_segment(aes(x=0,y=0,xend = Dim.2.coord, yend = Dim.1.coord),
+               arrow = arrow(length = unit(0.01, "npc"))) + 
+  theme_minimal()
+
+
+# Results for observations
+res.obs <- get_pca_ind(res.pca)
+coord.ind <- as_tibble(res.obs$coord) %>% mutate(ID = train_titles$ID) %>% dplyr::select(ID,everything())
+contrib.ind <- as_tibble(res.obs$contrib) %>% mutate(ID = train_titles$ID) %>% dplyr::select(ID,everything())
+
+coord.ind %>%
+  left_join(contrib.ind, by = c("ID"), suffix = c(".coord",".contrib")) %>%
+  dplyr::select(ID, Dim.1.contrib, Dim.2.contrib, Dim.1.coord, Dim.2.coord) %>% 
+  mutate(contrib = pmax(Dim.1.contrib,Dim.2.contrib)) %>%
+  filter(contrib >= mean(contrib) + (sd(contrib) * 1)) %>%
+  left_join(train_articles) %>% 
+  ggplot(aes(x=Dim.2.coord,y=Dim.1.coord,color=contrib)) +
+  geom_text_repel(aes(label=title)) +
+  geom_segment(aes(x=0,y=0,xend = Dim.2.coord, yend = Dim.1.coord),
+               arrow = arrow(length = unit(0.01, "npc"))) + 
+  theme_minimal()
+
+############## SCALE ##############
 # scale data
 train[,-c(1,2)] <- scale(train[,-c(1,2)])
 test[,-c(1,2)] <- scale(test[,-c(1,2)])
 train_titles[,-c(1,2)] <- scale(train_titles[,-c(1,2)])
 test_titles[,-c(1,2)] <- scale(test_titles[,-c(1,2)])
+
 
 
 ############## FIT LASSO ############## 
@@ -614,5 +668,7 @@ gruppi_table <- tibble(
 obrien_table <- tibble(
   var = c("wc","Quote","FK","NN","DT","shehe","TTR","mu_sentence")
 )
+
+
 
 
