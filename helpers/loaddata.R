@@ -3,7 +3,7 @@ library(dplyr)
 library(data.table)
 
 # load in FNN outliers
-fnn_outliers <- as.character(read.csv("thesis/fnn_outliers.csv")$x)
+fnn_outliers <- as.character(read.csv("thesis/outliers.csv")$x)
 
 ##################################
 ############## LIAR ##############
@@ -70,6 +70,13 @@ loadFNNTest <- function() {
     as_tibble() %>%
     mutate(label = as.factor(label))
   return(test)
+}
+
+loadFNN <- function() {
+  fnn<-fread(file="data/FakeNewsNet/dataset/fnn_data.TSV",sep = '\t', quote="", header = TRUE, encoding="UTF-8") %>%
+    as_tibble() %>%
+    filter(!(ID %in% fnn_outliers))
+  return(fnn)
 }
 
 loadFNNComplexity <- function(str){

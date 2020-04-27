@@ -10,6 +10,7 @@ library(lubridate)
 library(knitr)
 library(kableExtra)
 library(RVAideMemoire)
+library(ggforce)
 
 
 # load fonts
@@ -21,8 +22,9 @@ source("helpers/loaddata.R")
 source("helpers/helpers.R")
 
 # load in articles
-train_articles <- loadFNNTrain()
-test_articles <- loadFNNTest()
+fnn <- loadFNN() %>% filter(!grepl("gossipcop",ID))
+train_articles <- loadFNNTrain() %>% filter(!grepl("gossipcop",ID))
+test_articles <- loadFNNTest() %>% filter(!grepl("gossipcop",ID))
 
 # get lengths
 train_articles$title_length <- sapply(train_articles$title, str_length)
@@ -70,19 +72,29 @@ train_NER <- loadFNNNER("train") %>% filter(!grepl("gossipcop",ID))
 LWIC_groups <- loadLIWCGroups()
 
 ############## PREPROCCESS ##############
+# remove tree depth for title 
+train_titles %>% dplyr::select(-("mu_sentence":"num_verb_phrase"))
+test_titles %>% dplyr::select(-("mu_sentence":"num_verb_phrase"))
+
 train[,c(117,152)] <- train[,c(117,152)] / train$len * 100
 test[,c(117,152)] <- test[,c(117,152)] / test$len * 100
 train_titles[,c(117,152)] <- train_titles[,c(117,152)] / train_titles$len * 100
 test_titles[,c(117,152)] <- test_titles[,c(117,152)] / test_titles$len * 100
 
+# remove constant variance columns
+const_cols_train <- which(apply(train_titles, 2, var)==0)
+const_cols_test <- which(apply(test_titles, 2, var)==0) 
+const_cols <- c(const_cols_train, const_cols_test)
+train_titles <- train_titles[,-const_cols]
+test_titles <- test_titles[,-const_cols]
 
-
+# created merged df
+fnn_titles <- rbind(train_titles, test_titles)
 
 
 ############## PCA ############## 
 library(factoextra)
-train_titlesp <- train_titles[,-c(125,131)]
-res.pca <- prcomp(train_titlesp[,-c(1,2)], scale = TRUE)
+res.pca <- prcomp(fnn_titles[,-c(1,2)], scale = TRUE)
 
 fviz_eig(res.pca)
 
@@ -102,30 +114,45 @@ coord %>%
   left_join(contrib, by = c("var"), suffix = c(".coord",".contrib")) %>%
   dplyr::select(var, Dim.1.contrib, Dim.2.contrib, Dim.1.coord, Dim.2.coord) %>% 
   mutate(contrib = pmax(Dim.1.contrib,Dim.2.contrib)) %>%
-  filter(contrib >= mean(contrib) + (sd(contrib) * 0.5)) %>%
-  ggplot(aes(x=Dim.2.coord,y=Dim.1.coord,color=contrib)) +
+  filter(contrib >= mean(contrib) + (sd(contrib) * 1)) %>%
+  ggplot(aes(x=Dim.1.coord,y=Dim.2.coord,color=contrib)) +
   geom_text_repel(aes(label=var)) +
-  geom_segment(aes(x=0,y=0,xend = Dim.2.coord, yend = Dim.1.coord),
+  geom_segment(aes(x=0,y=0,xend = Dim.1.coord, yend = Dim.2.coord),
                arrow = arrow(length = unit(0.01, "npc"))) + 
-  theme_minimal()
+  geom_hline(yintercept = 0, linetype = "longdash") + 
+  geom_vline(xintercept = 0, linetype = "longdash") + 
+  geom_circle(aes(x0=0,y0=0,r=1), inherit.aes = FALSE) + 
+  scale_x_continuous(limits = c(-1,1)) + 
+  scale_y_continuous(limits = c(-1,1)) + 
+  theme_minimal() +
+  theme(
+    aspect.ratio=1
+  )
 
 
 # Results for observations
 res.obs <- get_pca_ind(res.pca)
-coord.ind <- as_tibble(res.obs$coord) %>% mutate(ID = train_titles$ID) %>% dplyr::select(ID,everything())
-contrib.ind <- as_tibble(res.obs$contrib) %>% mutate(ID = train_titles$ID) %>% dplyr::select(ID,everything())
+coord.ind <- as_tibble(res.obs$coord) %>% mutate(ID = fnn$ID) %>% dplyr::select(ID,everything())
+contrib.ind <- as_tibble(res.obs$contrib) %>% mutate(ID = fnn$ID) %>% dplyr::select(ID,everything())
 
 coord.ind %>%
   left_join(contrib.ind, by = c("ID"), suffix = c(".coord",".contrib")) %>%
-  dplyr::select(ID, Dim.1.contrib, Dim.2.contrib, Dim.1.coord, Dim.2.coord) %>% 
+  left_join(fnn, by = c("ID")) %>%
+  dplyr::select(ID, Dim.1.contrib, Dim.2.contrib, Dim.1.coord, Dim.2.coord, title) %>% 
   mutate(contrib = pmax(Dim.1.contrib,Dim.2.contrib)) %>%
-  filter(contrib >= mean(contrib) + (sd(contrib) * 1)) %>%
-  left_join(train_articles) %>% 
-  ggplot(aes(x=Dim.2.coord,y=Dim.1.coord,color=contrib)) +
+  filter(contrib >= mean(contrib) + (sd(contrib) * 3)) %>%
+  ggplot(aes(x=Dim.1.coord,y=Dim.2.coord,color=contrib)) +
+  geom_point() +
   geom_text_repel(aes(label=title)) +
-  geom_segment(aes(x=0,y=0,xend = Dim.2.coord, yend = Dim.1.coord),
-               arrow = arrow(length = unit(0.01, "npc"))) + 
-  theme_minimal()
+  geom_hline(yintercept = 0, linetype = "longdash") + 
+  geom_vline(xintercept = 0, linetype = "longdash") + 
+  theme_minimal() +
+  theme(
+    aspect.ratio=1
+  )
+
+# NEED TO GRAB TITLES THAT ARE JUST URLS FOR OUTLIER DETECTION
+
 
 ############## SCALE ##############
 # scale data
@@ -435,138 +462,138 @@ liwc_table <- tibble(
           "focuspresent","focusfuture","relativ","motion","space","time","work","leisure","home","money","relig","death","informal","swear","netspeak",
           "assent","nonflu","filler","AllPunc","Period","Comma","Colon","SemiC","QMark","Exclam","Dash","Quote","Apostro","Parenth","OtherP"),
   description = c("Word count","Words reflecting formal, logical, and hierarchical thinking",
-  "Words suggesting author is speaking from a position of authority",
-"Words associated with a more honest, personal, and disclosing text",
-"Words associated with positive, upbeat style",
-"Words per sentence",
-"Number of six+ letter words",
-"unsure",
-"Function words",
-"Pronouns",
-"Personal pronouns",
-"1st person singular",
-"1st person plural",
-"2nd person",
-"3rd person singular",
-"3rd person plural",
-"Impersonal pronoun",
-"Articles",
-"Prepositions",
-"Auxiliary verbs",
-"Common adverbs",
-"Conjuctions",
-"Negations",
-"Regular verbs",
-"Adjectives",
-"Comparatives",
-"Interrogatives",
-"Numbers",
-"Quantifiers",
-"Affect words",
-"Positive emotions",
-"Negative emotions",
-"Anxiety",
-"Anger",
-"Sad",
-"Social words",
-"Family",
-"Friends",
-"Female referents",
-"Male referents",
-"Cognitive processes",
-"Insight",
-"Cause",
-"Discrepancies",
-"Tentativeness",
-"Certainty",
-"Differentiation",
-"Perceptual processes",
-"Seeing",
-"Hearing",
-"Feeling",
-"Biological processes",
-"Body",
-"Health/illness",
-"Sexuality",
-"Ingesting",
-"Core drives",
-"Affiliation",
-"Achievement",
-"Power",
-"Reward focus",
-"Risk/prevention focus",
-"Past focus",
-"Present focus",
-"Future focus",
-"Relativity",
-"Motion",
-"Space",
-"Time",
-"Work",
-"Leisure",
-"Home",
-"Money",
-"Religion",
-"Death",
-"Informal speech",
-"Swear words",
-"Netspeak",
-"Assent",
-"Nonfluencies",
-"Fillers",
-"All punctuation",
-"Periods",
-"Commas",
-"Colons",
-"Semicolons",
-"Question marks",
-"Exclamation marks",
-"Dashes",
-"Quotes",
-"Apostrophes",
-"Parentheses (pairs)",
-"Other punctuation"))
+                  "Words suggesting author is speaking from a position of authority",
+                  "Words associated with a more honest, personal, and disclosing text",
+                  "Words associated with positive, upbeat style",
+                  "Words per sentence",
+                  "Number of six+ letter words",
+                  "unsure",
+                  "Function words",
+                  "Pronouns",
+                  "Personal pronouns",
+                  "1st person singular",
+                  "1st person plural",
+                  "2nd person",
+                  "3rd person singular",
+                  "3rd person plural",
+                  "Impersonal pronoun",
+                  "Articles",
+                  "Prepositions",
+                  "Auxiliary verbs",
+                  "Common adverbs",
+                  "Conjuctions",
+                  "Negations",
+                  "Regular verbs",
+                  "Adjectives",
+                  "Comparatives",
+                  "Interrogatives",
+                  "Numbers",
+                  "Quantifiers",
+                  "Affect words",
+                  "Positive emotions",
+                  "Negative emotions",
+                  "Anxiety",
+                  "Anger",
+                  "Sad",
+                  "Social words",
+                  "Family",
+                  "Friends",
+                  "Female referents",
+                  "Male referents",
+                  "Cognitive processes",
+                  "Insight",
+                  "Cause",
+                  "Discrepancies",
+                  "Tentativeness",
+                  "Certainty",
+                  "Differentiation",
+                  "Perceptual processes",
+                  "Seeing",
+                  "Hearing",
+                  "Feeling",
+                  "Biological processes",
+                  "Body",
+                  "Health/illness",
+                  "Sexuality",
+                  "Ingesting",
+                  "Core drives",
+                  "Affiliation",
+                  "Achievement",
+                  "Power",
+                  "Reward focus",
+                  "Risk/prevention focus",
+                  "Past focus",
+                  "Present focus",
+                  "Future focus",
+                  "Relativity",
+                  "Motion",
+                  "Space",
+                  "Time",
+                  "Work",
+                  "Leisure",
+                  "Home",
+                  "Money",
+                  "Religion",
+                  "Death",
+                  "Informal speech",
+                  "Swear words",
+                  "Netspeak",
+                  "Assent",
+                  "Nonfluencies",
+                  "Fillers",
+                  "All punctuation",
+                  "Periods",
+                  "Commas",
+                  "Colons",
+                  "Semicolons",
+                  "Question marks",
+                  "Exclamation marks",
+                  "Dashes",
+                  "Quotes",
+                  "Apostrophes",
+                  "Parentheses (pairs)",
+                  "Other punctuation"))
 
 POS_table <- tibble(
   var = c("CC","CD","DT","EX","FW","IN","JJ","JJR","JJS","LS",
-  "MD","NN","NNS","NNP","NNPS","PDT","POS","PRP","PRP$","RB","RBR","RBS",
-   "RP","SYM","TO","UH","VB","VBD","VBG","VBN","VBP","VBZ","WDT","WP","WP$","WRB"),
+          "MD","NN","NNS","NNP","NNPS","PDT","POS","PRP","PRP$","RB","RBR","RBS",
+          "RP","SYM","TO","UH","VB","VBD","VBG","VBN","VBP","VBZ","WDT","WP","WP$","WRB"),
   description = c("Coordinating conjunctions",
-"Cardinal numeral",
-"Determiner",
-"Existential",
-"Foreign word",
-"Preposition or subordinating conjunction",
-"Ordinal number",
-"Comparative adjective",
-"Superlative adjective",
-"List item marker",
-"Model verb",
-"Noun, singular or mass",
-"Plural noun",
-"Singular proper noun",
-"Plural proper noun",
-"Predeterminer",
-"Possessive ending",
-"Personal pronoun",
-"Possessive pronoun",
-"Adverb",
-"Comparative adverb",
-"Superlative adverb",
-"Particle",
-"Symbol",
-"To",
-"Exclamation/interjection",
-"Verb, base form",
-"Past tense verb",
-"Present participle",
-"Past participle",
-"Present tense verb, other than 3rd person singular",
-"Present tense verb, 3rd person singular",
-"Wh-determiner",
-"Wh-pronoun",
-"Possessive wh-pronoun",
-"Wh-adverb"))
+                  "Cardinal numeral",
+                  "Determiner",
+                  "Existential",
+                  "Foreign word",
+                  "Preposition or subordinating conjunction",
+                  "Ordinal number",
+                  "Comparative adjective",
+                  "Superlative adjective",
+                  "List item marker",
+                  "Model verb",
+                  "Noun, singular or mass",
+                  "Plural noun",
+                  "Singular proper noun",
+                  "Plural proper noun",
+                  "Predeterminer",
+                  "Possessive ending",
+                  "Personal pronoun",
+                  "Possessive pronoun",
+                  "Adverb",
+                  "Comparative adverb",
+                  "Superlative adverb",
+                  "Particle",
+                  "Symbol",
+                  "To",
+                  "Exclamation/interjection",
+                  "Verb, base form",
+                  "Past tense verb",
+                  "Present participle",
+                  "Past participle",
+                  "Present tense verb, other than 3rd person singular",
+                  "Present tense verb, 3rd person singular",
+                  "Wh-determiner",
+                  "Wh-pronoun",
+                  "Possessive wh-pronoun",
+                  "Wh-adverb"))
 
 
 ################# MEDIAN TEST TABLES
@@ -586,7 +613,7 @@ for (idx in seq(3,ncol(train))) {
   
   test_table[idx-2,]$med_false <- pull(filter(meds,label==0)[,2])
   test_table[idx-2,]$med_true <- pull(filter(meds,label==1)[,2])
-    
+  
   test_table[idx-2,]$pval <- test_temp$p.value
 }
 
@@ -613,7 +640,7 @@ gruppi_table <- tibble(
 obrien_table <- tibble(
   var = c("wc","Quote","FK","NN","DT","shehe","TTR","mu_sentence"),
   `Obrien et al.` = c("Disagree","Agree","Agree","Disagree","Disagree","Disagree","Disagree",
-                      "Disagree")
+                      "Disagree"))
 
 tests_sig <- tests_sig %>%
   left_join(gruppi_table) %>%
@@ -703,7 +730,7 @@ obrien_table <- tibble(
 tests_sig <- tests_sig %>%
   left_join(obrien_table) %>%
   mutate(
-         `Obrien et al.` = ifelse(is.na(`Obrien et al.`),"-",`Obrien et al.`))
+    `Obrien et al.` = ifelse(is.na(`Obrien et al.`),"-",`Obrien et al.`))
 kable(dplyr::select(tests_sig,-med_false,-med_true,-pval), "latex", longtable = T, booktabs = T, caption = "Longtable")
 
 
