@@ -11,6 +11,7 @@ library(knitr)
 library(kableExtra)
 library(RVAideMemoire)
 library(ggforce)
+library(tidytext)
 
 
 # load fonts
@@ -26,41 +27,15 @@ fnn <- loadFNN() %>% filter(!grepl("gossipcop",ID))
 train_articles <- loadFNNTrain() %>% filter(!grepl("gossipcop",ID))
 test_articles <- loadFNNTest() %>% filter(!grepl("gossipcop",ID))
 
-# get lengths
-train_articles$title_length <- sapply(train_articles$title, str_length)
-train_articles$body_length <- sapply(train_articles$text, str_length)
-test_articles$title_length <- sapply(test_articles$title, str_length)
-test_articles$body_length <- sapply(test_articles$text, str_length)
-
 # load in text features
 train <- loadFNNtxtfeat("train") %>% filter(!grepl("gossipcop",ID)) %>%
-  rename(function. = `function`) %>%
-  left_join(
-    dplyr::select(train_articles, ID, body_length),
-    by = c("ID")
-  ) %>%
-  rename(len  = body_length)
+  rename(function. = `function`)
 test <- loadFNNtxtfeat("test") %>% filter(!grepl("gossipcop",ID)) %>%
-  rename(function. = `function`) %>%
-  left_join(
-    dplyr::select(test_articles, ID, body_length),
-    by = c("ID")
-  ) %>%
-  rename(len  = body_length)
+  rename(function. = `function`)
 train_titles <- loadFNNtxtfeat("train_titles") %>% filter(!grepl("gossipcop",ID)) %>%
-  rename(function. = `function`) %>%
-  left_join(
-    dplyr::select(train_articles, ID, title_length),
-    by = c("ID")
-  ) %>%
-  rename(len  = title_length)
+  rename(function. = `function`)
 test_titles <- loadFNNtxtfeat("test_titles") %>% filter(!grepl("gossipcop",ID)) %>%
-  rename(function. = `function`) %>%
-  left_join(
-    dplyr::select(test_articles, ID, title_length),
-    by = c("ID")
-  ) %>%
-  rename(len  = title_length)
+  rename(function. = `function`)
 
 # individual parts
 train_complexity <- loadFNNComplexity("train") %>% filter(!grepl("gossipcop",ID))
@@ -71,15 +46,76 @@ train_NER <- loadFNNNER("train") %>% filter(!grepl("gossipcop",ID))
 # LWIC groups
 LWIC_groups <- loadLIWCGroups()
 
-############## PREPROCCESS ##############
-# remove tree depth for title 
-train_titles %>% dplyr::select(-("mu_sentence":"num_verb_phrase"))
-test_titles %>% dplyr::select(-("mu_sentence":"num_verb_phrase"))
+# get lengths
+fnn$body_length <- str_length(fnn$text)
+fnn$title_length <- str_length(fnn$title)
 
-train[,c(117,152)] <- train[,c(117,152)] / train$len * 100
-test[,c(117,152)] <- test[,c(117,152)] / test$len * 100
-train_titles[,c(117,152)] <- train_titles[,c(117,152)] / train_titles$len * 100
-test_titles[,c(117,152)] <- test_titles[,c(117,152)] / test_titles$len * 100
+# get stopword count
+text_stopwords <- fnn %>% 
+  dplyr::select(-title) %>%
+  unnest_tokens(word, text) %>%
+  filter(word %in% stop_words$word) %>%
+  group_by(ID) %>%
+  count() %>%
+  rename(stopwords = n)
+
+title_stopwords <-  fnn %>% 
+  dplyr::select(-text) %>%
+  unnest_tokens(word, title) %>%
+  filter(word %in% stop_words$word) %>%
+  group_by(ID) %>%
+  count() %>%
+  rename(stopwords = n)
+
+train <- left_join(train, text_stopwords) %>% mutate(stopwords = ifelse(is.na(stopwords),0,stopwords))
+test <- left_join(test, text_stopwords) %>% mutate(stopwords = ifelse(is.na(stopwords),0,stopwords))
+train_titles <- left_join(train_titles, title_stopwords) %>% mutate(stopwords = ifelse(is.na(stopwords),0,stopwords))
+test_titles <- left_join(test_titles, title_stopwords) %>% mutate(stopwords = ifelse(is.na(stopwords),0,stopwords))
+
+# add ALL CAPS
+text_allcaps <- mutate(fnn, all_caps = str_count(text, "[A-Z]")) %>% dplyr::select(ID, all_caps)
+title_allcaps <- mutate(fnn, all_caps = str_count(title, "[A-Z]")) %>% dplyr::select(ID, all_caps)
+
+train <- left_join(train, text_allcaps)
+test <- left_join(test, text_allcaps)
+train_titles <- left_join(train_titles, title_allcaps)
+test_titles <- left_join(test_titles, title_allcaps)
+
+# reorder variables
+colnames(train)
+colnames(train_titles)
+train <- train %>% dplyr::select(ID:ARI,all_caps,stopwords,everything())
+test <- test %>% dplyr::select(ID:ARI,all_caps,stopwords,everything())
+train_titles <- train_titles %>% dplyr::select(ID:ARI,all_caps,stopwords,everything())
+test_titles <- test_titles %>% dplyr::select(ID:ARI,all_caps,stopwords,everything())
+
+############## PREPROCCESS ##############
+# NORMALIZE BY WORD COUNT
+train[,c(23,seq(118,154))] <- train[,c(23,seq(118,154))] / train$WC * 100
+test[,c(23,seq(118,154))] <- test[,c(23,seq(118,154))] / test$WC * 100
+train_titles[,c(23,seq(118,154))] <- train_titles[,c(23,seq(118,154))] / train_titles$WC * 100
+test_titles[,c(23,seq(118,154))] <- test_titles[,c(23,seq(118,154))] / test_titles$WC * 100
+
+# normalize all caps
+train <- left_join(train, dplyr::select(fnn,ID,body_length))
+test <- left_join(test, dplyr::select(fnn,ID,body_length))
+train$all_caps <- train$all_caps / train$body_length * 100
+test$all_caps <- test$all_caps / test$body_length * 100
+
+train_titles <- left_join(train_titles, dplyr::select(fnn,ID,title_length))
+test_titles <- left_join(test_titles, dplyr::select(fnn,ID,title_length))
+train_titles$all_caps <- train_titles$all_caps / train_titles$title_length * 100
+test_titles$all_caps <- test_titles$all_caps / test_titles$title_length * 100
+
+train <- dplyr::select(train, -body_length)
+test <- dplyr::select(test, -body_length)
+train_titles <- dplyr::select(train_titles, -title_length)
+test_titles <- dplyr::select(test_titles, -title_length)
+
+# remove tree depth for title 
+train_titles <- train_titles %>% dplyr::select(-("mu_sentence":"num_verb_phrase"))
+test_titles <- test_titles %>% dplyr::select(-("mu_sentence":"num_verb_phrase"))
+
 
 # remove constant variance columns
 const_cols_train <- which(apply(train_titles, 2, var)==0)
@@ -90,6 +126,7 @@ test_titles <- test_titles[,-const_cols]
 
 # created merged df
 fnn_titles <- rbind(train_titles, test_titles)
+fnn_text <- rbind(train, test)
 
 
 ############## PCA ############## 
@@ -132,15 +169,15 @@ coord %>%
 
 # Results for observations
 res.obs <- get_pca_ind(res.pca)
-coord.ind <- as_tibble(res.obs$coord) %>% mutate(ID = fnn$ID) %>% dplyr::select(ID,everything())
-contrib.ind <- as_tibble(res.obs$contrib) %>% mutate(ID = fnn$ID) %>% dplyr::select(ID,everything())
+coord.ind <- as_tibble(res.obs$coord) %>% mutate(ID = fnn_titles$ID) %>% dplyr::select(ID,everything())
+contrib.ind <- as_tibble(res.obs$contrib) %>% mutate(ID = fnn_titles$ID) %>% dplyr::select(ID,everything())
 
 coord.ind %>%
   left_join(contrib.ind, by = c("ID"), suffix = c(".coord",".contrib")) %>%
   left_join(fnn, by = c("ID")) %>%
   dplyr::select(ID, Dim.1.contrib, Dim.2.contrib, Dim.1.coord, Dim.2.coord, title) %>% 
   mutate(contrib = pmax(Dim.1.contrib,Dim.2.contrib)) %>%
-  filter(contrib >= mean(contrib) + (sd(contrib) * 3)) %>%
+  filter(contrib >= mean(contrib) + (sd(contrib) * 2)) %>%
   ggplot(aes(x=Dim.1.coord,y=Dim.2.coord,color=contrib)) +
   geom_point() +
   geom_text_repel(aes(label=title)) +
@@ -303,7 +340,7 @@ ggsave("thesis/final_draft/figures/body.png",dpi=600)
 ############## TITLE MODELS ############## 
 fitLassoTitles <- function(train_data, seed = 13){
   # Dumy code categorical predictor variables
-  x <- as.matrix(train_data[,-1])
+  x <- model.matrix(train_data[,-1])
   
   # Convert the outcome (class) to a numerical variable
   y <- train_data$label
@@ -328,21 +365,21 @@ fitLassoTitles <- function(train_data, seed = 13){
 }
 
 # drop ID
-train_titles2 <- train_titles %>% dplyr::select(-ID, -LS, -PDT, -swear, -assent, -nonflu, -filler, -LS, -RBS, -UH, -`WP$`) %>% drop_na()
-test_titles2 <- test_titles %>% dplyr::select(-ID, -LS, -PDT, -swear, -assent, -nonflu, -filler, -LS, -RBS, -UH, -`WP$`) %>% drop_na()
+train_titles2 <- train_titles %>% drop_na()
+test_titles2 <- test_titles %>% drop_na()
 
 
 # try again with data balancing
 train_titles3 <- caret::upSample(train_titles2, train_titles2$label) %>% as_tibble() %>% select(-Class)
 
 # fit model
-mod.lasso.titles <- fitLassoTitles(train_titles3)
+mod.lasso.titles <- fitLasso(train_titles3)
 
 # Display regression coefficients
 mod.coefs.titles <- coef(mod.lasso.titles)
 
 # get predictions
-pred.titles <- getLassoProbsTitles(mod.lasso.titles, test_titles2)
+pred.titles <- getLassoProbs(mod.lasso.titles, test_titles2)
 
 # ROC
 getROC(mod.lasso.titles, test_titles2, pred.titles)
@@ -352,6 +389,7 @@ calcAccuracyLasso(mod.lasso.titles, test_titles2, pred=pred.titles, cutoff=0.5)
 
 # grab reduced variables
 vars_kept <- names(mod.coefs.titles[,1][which(abs(mod.coefs.titles[,1]) > 0)])[-1]
+vars_kept[39] <- "PRP$"
 
 ### refit to get p-values
 train_titles4 <- dplyr::select(train_titles3, label, vars_kept)
@@ -372,7 +410,7 @@ pred.titles2 <- predict(mod.titles2, test_titles3, type="response")
 getROC(mod.titles2, test_titles3, pred.titles2)
 
 # get accuracy
-calcAccuracyLasso(mod.titles2, test_titles3, pred=pred.titles2, cutoff=0.36)
+calcAccuracyLasso(mod.titles2, test_titles3, pred=pred.titles2, cutoff=0.3)
 
 ############## GET IMPORTANT VARIABLES ############## 
 # variable importance
@@ -384,9 +422,9 @@ var.imp.titles <- tibble(
 
 # get coefficients
 coefs.titles <- tibble(
-  var = names(mod.coefs3),
-  coef = mod.coefs3, 
-  pval = mod.pvals3
+  var = names(mod.coefs.titles2),
+  coef = mod.coefs.titles2, 
+  pval = mod.pvals.titles2
 ) %>%
   mutate(
     pval_group = case_when(
@@ -408,7 +446,6 @@ coefs_merge.titles %>%
   filter(pval_group != "> 0.1") %>%
   ggplot(aes(x=coef,y=varimp)) +
   geom_point(aes(shape=pval_group)) +
-  xlim(-1.5,1.5) + 
   geom_vline(xintercept = 0, linetype="longdash", alpha=0.5) + 
   geom_text_repel(aes(label = var)) +
   theme_minimal() +
@@ -632,21 +669,10 @@ tests_sig <- filter(test_table, pval <= 0.05, med_false != med_true) %>%
   )
 
 
-gruppi_table <- tibble(
-  var = c("SMOG","FK","WC","WPS","shehe","auxverb"),
-  `Gruppi et al.` = c("Agree","Disagree","Disagree","Agree","Agree","Agree")
-)
-
-obrien_table <- tibble(
-  var = c("wc","Quote","FK","NN","DT","shehe","TTR","mu_sentence"),
-  `Obrien et al.` = c("Disagree","Agree","Agree","Disagree","Disagree","Disagree","Disagree",
-                      "Disagree"))
 
 tests_sig <- tests_sig %>%
-  left_join(gruppi_table) %>%
-  left_join(obrien_table) %>%
-  mutate(`Gruppi et al.` = ifelse(is.na(`Gruppi et al.`),"-",`Gruppi et al.`),
-         `Obrien et al.` = ifelse(is.na(`Obrien et al.`),"-",`Obrien et al.`))
+  mutate(`Gruppi et al.` = "-",
+         `Horne et al.` = "-")
 kable(dplyr::select(tests_sig,-med_false,-med_true,-pval), "latex", longtable = T, booktabs = T, caption = "Longtable")
 
 ################# MEDIAN TEST TABLES - TITLES
@@ -657,42 +683,6 @@ test_table <- tibble(
   pval = rep(NA,ncol(train_titles) - 2)
 )
 
-for (idx in seq(3,ncol(train_titles))) {
-  test_temp<-mood.medtest(unlist(train_titles[,idx],use.names = FALSE) ~ train_titles$label,
-                          exact = FALSE)
-  meds <- train_titles[,c(2,idx)] %>%
-    group_by(label) %>%
-    summarize_all(median)
-  
-  test_table[idx-2,]$med_false <- pull(filter(meds,label==0)[,2])
-  test_table[idx-2,]$med_true <- pull(filter(meds,label==1)[,2])
-  
-  test_table[idx-2,]$pval <- test_temp$p.value
-}
-
-
-
-tests_sig <- filter(test_table, pval <= 0.05, med_false != med_true) %>%
-  mutate(Result = if_else(med_false > med_true, "Fake > Real", "Real > Fake")) %>%
-  mutate(
-    pval_group = case_when(
-      pval <= 0.001 ~ "< 0.001",
-      pval <= 0.01 ~ "< 0.01",
-      pval <= 0.05 ~ "< 0.05",
-      pval <= 0.1 ~ "< 0.1",
-      TRUE ~ "> 0.1"
-    )
-  )
-
-
-gruppi_table <- tibble(
-  var = c("SMOG","FK","WC","WPS","shehe","auxverb"),
-  `Gruppi et al.` = c("Agree","Disagree","Disagree","Agree","Agree","Agree")
-)
-
-obrien_table <- tibble(
-  var = c("wc","Quote","FK","NN","DT","shehe","TTR","mu_sentence")
-)
 
 for (idx in seq(3,ncol(train_titles))) {
   test_temp<-mood.medtest(unlist(train_titles[,idx],use.names = FALSE) ~ train_titles$label,
@@ -714,23 +704,13 @@ tests_sig <- filter(test_table, pval <= 0.05, med_false != med_true) %>%
   mutate(
     pval_group = case_when(
       pval <= 0.001 ~ "< 0.001",
-      pval <= 0.01 ~ "< 0.01",
-      pval <= 0.05 ~ "< 0.05",
-      pval <= 0.1 ~ "< 0.1",
-      TRUE ~ "> 0.1"
+      TRUE ~ as.character(round(pval,4))
     )
   )
-
-
-obrien_table <- tibble(
-  var = c("WPS","FK","NNP"),
-  `Obrien et al.` = c("Disagree","Agree","Disagree")
-)
 
 tests_sig <- tests_sig %>%
-  left_join(obrien_table) %>%
-  mutate(
-    `Obrien et al.` = ifelse(is.na(`Obrien et al.`),"-",`Obrien et al.`))
+  mutate(`Gruppi et al.` = "-",
+         `Horne et al.` = "-")
 kable(dplyr::select(tests_sig,-med_false,-med_true,-pval), "latex", longtable = T, booktabs = T, caption = "Longtable")
 
 
