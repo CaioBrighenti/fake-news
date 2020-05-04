@@ -163,8 +163,43 @@ coord %>%
   scale_y_continuous(limits = c(-1,1)) + 
   theme_minimal() +
   theme(
-    aspect.ratio=1
+    aspect.ratio=1,
+    legend.position = "bottom",
+    legend.key.width = unit(1, "cm")
+  ) +
+  labs(title = "Highest contributing variables for 1st and 2nd dimensions of PCA",
+       x = "Dim 1 Coordinate",
+       y= "Dim 2 Coordinate",
+       color = "Contribution"
+       )
+ggsave("thesis/plots/pca1.png", dpi=600)
+
+coord %>%
+  left_join(contrib, by = c("var"), suffix = c(".coord",".contrib")) %>%
+  dplyr::select(var, Dim.3.contrib, Dim.4.contrib, Dim.3.coord, Dim.4.coord) %>% 
+  mutate(contrib = pmax(Dim.3.contrib,Dim.4.contrib)) %>%
+  filter(contrib >= mean(contrib) + (sd(contrib) * 1)) %>%
+  ggplot(aes(x=Dim.3.coord,y=Dim.4.coord,color=contrib)) +
+  geom_text_repel(aes(label=var)) +
+  geom_segment(aes(x=0,y=0,xend = Dim.3.coord, yend = Dim.4.coord),
+               arrow = arrow(length = unit(0.01, "npc"))) + 
+  geom_hline(yintercept = 0, linetype = "longdash") + 
+  geom_vline(xintercept = 0, linetype = "longdash") + 
+  geom_circle(aes(x0=0,y0=0,r=1), inherit.aes = FALSE) + 
+  scale_x_continuous(limits = c(-1,1)) + 
+  scale_y_continuous(limits = c(-1,1)) + 
+  theme_minimal() +
+  theme(
+    aspect.ratio=1,
+    legend.position = "bottom",
+    legend.key.width = unit(1, "cm")
+  ) +
+  labs(title = "Highest contributing variables for 1st and 2nd dimensions of PCA",
+       x = "Dim 1 Coordinate",
+       y= "Dim 2 Coordinate",
+       color = "Contribution"
   )
+ggsave("thesis/plots/pca2.png", dpi=600)
 
 
 # Results for observations
@@ -172,23 +207,71 @@ res.obs <- get_pca_ind(res.pca)
 coord.ind <- as_tibble(res.obs$coord) %>% mutate(ID = fnn_titles$ID) %>% dplyr::select(ID,everything())
 contrib.ind <- as_tibble(res.obs$contrib) %>% mutate(ID = fnn_titles$ID) %>% dplyr::select(ID,everything())
 
-coord.ind %>%
-  left_join(contrib.ind, by = c("ID"), suffix = c(".coord",".contrib")) %>%
-  left_join(fnn, by = c("ID")) %>%
-  dplyr::select(ID, Dim.1.contrib, Dim.2.contrib, Dim.1.coord, Dim.2.coord, title) %>% 
-  mutate(contrib = pmax(Dim.1.contrib,Dim.2.contrib)) %>%
-  filter(contrib >= mean(contrib) + (sd(contrib) * 2)) %>%
-  ggplot(aes(x=Dim.1.coord,y=Dim.2.coord,color=contrib)) +
-  geom_point() +
-  geom_text_repel(aes(label=title)) +
-  geom_hline(yintercept = 0, linetype = "longdash") + 
-  geom_vline(xintercept = 0, linetype = "longdash") + 
+# grab fake and real
+fake_coords <- left_join(coord.ind, train_articles) %>% filter(label == "fake") %>% dplyr::select(ID:Dim.4)
+real_coords <- left_join(coord.ind, train_articles) %>% filter(label == "real") %>% dplyr::select(ID:Dim.4)
+
+# get closest neighbor
+## fake news
+fake_knn <- get.knn(fake_coords[,-1],k=1)
+dists <- fake_knn$nn.dist
+dists[dists == 0] <- 100
+fake1 <- which.min(dists)
+fake2 <- fake_knn$nn.index[fake1]
+## reals news
+real_knn <- get.knn(real_coords[,-1],k=1)
+dists <- real_knn$nn.dist
+dists[dists == 0] <- 100
+real1 <- which.min(dists)
+real2 <- real_knn$nn.index[real1]
+
+
+## DIM 1
+fake_examples <- fake_coords[c(fake1,fake2),c(1,2,3)] %>%
+  left_join(fnn, by = c("ID"))
+real_examples <- coord.ind[c(fake1,fake2),c(1,2,3)] %>%
+  left_join(fnn, by = c("ID"))
+
+
+exs <- rbind(fake_examples, real_examples)
+
+exs %>%
+  ggplot(aes(x=Dim.1,y=Dim.2)) +
+  geom_point(aes(color=label)) +
+  geom_text_repel(aes(label=title, color=label)) +
+  geom_hline(yintercept = 0, linetype = "longdash") +
+  geom_vline(xintercept = 0, linetype = "longdash") +
+  scale_x_continuous(limits = c(-7,7)) +
+  scale_y_continuous(limits = c(-7,7)) + 
   theme_minimal() +
   theme(
     aspect.ratio=1
   )
 
-# NEED TO GRAB TITLES THAT ARE JUST URLS FOR OUTLIER DETECTION
+
+### DIM 2
+fake_examples <- coord.ind[c(308,17),c(1,2,3,4,5)] %>%
+  left_join(fnn, by = c("ID"))
+real_examples <- coord.ind[c(484,346),c(1,2,3,4,5)] %>%
+  left_join(fnn, by = c("ID"))
+
+plot(fake_coords$Dim.1, fake_coords$Dim.2)
+
+exs <- rbind(fake_examples, real_examples)
+
+exs %>%
+  ggplot(aes(x=Dim.1,y=Dim.2)) +
+  geom_point(aes(color=label)) +
+  geom_text_repel(aes(label=title, color=label)) +
+  geom_hline(yintercept = 0, linetype = "longdash") +
+  geom_vline(xintercept = 0, linetype = "longdash") +
+  scale_x_continuous(limits = c(-7,7)) +
+  scale_y_continuous(limits = c(-7,7)) + 
+  theme_minimal() +
+  theme(
+    aspect.ratio=1
+  )
+
 
 
 ############## SCALE ##############
